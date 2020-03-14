@@ -65,7 +65,7 @@ def get_plot_text(slope, country, R, d_time, R0, x, month):
 
 def get_excel_data(url, country, table_name, column, download):
     """Retrive Excel sheet and parse."""
-    country_xls = "{}.xls".format(country)
+    country_xls = "country_data/{}.xls".format(country)
     if not os.path.isfile(country_xls):
         urllib.urlretrieve(url, country_xls)
     book = open_workbook(country_xls, on_demand=True)
@@ -115,7 +115,7 @@ def plot_uk_data(download):
     plt.yticks(y_data, [np.int(y01) for y01 in y_data_real])
     _common_plot_stuff("UK", plot_suptitle)
     plt.text(2., y_data[-1] + 0.5, plot_title)
-    plt.savefig(plot_name)
+    plt.savefig(os.path.join("country_plots", plot_name))
     plt.show()
 
 
