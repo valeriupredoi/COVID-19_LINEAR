@@ -11,6 +11,8 @@ most up to date data; currently the only data location is at:
 
 UK_DATA_LOCATION = "https://www.arcgis.com/sharing/rest/content/items/e5fd11150d274bebaaf8fe2a7a2bda11/data"
 
+Source (official): https://www.gov.uk/government/publications/covid-19-track-coronavirus-cases
+
 which is an excel spreadsheet.
 """
 import argparse
