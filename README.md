@@ -6,14 +6,16 @@ log number of daily cases of COVID-19 and deaths vs time. It does the
 following automated tasks:
 
 - downloads the data (if prompted) for the required countries;
-- extracts the daily number of cases from the original data;
-- plots log(number of cases) vs time;
+- extracts the daily number of cases and daily deaths from the original datasets;
+- plots log(number of cases) and log(number of deaths) vs time;
 - fits a line through and computes the line parameters and least
   squares errors;
 - computes the coefficient of determination (how good the linear fit is);
-- computes the estimated population doubling time;
+- computes the estimated infected population doubling time and death toll doubling time;
 - computes the daily basic reproductive number (how many new infections
-  result daily from one infected individual).
+  result daily from one infected individual); note that the actual `R0`
+  (basic reproductive number) can be estimated by multiplying by 7 (days, the median
+  duration of the infectious phase).
 
 Usage
 =====
