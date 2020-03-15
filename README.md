@@ -2,7 +2,7 @@ Simple script that plots the evolution of COVID-19
 ==================================================
 
 This is a simple and easily adaptible script that plots the
-log number of daily cases of COVID-19 vs time. It does the
+log number of daily cases of COVID-19 and deaths vs time. It does the
 following automated tasks:
 
 - downloads the data (if prompted) for the required countries;
