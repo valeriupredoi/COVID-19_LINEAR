@@ -1,3 +1,5 @@
+![COVID-19 UK Evolution](country_plots/2019-ncov_lin_15-03-2020_UK.png)
+
 Simple script that plots the evolution of COVID-19
 ==================================================
 
