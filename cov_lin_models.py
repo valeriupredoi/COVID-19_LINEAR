@@ -68,7 +68,7 @@ def get_plot_text(slope, country, R, d_time, R0, x, month):
 def get_excel_data(url, country, table_name, column, download):
     """Retrive Excel sheet and parse."""
     country_xls = "country_data/{}.xls".format(country)
-    if not os.path.isfile(country_xls):
+    if not os.path.isfile(country_xls) or download:
         urllib.urlretrieve(url, country_xls)
     book = open_workbook(country_xls, on_demand=True)
     sheet = [
