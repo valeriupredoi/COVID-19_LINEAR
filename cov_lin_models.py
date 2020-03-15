@@ -82,8 +82,8 @@ def get_excel_data(url, country, table_name, column, download):
 
 def _common_plot_stuff(country, plot_suptitle):
     """Add common stuff to plot."""
-    plt.xlabel("March Date (DD/03/2020)")
-    plt.ylabel("Number of 2019-nCov cases on given day DD")
+    plt.xlabel("Time [days, starting March 1st, 2020]")
+    plt.ylabel("Cumulative number of cases")
     plt.suptitle("COVID-19 in {} starting March 1, 2020".format(country))
     plt.title(plot_suptitle)
 
