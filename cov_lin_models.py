@@ -9,7 +9,7 @@ $ python cov_lin_models.py --countries UK,Italy --download-data [True, False]
 If download-data set to True, it will download the official,
 most up to date data; currently the only data location is at:
 
-UK_DATA_LOCATION = "https://www.arcgis.com/sharing/rest/content/items/e5fd11150d274bebaaf8fe2a7a2bda11/data"
+UK_DAILY_CASES_DATA = "https://www.arcgis.com/sharing/rest/content/items/e5fd11150d274bebaaf8fe2a7a2bda11/data"
 
 Source (official): https://www.gov.uk/government/publications/covid-19-track-coronavirus-cases
 
@@ -23,7 +23,9 @@ import matplotlib.pyplot as plt
 import urllib
 from xlrd import open_workbook
 
-UK_DATA_LOCATION = "https://www.arcgis.com/sharing/rest/content/items/e5fd11150d274bebaaf8fe2a7a2bda11/data"
+# data stores: governemental data
+UK_DAILY_CASES_DATA = "https://www.arcgis.com/sharing/rest/content/items/e5fd11150d274bebaaf8fe2a7a2bda11/data"
+UK_DAILY_DEATH_DATA = "https://www.arcgis.com/sharing/rest/content/items/bc8ee90225644ef7a6f4dd1b13ea1d67/data"
 
 def c_of_d(ys_orig, ys_line):
     """Compute the line R squared."""
@@ -52,22 +54,31 @@ def get_linear_parameters(x, y):
 
 def get_plot_text(slope, country, R, d_time, R0, x, month):
     """Set plot title, subtitle, text."""
-    plot_suptitle = "Lin fit of " + \
-                    "log cases $N=Ce^{bt}$ with " + \
-                    "$b=$%.2f day$^{-1}$ (red, %s)" % (slope, country)
-    plot_title = "Coefficient of determination R=%.3f" % R + "\n" + \
-                 "Population Doubling time: %.1f days" % d_time + "\n" + \
-                 "Estimated Daily $R_0=$%.1f" % R0
+    plot_text = "Daily Cases (red):" + "\n" + \
+                "Line fit $N=Ce^{bt}$ with rate $b=$%.2f" % slope + "\n" + \
+                "Coefficient of determination R=%.3f" % R + "\n" + \
+                "Cases Doubling time: %.1f days" % d_time + "\n" + \
+                "Estimated Daily $R_0=$%.1f" % R0
     plot_name = "2019-ncov_lin_{}-{}-2020_{}.png".format(
                     str(int(x[-1])),
                     month, country)
 
-    return plot_suptitle, plot_title, plot_name
+    return plot_text, plot_name
 
 
-def get_excel_data(url, country, table_name, column, download):
+def get_deaths_plot_text(slope, country, R, d_time):
+    """Set text for deaths."""
+    plot_text = "Daily Deaths (blue):" + "\n" + \
+                "Line fit $N=Ce^{mt}$ with rate $m=$%.2f" % slope + "\n" + \
+                "Coefficient of determination R=%.3f" % R + "\n" + \
+                "Deaths Doubling time: %.1f days" % d_time
+
+    return plot_text
+
+
+def get_excel_data(url, country_table, table_name, column, download):
     """Retrive Excel sheet and parse."""
-    country_xls = "country_data/{}.xls".format(country)
+    country_xls = "country_data/{}.xls".format(country_table)
     if not os.path.isfile(country_xls) or download:
         urllib.urlretrieve(url, country_xls)
     book = open_workbook(country_xls, on_demand=True)
@@ -80,43 +91,91 @@ def get_excel_data(url, country, table_name, column, download):
     return cells
 
 
-def _common_plot_stuff(country, plot_suptitle):
+def _common_plot_stuff(country):
     """Add common stuff to plot."""
     plt.xlabel("Time [days, starting March 1st, 2020]")
-    plt.ylabel("Cumulative number of cases")
-    plt.suptitle("COVID-19 in {} starting March 1, 2020".format(country))
-    plt.title(plot_suptitle)
+    plt.ylabel("Cumulative number of confirmed cases and deaths")
+    plt.title("COVID-19 in {} starting March 1, 2020".format(country))
+
+
+def load_daily_deaths_history():
+    """Load previously written to disk deaths numbers."""
+    return list(np.loadtxt("country_data/UK_deaths_history", dtype='float'))
 
 
 def plot_uk_data(download):
     """Plot the UK data starting March 1st, 2020."""
-    uk_data_url = UK_DATA_LOCATION
-    cells = get_excel_data(uk_data_url, "UK",
-                           "DailyConfirmedCases", 2, download=download)
+    uk_cases_url = UK_DAILY_CASES_DATA
+    cases_cells = get_excel_data(uk_cases_url, "UK_cases",
+                                 "DailyConfirmedCases", 2,
+                                 download=download)
+    uk_deaths_url = UK_DAILY_DEATH_DATA
+    # TODO check for possible future book.name == DailyIndicators
+    death_cells = get_excel_data(uk_deaths_url, "UK_deaths",
+                                 "Sheet1", 3,
+                                 download=download)
 
-    # data cells
-    y_data_real = cells[31:]
+    # data cells: cases and deaths
+    y_data_real = cases_cells[31:]
+    y_deaths_real = load_daily_deaths_history()
+
+    # append to file
+    if death_cells[1:] not in y_deaths_real:
+        y_deaths_real.extend(death_cells[1:])
+        with open("country_data/UK_deaths_history", "a") as file:
+            file.write(str(death_cells[1:][0]))
+
+    # all in one
+    y_all_real = []
+    y_all_real.extend(y_deaths_real)
+    y_all_real.extend(y_data_real)
+    y_all = np.log(y_all_real)
+
+    # logarithimc regression
     y_data = np.log(y_data_real)
-    x_data = [np.float(x) for x in range(1, len(y_data) + 1)]
+    y_deaths = np.log(y_deaths_real)
 
-    # statistics
+    # x-time series, days: cases start 1st March
+    # deths start 13th March
+    x_data = [np.float(x) for x in range(1, len(y_data) + 1)]
+    x_deaths = [np.float(x) for x in range(13, len(y_deaths) + 13)]
+
+    # statistics: cases
     poly_x, R, y_err, slope, d_time, R0 = get_linear_parameters(x_data,
                                                                 y_data)
 
-    # plot parameters
-    plot_suptitle, plot_title, plot_name = get_plot_text(slope, "UK",
-                                                         R, d_time, R0,
-                                                         x_data, month="03")
+    # plot parameters: cases
+    plot_text, plot_name = get_plot_text(slope, "UK",
+                                         R, d_time, R0,
+                                         x_data, month="03")
 
-    # plotting
-    plt.plot(x_data, y_data, 'yo', x_data, poly_x, '--k')
+    # statistics: deaths
+    poly_x_d, R_d, y_err_d, slope_d, d_time_d, R0_d = get_linear_parameters(
+        x_deaths,
+        y_deaths
+    )
+
+    # plot parameters: deaths
+    plot_text_d = get_deaths_plot_text(
+        slope_d, "UK",
+        R_d, d_time_d
+    )
+
+    # plotting cases
+    plt.scatter(x_data, y_data, color='r', label="Daily Cases")
+    plt.plot(x_data, poly_x, '--k')
+    plt.scatter(x_deaths, y_deaths, marker='v', color='b', label="Deaths")
+    plt.plot(x_deaths, poly_x_d, '--b')
     plt.errorbar(x_data, y_data, yerr=y_err, fmt='o', color='r')
+    plt.errorbar(x_deaths, y_deaths, yerr=y_err_d, fmt='v', color='b')
     plt.grid()
     plt.xlim(x_data[0] - 1.5, x_data[-1] + 1.5)
-    plt.ylim(2.5, y_data[-1] + 1.5)
-    plt.yticks(y_data, [np.int(y01) for y01 in y_data_real])
-    _common_plot_stuff("UK", plot_suptitle)
-    plt.text(2., y_data[-1] + 0.5, plot_title)
+    plt.ylim(1.5, y_data[-1] + 2.5)
+    _common_plot_stuff("UK")
+    plt.text(2., y_data[-1] + 0.5, plot_text)
+    plt.text(2., y_data[-1] - 1.0, plot_text_d)
+    plt.legend(loc="lower left")
+    plt.yticks(y_all, [np.int(y01) for y01 in y_all_real])
     plt.savefig(os.path.join("country_plots", plot_name))
     plt.show()
 
