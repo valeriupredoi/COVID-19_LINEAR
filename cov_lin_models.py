@@ -66,12 +66,13 @@ def get_plot_text(slope, country, R, d_time, R0, x, month):
     return plot_text, plot_name
 
 
-def get_deaths_plot_text(slope, country, R, d_time):
+def get_deaths_plot_text(slope, country, R, d_time, avg_mort, stdev_mort):
     """Set text for deaths."""
     plot_text = "Daily Deaths (blue):" + "\n" + \
                 "Line fit $N=Ce^{mt}$ with rate $m=$%.2f" % slope + "\n" + \
                 "Coefficient of determination R=%.3f" % R + "\n" + \
-                "Deaths Doubling time: %.1f days" % d_time
+                "Deaths Doubling time: %.1f days" % d_time + "\n" + \
+                "Average mortality %.2f+/-%.2f (STD)" % (avg_mort, stdev_mort)
 
     return plot_text
 
@@ -119,6 +120,11 @@ def plot_uk_data(download):
     y_data_real = cases_cells[31:]
     y_deaths_real = load_daily_deaths_history()
 
+    # compute avergae mortality
+    mort = np.array(y_deaths_real) / np.array(y_data_real[12:])
+    avg_mort = np.mean(mort)
+    stdev_mort = np.std(mort)
+
     # append to file
     if death_cells[1:] not in y_deaths_real:
         y_deaths_real.extend(death_cells[1:])
@@ -158,13 +164,16 @@ def plot_uk_data(download):
     # plot parameters: deaths
     plot_text_d = get_deaths_plot_text(
         slope_d, "UK",
-        R_d, d_time_d
+        R_d, d_time_d,
+        avg_mort, stdev_mort
     )
 
     # plotting cases
-    plt.scatter(x_data, y_data, color='r', label="Daily Cases")
+    plt.scatter(x_data, y_data, color='r',
+                label="Daily Cases")
     plt.plot(x_data, poly_x, '--k')
-    plt.scatter(x_deaths, y_deaths, marker='v', color='b', label="Deaths")
+    plt.scatter(x_deaths, y_deaths, marker='v',
+                color='b', label="Daily Deaths")
     plt.plot(x_deaths, poly_x_d, '--b')
     plt.errorbar(x_data, y_data, yerr=y_err, fmt='o', color='r')
     plt.errorbar(x_deaths, y_deaths, yerr=y_err_d, fmt='v', color='b')
@@ -173,9 +182,10 @@ def plot_uk_data(download):
     plt.ylim(1.5, y_data[-1] + 2.5)
     _common_plot_stuff("UK")
     plt.text(2., y_data[-1] + 0.5, plot_text)
-    plt.text(2., y_data[-1] - 1.0, plot_text_d)
+    plt.text(2., y_data[-1] - 1.2, plot_text_d)
     plt.legend(loc="lower left")
     plt.yticks(y_all, [np.int(y01) for y01 in y_all_real])
+    plt.tick_params(axis="y", labelsize=8)
     plt.savefig(os.path.join("country_plots", plot_name))
     plt.show()
 
