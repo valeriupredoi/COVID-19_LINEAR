@@ -1,4 +1,4 @@
-![COVID-19 UK Evolution](country_plots/2019-ncov_lin_15-03-2020_UK.png)
+![COVID-19 UK Evolution](country_plots/2019-ncov_lin_16-03-2020_UK.png)
 
 Simple script that plots the evolution of COVID-19
 ==================================================
@@ -34,3 +34,8 @@ Command line use:
 where `COUNTRIES` is a list of countries to study (currently UK only
 implemented); `BOOL`: `True` for doewnloading the data to the `country_data`
 directory or `False` to use an older copy from the said directory.
+
+UK Data
+=======
+
+Official data source: https://www.gov.uk/government/publications/covid-19-track-coronavirus-cases
