@@ -123,7 +123,7 @@ def plot_uk_data(download):
     if death_cells[1:] not in y_deaths_real:
         y_deaths_real.extend(death_cells[1:])
         with open("country_data/UK_deaths_history", "a") as file:
-            file.write(str(death_cells[1:][0]))
+            file.write(str(death_cells[1:][0]) + "\n")
 
     # all in one
     y_all_real = []
