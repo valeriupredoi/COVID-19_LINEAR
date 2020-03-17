@@ -12,7 +12,8 @@ deaths per country
 
 Parameters:
 
-- `b`: exponential rate (in units `day-1`)
+- `b`: exponential rate at which daily cases rise (in units `day-1`);
+- `m`: exponential rate at which daily deaths rise (in units `day-1`);
 - Coefficient of determination: how good the linear fit is: perfect fit R=1;
 - Cases/Deaths doubling time: the number of days in which the cases/deaths will double;
 - Estimated R0: the number of people a single infected person will infect per day, on average;
