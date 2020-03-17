@@ -140,21 +140,23 @@ def plot_countries(datasets, month, country):
     stdev_mort = np.std(mort)
 
     # statistics: deaths
-    poly_x_d, R_d, y_err_d, slope_d, d_time_d, R0_d = get_linear_parameters(
-        x_deaths,
-        y_deaths
-    )
+    if deaths:
+        poly_x_d, R_d, y_err_d, slope_d, d_time_d, R0_d = get_linear_parameters(
+            x_deaths,
+            y_deaths
+        )
 
-    # plot parameters: deaths
-    plot_text_d = get_deaths_plot_text(
-        slope_d, "UK",
-        R_d, d_time_d,
-        avg_mort, stdev_mort
-    )
+        # plot parameters: deaths
+        plot_text_d = get_deaths_plot_text(
+            slope_d, "UK",
+            R_d, d_time_d,
+            avg_mort, stdev_mort
+        )
 
     # all in one
     y_all_real = []
-    y_all_real.extend(deaths)
+    if deaths:
+        y_all_real.extend(deaths)
     y_all_real.extend(cases)
     y_all = np.log(y_all_real)
 
@@ -162,17 +164,20 @@ def plot_countries(datasets, month, country):
     plt.scatter(x_cases, y_cases, color='r',
                 label="Daily Cases")
     plt.plot(x_cases, poly_x, '--k')
-    plt.scatter(x_deaths, y_deaths, marker='v',
-                color='b', label="Daily Deaths")
-    plt.plot(x_deaths, poly_x_d, '--b')
+    if deaths:
+        plt.scatter(x_deaths, y_deaths, marker='v',
+                    color='b', label="Daily Deaths")
+        plt.plot(x_deaths, poly_x_d, '--b')
     plt.errorbar(x_cases, y_cases, yerr=y_err, fmt='o', color='r')
-    plt.errorbar(x_deaths, y_deaths, yerr=y_err_d, fmt='v', color='b')
+    if deaths:
+        plt.errorbar(x_deaths, y_deaths, yerr=y_err_d, fmt='v', color='b')
     plt.grid()
     plt.xlim(x_cases[0] - 1.5, x_cases[-1] + 1.5)
     plt.ylim(1.5, y_cases[-1] + 2.5)
     _common_plot_stuff(country)
     plt.text(1., y_cases[-1] + 0.3, plot_text)
-    plt.text(1., y_cases[-1] - 1.7, plot_text_d)
+    if deaths:
+        plt.text(1., y_cases[-1] - 1.7, plot_text_d)
     plt.legend(loc="lower left")
     plt.yticks(y_all, [np.int(y01) for y01 in y_all_real])
     plt.tick_params(axis="y", labelsize=8)
