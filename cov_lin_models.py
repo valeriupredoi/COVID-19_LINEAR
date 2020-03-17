@@ -182,7 +182,7 @@ def plot_countries(datasets, month, country):
     plt.yticks(y_all, [np.int(y01) for y01 in y_all_real])
     plt.tick_params(axis="y", labelsize=8)
     plt.savefig(os.path.join("country_plots", plot_name))
-    # plt.show()
+    plt.close()
 
 
 def plot_official_uk_data(download):
