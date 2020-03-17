@@ -29,13 +29,18 @@ Requirements:
 
 Command line use:
 
-`python cov_lin_models.py --countries COUNTRIES --download-data BOOL`
+`python cov_lin_models.py --countries France,Spain,Italy,Canada,US --download-data True --month 3`
 
-where `COUNTRIES` is a list of countries to study (currently UK only
-implemented); `BOOL`: `True` for doewnloading the data to the `country_data`
-directory or `False` to use an older copy from the said directory.
+where `--countries` is a list of countries to study ;
+`download-data`: `True` for downloading the data to the `country_data`
+directory or `False` to use an older copy from the said directory;
+`--month`: numeral of the month to plot.
 
 UK Data
 =======
 
 Official data source: https://www.gov.uk/government/publications/covid-19-track-coronavirus-cases
+
+Worldwide Data
+==============
+Johns Hopkins gitHub repository: https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports
