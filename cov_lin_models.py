@@ -201,16 +201,16 @@ def plot_official_uk_data(download):
     y_data_real = cases_cells[31:]
     y_deaths_real = load_daily_deaths_history()
 
-    # compute avergae mortality
-    mort = np.array(y_deaths_real) / np.array(y_data_real[12:])
-    avg_mort = np.mean(mort)
-    stdev_mort = np.std(mort)
-
-    # append to file
+    # append to file if new data
     if death_cells[1:] not in y_deaths_real:
         y_deaths_real.extend(death_cells[1:])
         with open("country_data/UK_deaths_history", "a") as file:
             file.write(str(death_cells[1:][0]) + "\n")
+
+    # compute avergae mortality
+    mort = np.array(y_deaths_real) / np.array(y_data_real[12:])
+    avg_mort = np.mean(mort)
+    stdev_mort = np.std(mort)
 
     # all in one
     y_all_real = []
