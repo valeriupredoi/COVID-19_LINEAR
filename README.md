@@ -1,4 +1,4 @@
-![COVID-19 UK Evolution](country_plots/2019-ncov_lin_16-03-2020_UK.png)
+![COVID-19 UK Evolution](country_plots/2019-ncov_lin_16-03-2020_UK.png) ![COVID-19 France Evolution](country_plots/2019-ncov_lin_16-3-2020_France.png)
 ![COVID-19 France Evolution](country_plots/2019-ncov_lin_16-3-2020_France.png)
 ![COVID-19 Spain Evolution](country_plots/2019-ncov_lin_16-3-2020_Spain.png)
 ![COVID-19 Italy Evolution](country_plots/2019-ncov_lin_16-3-2020_Italy.png)
