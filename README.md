@@ -9,6 +9,8 @@ deaths per country
 ![COVID-19 Spain Evolution](country_plots/2019-ncov_lin_16-3-2020_Spain.png)
 ![COVID-19 Italy Evolution](country_plots/2019-ncov_lin_16-3-2020_Italy.png)
 ![COVID-19 Canada Evolution](country_plots/2019-ncov_lin_16-3-2020_Canada.png)
+![COVID-19 Canada Evolution](country_plots/2019-ncov_lin_16-3-2020_Germany.png)
+![COVID-19 Canada Evolution](country_plots/2019-ncov_lin_16-3-2020_Bulgaria.png)
 
 Parameters:
 
