@@ -16,6 +16,8 @@ Source (official): https://www.gov.uk/government/publications/covid-19-track-cor
 which is an excel spreadsheet.
 """
 import argparse
+import csv
+from datetime import datetime
 import os
 import numpy as np
 import matplotlib
@@ -26,6 +28,9 @@ from xlrd import open_workbook
 # data stores: governemental data
 UK_DAILY_CASES_DATA = "https://www.arcgis.com/sharing/rest/content/items/e5fd11150d274bebaaf8fe2a7a2bda11/data"
 UK_DAILY_DEATH_DATA = "https://www.arcgis.com/sharing/rest/content/items/bc8ee90225644ef7a6f4dd1b13ea1d67/data"
+
+# data stores: Johns Hopkins data
+JOHN_HOPKINS = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports"
 
 def c_of_d(ys_orig, ys_line):
     """Compute the line R squared."""
@@ -104,7 +109,7 @@ def load_daily_deaths_history():
     return list(np.loadtxt("country_data/UK_deaths_history", dtype='float'))
 
 
-def plot_uk_data(download):
+def plot_official_uk_data(download):
     """Plot the UK data starting March 1st, 2020."""
     uk_cases_url = UK_DAILY_CASES_DATA
     cases_cells = get_excel_data(uk_cases_url, "UK_cases",
@@ -190,6 +195,59 @@ def plot_uk_data(download):
     plt.show()
 
 
+def _get_daily_countries_data(date, country):
+    """Get all countries data via csv file reading."""
+    # date[0] = DAY(DD), date[1] = MONTH(MM)
+    file_name = "{}-{}-2020.csv".format(date[1], date[0])
+    data_dir = os.path.join("country_data",
+                            "{}_monthly_{}".format(country, date[1]))
+    if not os.path.isdir(data_dir):
+        os.makedirs(data_dir)
+    fullpath_file = os.path.join(data_dir, file_name)
+    if not os.path.isfile(fullpath_file):
+        url = os.path.join(JOHN_HOPKINS, file_name)
+        urllib.urlretrieve(url, fullpath_file)
+
+    # file reading
+    with open(fullpath_file, "r") as csv_file:
+        reader = csv.reader(csv_file, delimiter=',', quotechar='"')
+        data_read = [row for row in reader]
+        # country data
+        count_cases = [tab[3] for tab in data_read if tab[1] == country]
+        if count_cases:
+            count_cases = count_cases[0]
+        count_deaths = [tab[4] for tab in data_read if tab[1] == country]
+        if count_deaths:
+            count_deaths = count_deaths[0]
+        count_rec = [tab[5] for tab in data_read if tab[1] == country]
+        if count_rec:
+            count_rec = count_rec[0]
+
+    return count_cases, count_deaths, count_rec
+
+
+def _get_monthly_countries_data(country, month):
+    """Assemble monthly data per country."""
+    m_cases = []
+    m_deaths = []
+    m_rec = []
+    # start March 1st
+    today_date = datetime.today().strftime('%m-%d-%Y')
+    today_day = today_date.split("-")[1]
+    for day in range(1, int(float(today_day))):
+        date_object = datetime(day=day,
+                               month=month,
+                               year=2020).strftime('%d-%m-%Y')
+        date = (date_object.split("-")[0], date_object.split("-")[1])
+        month_cases, month_deaths, month_rec = \
+            _get_daily_countries_data(date, country)
+        m_cases.append(month_cases)
+        m_deaths.append(month_deaths)
+        m_rec.append(month_rec)
+
+    return m_cases, m_deaths, m_rec
+
+
 def main():
     """Execute the plotter."""
     # parse command line args
@@ -202,15 +260,22 @@ def main():
                         '--countries',
                         type=str,
                         help='List of countries.')
+    parser.add_argument('-m',
+                        '--month',
+                        type=int,
+                        help='Month index: March: 3, April: 4 etc.')
     args = parser.parse_args()
     download = False
     if not args.countries:
         return
     if args.download_data:
         download = True
-    if "UK" in args.countries:
-        plot_uk_data(download)
+    # plot UK first
+    plot_official_uk_data(download)
 
+    # plot other countries
+    for country in args.countries.split(","):
+        monthly_numbers = _get_monthly_countries_data(country, args.month)
 
 if __name__ == '__main__':
     main()
