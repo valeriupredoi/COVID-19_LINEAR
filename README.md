@@ -1,8 +1,22 @@
-![COVID-19 UK Evolution](country_plots/2019-ncov_lin_16-03-2020_UK.png) ![COVID-19 France Evolution](country_plots/2019-ncov_lin_16-3-2020_France.png)
+Results
+=======
+
+Current results for linear fit of daily number of cases and daily number of
+deaths per country
+
+![COVID-19 UK Evolution](country_plots/2019-ncov_lin_16-03-2020_UK.png)
 ![COVID-19 France Evolution](country_plots/2019-ncov_lin_16-3-2020_France.png)
 ![COVID-19 Spain Evolution](country_plots/2019-ncov_lin_16-3-2020_Spain.png)
 ![COVID-19 Italy Evolution](country_plots/2019-ncov_lin_16-3-2020_Italy.png)
 ![COVID-19 Canada Evolution](country_plots/2019-ncov_lin_16-3-2020_Canada.png)
+
+Parameters:
+
+- `b`: exponential rate (in units `day-1`)
+- Coefficient of determination: how good the linear fit is: perfect fit R=1;
+- Cases/Deaths doubling time: the number of days in which the cases/deaths will double;
+- Estimated R0: the number of people a single infected person will infect per day, on average;
+- Average Mortality Rate: average percent of number of cases that die.
 
 Simple script that plots the evolution of COVID-19
 ==================================================
