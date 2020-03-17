@@ -117,11 +117,20 @@ def plot_countries(datasets, month, country):
     deaths = [d for d in deaths if d > 0.]
     recs = [float(c) for c in datasets[2] if c != 'NN']
 
+    actual_days = [
+        datetime.strptime(c, "%Y-%m-%dT%H:%M:%S").day
+        for c in datasets[3] if c != 'NN'
+    ]
+    if actual_days[0] != 1 and actual_days[0] < 10:
+        x_cases = actual_days
+    else:
+        x_cases = [float(n) for n in range(1, len(cases) + 1)]
+
     # logarithimc regression
     y_cases = np.log(cases)
     y_deaths = np.log(deaths)
-    x_cases = [float(n) for n in range(1, len(cases) + 1)]
-    x_deaths = [float(n) for n in range(1, len(deaths) + 1)]
+    x_deaths = [float(n) for n in range(int(x_cases[-1]) - len(deaths) + 1,
+                                        int(x_cases[-1]) + 1)]
 
     # statistics: cases
     poly_x, R, y_err, slope, d_time, R0 = get_linear_parameters(
@@ -172,8 +181,8 @@ def plot_countries(datasets, month, country):
     if deaths:
         plt.errorbar(x_deaths, y_deaths, yerr=y_err_d, fmt='v', color='b')
     plt.grid()
-    plt.xlim(x_cases[0] - 1.5, x_cases[-1] + 1.5)
-    plt.ylim(1.5, y_cases[-1] + 2.5)
+    plt.xlim(0., x_cases[-1] + 1.5)
+    plt.ylim(0., y_cases[-1] + 2.5)
     _common_plot_stuff(country)
     plt.text(1., y_cases[-1] + 0.3, plot_text)
     if deaths:
@@ -259,8 +268,8 @@ def plot_official_uk_data(download):
     plt.errorbar(x_data, y_data, yerr=y_err, fmt='o', color='r')
     plt.errorbar(x_deaths, y_deaths, yerr=y_err_d, fmt='v', color='b')
     plt.grid()
-    plt.xlim(x_data[0] - 1.5, x_data[-1] + 1.5)
-    plt.ylim(1.5, y_data[-1] + 2.5)
+    plt.xlim(0., x_data[-1] + 1.5)
+    plt.ylim(0., y_data[-1] + 2.5)
     _common_plot_stuff("UK")
     plt.text(2., y_data[-1] + 0.5, plot_text)
     plt.text(2., y_data[-1] - 1.2, plot_text_d)
@@ -289,6 +298,11 @@ def _get_daily_countries_data(date, country):
         reader = csv.reader(csv_file, delimiter=',', quotechar='"')
         data_read = [row for row in reader]
         # country data
+        exp_dates = [tab[2] for tab in data_read if tab[1] == country]
+        if exp_dates:
+            exp_dates = exp_dates[0]
+        else:
+            exp_dates = 'NN'
         count_cases = [tab[3] for tab in data_read if tab[1] == country]
         if count_cases:
             count_cases = count_cases[0]
@@ -305,7 +319,7 @@ def _get_daily_countries_data(date, country):
         else:
             count_rec = 'NN'
 
-    return count_cases, count_deaths, count_rec
+    return count_cases, count_deaths, count_rec, exp_dates
 
 
 def _get_monthly_countries_data(country, month):
@@ -313,6 +327,7 @@ def _get_monthly_countries_data(country, month):
     m_cases = []
     m_deaths = []
     m_rec = []
+    actual_dates = []
     # start March 1st
     today_date = datetime.today().strftime('%m-%d-%Y')
     today_day = today_date.split("-")[1]
@@ -321,13 +336,14 @@ def _get_monthly_countries_data(country, month):
                                month=month,
                                year=2020).strftime('%d-%m-%Y')
         date = (date_object.split("-")[0], date_object.split("-")[1])
-        month_cases, month_deaths, month_rec = \
+        month_cases, month_deaths, month_rec, exp_dates = \
             _get_daily_countries_data(date, country)
         m_cases.append(month_cases)
         m_deaths.append(month_deaths)
         m_rec.append(month_rec)
+        actual_dates.append(exp_dates)
 
-    return m_cases, m_deaths, m_rec
+    return m_cases, m_deaths, m_rec, actual_dates
 
 
 def main():
