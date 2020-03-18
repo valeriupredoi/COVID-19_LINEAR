@@ -1,8 +1,13 @@
-Results
-=======
+Results: Expenential Phase
+==========================
 
-Current results for linear fit of daily number of cases and daily number of
-deaths per country
+Current results for linear fit for logarithmic data of daily number of cases and daily number of
+deaths per country. Almost every coutry is undergoing an expoenential infection spread phase,
+`exp(bt)`, characterised by the rate `b` and time coordinate `t` (time exponential)
+in most cases, the exponential rates `b` are 0.25-0.3 day-1, yieling population (cases, deaths)
+doubling times of 2-3 days. The results are affected by poor testing in different areas and countries,
+and by **driver** regions (like Lombardia in Italy or London in UK, ultimately assigning a lot of
+statistical weight to these parts of the country, given overwheling numbers).
 
 ![COVID-19 UK Evolution](country_plots/COVID-19_LIN_UK.png)
 ![COVID-19 France Evolution](country_plots/COVID-19_LIN_France.png)
