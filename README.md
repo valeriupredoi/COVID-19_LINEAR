@@ -9,7 +9,7 @@ doubling times of 2-3 days. The results are affected by poor testing in differen
 and by **driver** regions (like Lombardia in Italy or London in UK, ultimately assigning a lot of
 statistical weight to these parts of the country, given overwheling numbers).
 
-![COVID-19 UK Evolution](country_plots/COVID-19_LIN_UK.png)
+![COVID-19 UK Evolution](country_plots/COVID-19_LIN_UK-GOV.png)
 ![COVID-19 France Evolution](country_plots/COVID-19_LIN_France.png)
 ![COVID-19 Belgium Evolution](country_plots/COVID-19_LIN_Belgium.png)
 ![COVID-19 Spain Evolution](country_plots/COVID-19_LIN_Spain.png)
