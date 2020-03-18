@@ -9,14 +9,50 @@ doubling times of 2-3 days. The results are affected by poor testing in differen
 and by **driver** regions (like Lombardia in Italy or London in UK, ultimately assigning a lot of
 statistical weight to these parts of the country, given overwheling numbers).
 
-United Kingdom
---------------
+United Kingdom (updated daily)
+------------------------------
 
 ![COVID-19 UK Evolution](country_plots/COVID-19_LIN_UK-GOV.png)
 
 Linear fit of the exponential spread in the United Kingdom, starting March 1st, 2020.
 Data is piped automatically from the official database
 https://www.gov.uk/government/publications/covid-19-track-coronavirus-cases
+
+Flattening the curve example
+----------------------------
+
+There a few examples already that show that the combination of better testing and restricted
+social interactions contribute to bringing down the acceleration of the spread: the figure shows
+the start of two different outbreaks - Italy and UK, shifted in time since Italy's outbreak started
+earlier in February: at the start the two outbreaks differ in spread rate (and cases doubling time)
+but comparing the two rates is not relevant due to different biases (more or less testing, different
+population densities etc). What matters is that Italy, within the past month,
+has introduced a set of strict control measures
+and these measures are now visible in the spread rate: a decrease of 40% in the spread rate.
+The UK is only now (18 March) starting to introduce such measures and the effect is left to be seen.
+Just how important such a decrease of the spread rate is? Current numbers in Italy are ~32,000; at
+its initial rate that would mean in a week this number rises to ~310,000 resulting in 10,000 more deaths;
+a constant rate of 0.19 will result in a total of 120,000 cases in a week, with a total of 2,000 more
+deaths, factor five less.
+
+![COVID-19 Italy-UK Start Evolution](START_PLOTS/COV19_LIN_START_9-03-2020_UK-Italy.png)
+
+Figure above: Comparison of infection starts for Italy (February) and UK (March);
+Italy shows a faster infectious spread at a rate of 0.32 day-1
+as compared to the UK's 0.23 day-1
+
+Probably the most evident case of a (rather strong) quarantine can be seen in China in the figure below:
+the Chinese government has instituted it on January 23 and effects can be seen as early as January 27.
+
+![COVID-19 Italy-UK Start Evolution](START_PLOTS/COV19_LIN_START_2-02-2020_China.png)
+
+Figure above: Confirmed cases for China a few days before and after 23 January quarantine.
+About 5 days after the quarantine institution we notice
+a slower infectious spread at a rate of 0.23 day-1,
+as compared to the initial 0.41 day-1.
+
+Situation around the world (updated daily)
+------------------------------------------
 
 ![COVID-19 France Evolution](country_plots/COVID-19_LIN_France.png)
 ![COVID-19 Belgium Evolution](country_plots/COVID-19_LIN_Belgium.png)
@@ -33,7 +69,8 @@ https://www.gov.uk/government/publications/covid-19-track-coronavirus-cases
 ![COVID-19 Doubling Time Evolution](country_plots/Histogram_Doubling_Time.png)
 ![COVID-19 Rzero Evolution](country_plots/Histogram_Basic_Reproductive_Number.png)
 
-Parameters:
+Parameters
+----------
 
 - `b`: exponential rate at which daily cases rise (in units `day-1`);
 - `m`: exponential rate at which daily deaths rise (in units `day-1`);
