@@ -56,11 +56,13 @@ Requirements:
 
 Command line use:
 
-`python cov_lin_models.py --countries France,Spain,Italy,Canada,US --download-data True --month 3`
+`python cov_lin_models.py --countries COUNTRIES --month 3`
 
-where `--countries` is a list of countries to study ;
-`download-data`: `True` for downloading the data to the `country_data`
-directory or `False` to use an older copy from the said directory;
+where `--countries` is a list of countries to study
+or `file: COUNTRIES` (just add your country there);
+`download-data`: `True` (default) for downloading the
+data to the `country_data` directory or `False` to use
+an older copy from the said directory;
 `--month`: numeral of the month to plot.
 
 UK Data
