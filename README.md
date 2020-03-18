@@ -4,19 +4,19 @@ Results
 Current results for linear fit of daily number of cases and daily number of
 deaths per country
 
-![COVID-19 UK Evolution](country_plots/2019-ncov_lin_17-03-2020_UK.png)
-![COVID-19 France Evolution](country_plots/2019-ncov_lin_17-3-2020_France.png)
-![COVID-19 Belgium Evolution](country_plots/2019-ncov_lin_17-3-2020_Belgium.png)
-![COVID-19 Spain Evolution](country_plots/2019-ncov_lin_17-3-2020_Spain.png)
-![COVID-19 Italy Evolution](country_plots/2019-ncov_lin_17-3-2020_Italy.png)
-![COVID-19 Romania Evolution](country_plots/2019-ncov_lin_17-3-2020_Romania.png)
-![COVID-19 Canada Evolution](country_plots/2019-ncov_lin_17-3-2020_Canada.png)
-![COVID-19 Germany Evolution](country_plots/2019-ncov_lin_17-3-2020_Germany.png)
-![COVID-19 Netherlands Evolution](country_plots/2019-ncov_lin_17-3-2020_Netherlands.png)
-![COVID-19 Bulgaria Evolution](country_plots/2019-ncov_lin_17-3-2020_Bulgaria.png)
-![COVID-19 Ireland Evolution](country_plots/2019-ncov_lin_17-3-2020_Ireland.png)
-![COVID-19 Slovakia Evolution](country_plots/2019-ncov_lin_17-3-2020_Slovakia.png)
-![COVID-19 US Evolution](country_plots/2019-ncov_lin_17-3-2020_US.png)
+![COVID-19 UK Evolution](country_plots/COVID-19_LIN_UK.png)
+![COVID-19 France Evolution](country_plots/COVID-19_LIN_France.png)
+![COVID-19 Belgium Evolution](country_plots/COVID-19_LIN_Belgium.png)
+![COVID-19 Spain Evolution](country_plots/COVID-19_LIN_Spain.png)
+![COVID-19 Italy Evolution](country_plots/COVID-19_LIN_Italy.png)
+![COVID-19 Romania Evolution](country_plots/COVID-19_LIN_Romania.png)
+![COVID-19 Canada Evolution](country_plots/COVID-19_LIN_Canada.png)
+![COVID-19 Germany Evolution](country_plots/COVID-19_LIN_Germany.png)
+![COVID-19 Netherlands Evolution](country_plots/COVID-19_LIN_Netherlands.png)
+![COVID-19 Bulgaria Evolution](country_plots/COVID-19_LIN_Bulgaria.png)
+![COVID-19 Ireland Evolution](country_plots/COVID-19_LIN_Ireland.png)
+![COVID-19 Slovakia Evolution](country_plots/COVID-19_LIN_Slovakia.png)
+![COVID-19 US Evolution](country_plots/COVID-19_LIN_US.png)
 
 Parameters:
 
