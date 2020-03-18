@@ -22,6 +22,8 @@ statistical weight to these parts of the country, given overwheling numbers).
 ![COVID-19 Ireland Evolution](country_plots/COVID-19_LIN_Ireland.png)
 ![COVID-19 Slovakia Evolution](country_plots/COVID-19_LIN_Slovakia.png)
 ![COVID-19 US Evolution](country_plots/COVID-19_LIN_US.png)
+![COVID-19 Doubling Time Evolution](country_plots/Histogram_Doubling_Time.png)
+![COVID-19 Rzero Evolution](country_plots/Histogram_Basic_Reproductive_Number.png)
 
 Parameters:
 
