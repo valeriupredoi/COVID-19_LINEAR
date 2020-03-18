@@ -371,8 +371,10 @@ def plot_parameters(doubling_time, basic_reproductive):
     plt.close()
 
     # append historical data
+    with open("country_data/mean_doubling_time", "r") as file:
+        data_lines = [c.split(' ')[0] for c in file.readlines()]
     with open("country_data/mean_doubling_time", "a") as file:
-        if str(mean_dt) not in file.readlines():
+        if str(mean_dt) not in data_lines:
             file.write(str(mean_dt) + ' ' + str(std_dt) + "\n")
 
     R_0 = [c * 10. for c in basic_reproductive]
