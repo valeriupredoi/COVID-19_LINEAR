@@ -303,19 +303,28 @@ def _get_daily_countries_data(date, country):
             exp_dates = exp_dates[0]
         else:
             exp_dates = 'NN'
-        count_cases = [tab[3] for tab in data_read if tab[1] == country]
+        count_cases = [float(tab[3]) for tab in data_read if tab[1] == country]
         if count_cases:
-            count_cases = count_cases[0]
+            if country != "US":
+                count_cases = count_cases[0]
+            else:
+                count_cases = sum(count_cases)
         else:
             count_cases = 'NN'
-        count_deaths = [tab[4] for tab in data_read if tab[1] == country]
+        count_deaths = [float(tab[4]) for tab in data_read if tab[1] == country]
         if count_deaths:
-            count_deaths = count_deaths[0]
+            if country != "US":
+                count_deaths = count_deaths[0]
+            else:
+                count_deaths = sum(count_deaths)
         else:
             count_deaths = 'NN'
-        count_rec = [tab[5] for tab in data_read if tab[1] == country]
+        count_rec = [float(tab[5]) for tab in data_read if tab[1] == country]
         if count_rec:
-            count_rec = count_rec[0]
+            if country != "US":
+                count_rec = count_rec[0]
+            else:
+                count_rec = sum(count_rec)
         else:
             count_rec = 'NN'
 
