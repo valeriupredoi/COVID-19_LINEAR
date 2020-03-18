@@ -1,4 +1,4 @@
-Results: Expenential Phase
+Results: Exponential Phase
 ==========================
 
 Current results for linear fit for logarithmic data of daily number of cases and daily number of
