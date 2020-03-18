@@ -372,7 +372,8 @@ def plot_parameters(doubling_time, basic_reproductive):
 
     # append historical data
     with open("country_data/mean_doubling_time", "a") as file:
-        file.write(str(mean_dt) + ' ' + str(std_dt) + "\n")
+        if str(mean-dt) not in file.readlines():
+            file.write(str(mean_dt) + ' ' + str(std_dt) + "\n")
 
     R_0 = [c * 10. for c in basic_reproductive]
     plt.hist(R_0, bins=len(R_0), histtype='step',
