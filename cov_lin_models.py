@@ -60,13 +60,12 @@ def get_linear_parameters(x, y):
 def get_plot_text(slope, country, R, d_time, R0, x, month):
     """Set plot title, subtitle, text."""
     plot_text = "Daily Cases (red):" + "\n" + \
+                "Date: %s-%s-2020" % (str(int(x[-1])), month) + "\n" + \
                 "Line fit $N=Ce^{bt}$ with rate $b=$%.2f" % slope + "\n" + \
                 "Coefficient of determination R=%.3f" % R + "\n" + \
                 "Cases Doubling time: %.1f days" % d_time + "\n" + \
                 "Estimated Daily $R_0=$%.1f" % R0
-    plot_name = "2019-ncov_lin_{}-{}-2020_{}.png".format(
-                    str(int(x[-1])),
-                    month, country)
+    plot_name = "COVID-19_LIN_{}.png".format(country)
 
     return plot_text, plot_name
 
@@ -362,11 +361,13 @@ def main():
     parser.add_argument('-d',
                         '--download-data',
                         type=bool,
+                        default=True,
                         help='Flag to trigger downloading data.')
     parser.add_argument('-c',
                         '--countries',
                         type=str,
-                        help='List of countries.')
+                        default="COUNTRIES",
+                        help='List OR file with list of countries.')
     parser.add_argument('-m',
                         '--month',
                         type=int,
@@ -381,8 +382,15 @@ def main():
     # plot UK always
     plot_official_uk_data(download)
 
+    # get countries
+    if not os.path.isfile(args.countries):
+        countries = args.countries.split(",")
+    else:
+        with open(args.countries, "r") as file:
+            countries = [coun.strip() for coun in file.readlines()]
+
     # plot other countries
-    for country in args.countries.split(","):
+    for country in countries:
         monthly_numbers = _get_monthly_countries_data(country, args.month)
         plot_countries(monthly_numbers, args.month, country)
 
