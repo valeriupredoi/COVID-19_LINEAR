@@ -240,7 +240,7 @@ def plot_official_uk_data(download):
                                                                 y_data)
 
     # plot parameters: cases
-    plot_text, plot_name = get_plot_text(slope, "UK",
+    plot_text, plot_name = get_plot_text(slope, "UK-GOV",
                                          R, d_time, R0,
                                          x_data, month="03")
 
@@ -276,7 +276,7 @@ def plot_official_uk_data(download):
     plt.yticks(y_all, [np.int(y01) for y01 in y_all_real])
     plt.tick_params(axis="y", labelsize=8)
     plt.savefig(os.path.join("country_plots", plot_name))
-    plt.show()
+    plt.close()
 
 
 def _get_daily_countries_data(date, country):
