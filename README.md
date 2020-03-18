@@ -9,9 +9,15 @@ doubling times of 2-3 days. The results are affected by poor testing in differen
 and by **driver** regions (like Lombardia in Italy or London in UK, ultimately assigning a lot of
 statistical weight to these parts of the country, given overwheling numbers).
 
-Results are presented here: https://valeriupredoi.github.io/index.html
+United Kingdom
+--------------
 
 ![COVID-19 UK Evolution](country_plots/COVID-19_LIN_UK-GOV.png)
+
+Linear fit of the exponential spread in the United Kingdom, starting March 1st, 2020.
+Data is piped automatically from the official database
+https://www.gov.uk/government/publications/covid-19-track-coronavirus-cases
+
 ![COVID-19 France Evolution](country_plots/COVID-19_LIN_France.png)
 ![COVID-19 Belgium Evolution](country_plots/COVID-19_LIN_Belgium.png)
 ![COVID-19 Spain Evolution](country_plots/COVID-19_LIN_Spain.png)
