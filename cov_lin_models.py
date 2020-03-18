@@ -192,6 +192,7 @@ def plot_countries(datasets, month, country):
     plt.savefig(os.path.join("country_plots", plot_name))
     plt.close()
 
+    return d_time, R0
 
 def plot_official_uk_data(download):
     """Plot the UK data starting March 1st, 2020."""
@@ -353,6 +354,41 @@ def _get_monthly_countries_data(country, month):
 
     return m_cases, m_deaths, m_rec, actual_dates
 
+def plot_parameters(doubling_time, basic_reproductive):
+    """Plot simple viral infection parameters."""
+    plt.hist(doubling_time, bins=len(doubling_time), histtype='step',
+             normed=False, cumulative=False)
+    plt.grid()
+    plt.xlabel("Cases doubling time [days]")
+    plt.ylabel("Number")
+    mean_dt = np.mean(doubling_time)
+    std_dt = np.std(doubling_time)
+    plt.axvline(np.mean(mean_dt), color='red', linestyle='--')
+    plt.title(
+        "Cases doubling time [days] for %i countries\nVertical line: mean doubling time: %.1f+/-%.1f" % (len(doubling_time), mean_dt, std_dt)
+    )
+    plt.savefig(os.path.join("country_plots", "Histogram_Doubling_Time.png"))
+    plt.close()
+
+    # append historical data
+    with open("country_data/mean_doubling_time", "a") as file:
+        file.write(str(mean_dt) + ' ' + str(std_dt) + "\n")
+
+    R_0 = [c * 10. for c in basic_reproductive]
+    plt.hist(R_0, bins=len(R_0), histtype='step',
+             normed=False, cumulative=False)
+    plt.grid()
+    plt.xlabel("Basic Reproductive Number")
+    plt.ylabel("Number")
+    mean_r0 = np.mean(R_0)
+    std_r0 = np.std(R_0)
+    plt.axvline(mean_r0, color='red', linestyle='--')
+    plt.title(
+        "Basic reproductive number for %i countries\nVertical line: mean number: %.1f+/-%.1f (assuming an avg infectious phase 10 days)" % (len(R_0), mean_r0, std_r0)
+    )
+    plt.savefig(os.path.join("country_plots",
+                             "Histogram_Basic_Reproductive_Number.png"))
+    plt.close()
 
 def main():
     """Execute the plotter."""
@@ -390,9 +426,17 @@ def main():
             countries = [coun.strip() for coun in file.readlines()]
 
     # plot other countries
+    double_time = []
+    basic_rep = []
     for country in countries:
         monthly_numbers = _get_monthly_countries_data(country, args.month)
-        plot_countries(monthly_numbers, args.month, country)
+        d_time, R0 = plot_countries(monthly_numbers, args.month, country)
+        double_time.append(d_time)
+        basic_rep.append(R0)
+
+    # plot viral parameters
+    plot_parameters(double_time, basic_rep)
+
 
 if __name__ == '__main__':
     main()
