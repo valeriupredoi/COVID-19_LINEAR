@@ -21,6 +21,15 @@ https://www.gov.uk/government/publications/covid-19-track-coronavirus-cases
 Flattening the curve example
 ----------------------------
 
+Daily-updated comparison between linear fits to exponential spreads in the UK and Denmark.
+The UK is displaying an almost-perfect exponential spread at a rate of 0.25 day-1 giving a
+doubling time of the infected population of 2.7 days; the same numbers have been brought down
+by Denmark to 0.06 day-1 and 12.5 days.
+
+Spread in the UK                             |  Spread in Denmark
+:-------------------------------------------:|:-------------------------:
+![UK](country_plots/COVID-19_LIN_UK-GOV.png) |  ![Denmark](country_plots/COVID-19_LIN_Denmark.png)
+
 There a few examples already that show that the combination of better testing and restricted
 social interactions contribute to bringing down the acceleration of the spread: the figure shows
 the start of two different outbreaks - Italy and UK, shifted in time since Italy's outbreak started
@@ -29,7 +38,7 @@ but comparing the two rates is not relevant due to different biases (more or les
 population densities etc). What matters is that Italy, within the past month,
 has introduced a set of strict control measures
 and these measures are now visible in the spread rate: a decrease of 40% in the spread rate.
-The UK is only now (18 March) starting to introduce such measures and the effect is left to be seen.
+The UK is only now (time of writing: 18 March, 2020) starting to introduce such measures and the effect is left to be seen.
 Just how important such a decrease of the spread rate is? Current numbers in Italy are ~32,000; at
 its initial rate that would mean in a week this number rises to ~310,000 resulting in 10,000 more deaths;
 a constant rate of 0.19 will result in a total of 120,000 cases in a week, with a total of 2,000 more
