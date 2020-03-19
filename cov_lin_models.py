@@ -32,6 +32,12 @@ UK_DAILY_DEATH_DATA = "https://www.arcgis.com/sharing/rest/content/items/bc8ee90
 # data stores: Johns Hopkins data
 JOHN_HOPKINS = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports"
 
+# slowing countries: countries that show a consistent slowing trend
+# slowing down value = date in March that is roughly the start of slowdown
+SLOWDOWN = {"Belgium": 13, 
+            "Ireland": 15,
+            "Netherlands": 13}
+
 def c_of_d(ys_orig, ys_line):
     """Compute the line R squared."""
     y_mean_line = [np.mean(ys_orig) for y in ys_orig]
@@ -59,7 +65,7 @@ def get_linear_parameters(x, y):
 
 def get_plot_text(slope, country, R, d_time, R0, x, month):
     """Set plot title, subtitle, text."""
-    plot_text = "Daily Cases (red):" + "\n" + \
+    plot_text = "Daily Cases:" + "\n" + \
                 "Date: %s-%s-2020" % (str(int(x[-1])), month) + "\n" + \
                 "Line fit $N=Ce^{bt}$ with rate $b=$%.2f" % slope + "\n" + \
                 "Coefficient of determination R=%.3f" % R + "\n" + \
@@ -72,7 +78,7 @@ def get_plot_text(slope, country, R, d_time, R0, x, month):
 
 def get_deaths_plot_text(slope, country, R, d_time, avg_mort, stdev_mort):
     """Set text for deaths."""
-    plot_text = "Daily Deaths (blue):" + "\n" + \
+    plot_text = "Daily Deaths:" + "\n" + \
                 "Line fit $N=Ce^{mt}$ with rate $m=$%.2f" % slope + "\n" + \
                 "Coefficient of determination R=%.3f" % R + "\n" + \
                 "Deaths Doubling time: %.1f days" % d_time + "\n" + \
@@ -131,15 +137,37 @@ def plot_countries(datasets, month, country):
     x_deaths = [float(n) for n in range(int(x_cases[-1]) - len(deaths) + 1,
                                         int(x_cases[-1]) + 1)]
 
-    # statistics: cases
+    # statistics: cases: account for slowdown
+    d_time_s = []
+    R0_s = []
+    if country in SLOWDOWN:
+        slowdown_index = x_cases.index(SLOWDOWN[country])
+        y_slow = y_cases[slowdown_index:]
+        x_slow = x_cases[slowdown_index:]
+        x_cases = x_cases[0:slowdown_index]
+        y_cases = y_cases[0:slowdown_index]
+
+        # get linear params for slowdown
+        poly_x_s, R_s, y_err_s, slope_s, d_time_s, R0_s = get_linear_parameters(
+            x_slow,
+            y_slow)
+        plot_text_s, plot_name_s = get_plot_text(slope_s, country,
+                                                 R_s, d_time_s, R0_s,
+                                                 x_slow,
+                                                 month)
+    # get linear params
     poly_x, R, y_err, slope, d_time, R0 = get_linear_parameters(
         x_cases,
         y_cases)
+    if d_time_s and R0_s:
+        d_time = np.mean(np.append(d_time, d_time_s))
+        R0 = np.mean(np.append(R0, R0_s))
 
     # plot parameters: cases
     plot_text, plot_name = get_plot_text(slope, country,
                                          R, d_time, R0,
-                                         x_cases, month)
+                                         x_cases,
+                                         month)
 
     # compute average mortality
     delta = len(cases) - len(deaths)
@@ -171,7 +199,13 @@ def plot_countries(datasets, month, country):
     # plotting cases
     plt.scatter(x_cases, y_cases, color='r',
                 label="Daily Cases")
-    plt.plot(x_cases, poly_x, '--k')
+    plt.plot(x_cases, poly_x, '--r')
+
+    # plot slowdown
+    if country in SLOWDOWN:
+        plt.scatter(x_slow, y_slow, color='g',
+                    label="Daily Cases Slower")
+        plt.plot(x_slow, poly_x_s, '-g')
     if deaths:
         plt.scatter(x_deaths, y_deaths, marker='v',
                     color='b', label="Daily Deaths")
@@ -182,10 +216,19 @@ def plot_countries(datasets, month, country):
     plt.grid()
     plt.xlim(0., x_cases[-1] + 1.5)
     plt.ylim(0., y_cases[-1] + 3.5)
+    if country in SLOWDOWN:
+        plt.xlim(0., x_slow[-1] + 1.5)
+        plt.ylim(0., y_slow[-1] + 3.5)
     _common_plot_stuff(country)
-    plt.text(1., y_cases[-1] + 0.3, plot_text, fontsize=8)
-    if deaths:
-        plt.text(1., y_cases[-1] - 2.1, plot_text_d, fontsize=8)
+    if country in SLOWDOWN:
+        plt.text(1., y_slow[-1] + 0.3, plot_text_s, fontsize=8, color='g')
+        plt.text(1., y_slow[-1] - 1.5, plot_text, fontsize=8, color='r')
+        if deaths:
+            plt.text(1., y_slow[-1] - 3.1, plot_text_d, fontsize=8, color='b')
+    else:
+        plt.text(1., y_cases[-1] + 0.3, plot_text, fontsize=8, color='r')
+        if deaths:
+            plt.text(1., y_cases[-1] - 2.1, plot_text_d, fontsize=8, color='b')
     plt.legend(loc="lower left")
     plt.yticks(y_all, [np.int(y01) for y01 in y_all_real])
     plt.tick_params(axis="y", labelsize=8)
