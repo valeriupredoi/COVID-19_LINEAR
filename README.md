@@ -68,8 +68,8 @@ as compared to the initial 0.41 day-1.
 Situation around the world (updated daily)
 ==========================================
 
-Western, Central and Eastern Europe (and the US and Canada)
------------------------------------------------------------
+Western, Central and Eastern Europe (inc Israel, and the US and Canada)
+-----------------------------------------------------------------------
 
 Even though most of the countries display an exponential spread,
 some of the (smaller) countries (Belgium, Netherlands) are starting to
@@ -90,6 +90,7 @@ Look for the green lines, representing the new, slow-down increase.
 ![COVID-19 Ireland Evolution](country_plots/COVID-19_LIN_Ireland.png)
 ![COVID-19 Slovakia Evolution](country_plots/COVID-19_LIN_Slovakia.png)
 ![COVID-19 Poland Evolution](country_plots/COVID-19_LIN_Poland.png)
+![COVID-19 Israel Evolution](country_plots/COVID-19_LIN_Israel.png)
 ![COVID-19 US Evolution](country_plots/COVID-19_LIN_US.png)
 ![COVID-19 Canada Evolution](country_plots/COVID-19_LIN_Canada.png)
 
