@@ -26,6 +26,11 @@ The UK is displaying an almost-perfect exponential spread at a rate of 0.25 day-
 doubling time of the infected population of 2.7 days; the same numbers have been brought down
 by Denmark to 0.06 day-1 and 12.5 days.
 
+Denmark experiences a sharp decrease in the virus spread after 13 March, 2020, reducing the
+spread rate from a (noisy) 0.49 day-1 to a stable 0.06 day-1; in terms of infected population
+growth this means it will double almost every two weeks - the same population doubling time
+is less than 3 days currently in the UK (18 March, 2020).
+
 Spread in the UK                             |  Spread in Denmark
 :-------------------------------------------:|:-------------------------:
 ![UK](country_plots/COVID-19_LIN_UK-GOV.png) |  ![Denmark](country_plots/COVID-19_LIN_Denmark.png)
