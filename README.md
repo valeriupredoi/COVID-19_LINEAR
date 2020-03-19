@@ -1,11 +1,15 @@
-Results: Exponential Phase
-==========================
+COVID-19: Exponential Phase
+===========================
 
 Current results for linear fit for logarithmic data of daily number of cases and daily number of
-deaths per country. Almost every coutry is undergoing an expoenential infection spread phase,
-`exp(bt)`, characterised by the rate `b` and time coordinate `t` (time exponential)
-in most cases, the exponential rates `b` are 0.25-0.3 day-1, yieling population (cases, deaths)
-doubling times of 2-3 days. The results are affected by poor testing in different areas and countries,
+deaths per country. Almost every country is undergoing an expoenential infection spread phase,
+`exp(bt)`, characterised by the increase rate `b` (units: 1/day or day-1) and time coordinate `t` (units: day);
+in most cases, the exponential rates `b` are 0.25-0.3 day-1 
+(except recent phases of Scandinavian countries that show a significantly lower rate),
+yieling reported cases doubling times of 2-3 days (again, except the Scandinavian countries that
+show doubling times of order 10 days or more, using recent data).
+
+The results are affected by poor testing in certain areas and countries,
 and by **driver** regions (like Lombardia in Italy or London in UK, ultimately assigning a lot of
 statistical weight to these parts of the country, given overwheling numbers).
 
@@ -15,8 +19,8 @@ United Kingdom (updated daily)
 ![COVID-19 UK Evolution](country_plots/COVID-19_LIN_UK-GOV.png)
 
 Linear fit of the exponential spread in the United Kingdom, starting March 1st, 2020.
-Data is piped automatically from the official database
-https://www.gov.uk/government/publications/covid-19-track-coronavirus-cases
+Data is piped automatically from the official database provided by the
+[UK Government](https://www.gov.uk/government/publications/covid-19-track-coronavirus-cases).
 
 Flattening the curve example
 ----------------------------
@@ -51,7 +55,7 @@ deaths, factor five less.
 
 ![COVID-19 Italy-UK Start Evolution](START_PLOTS/COV19_LIN_START_9-03-2020_UK-Italy.png)
 
-Figure above: Comparison of infection starts for Italy (February) and UK (March);
+Figure above: comparison of infection starts for Italy (February) and UK (March);
 Italy shows a faster infectious spread at a rate of 0.32 day-1
 as compared to the UK's 0.23 day-1
 
@@ -60,7 +64,7 @@ the Chinese government has instituted it on January 23 and effects can be seen a
 
 ![COVID-19 Italy-UK Start Evolution](START_PLOTS/COV19_LIN_START_2-02-2020_China.png)
 
-Figure above: Confirmed cases for China a few days before and after 23 January quarantine.
+Figure above: confirmed cases for China a few days before and after 23 January quarantine.
 About 5 days after the quarantine institution we notice
 a slower infectious spread at a rate of 0.23 day-1,
 as compared to the initial 0.41 day-1.
