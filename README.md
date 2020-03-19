@@ -84,6 +84,7 @@ Look for the green lines, representing the new, slow-down increase.
 ![COVID-19 Romania Evolution](country_plots/COVID-19_LIN_Romania.png)
 ![COVID-19 Portugal Evolution](country_plots/COVID-19_LIN_Portugal.png)
 ![COVID-19 Germany Evolution](country_plots/COVID-19_LIN_Germany.png)
+![COVID-19 Austria Evolution](country_plots/COVID-19_LIN_Austria.png)
 ![COVID-19 Netherlands Evolution](country_plots/COVID-19_LIN_Netherlands.png)
 ![COVID-19 Bulgaria Evolution](country_plots/COVID-19_LIN_Bulgaria.png)
 ![COVID-19 Ireland Evolution](country_plots/COVID-19_LIN_Ireland.png)
