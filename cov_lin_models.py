@@ -34,9 +34,13 @@ JOHN_HOPKINS = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master
 
 # slowing countries: countries that show a consistent slowing trend
 # slowing down value = date in March that is roughly the start of slowdown
-SLOWDOWN = {"Belgium": 13, 
+SLOWDOWN = {"Belgium": 13,
+            "Denmark": 13, 
+            "Finland": 14,
             "Ireland": 15,
-            "Netherlands": 13}
+            "Netherlands": 13,
+            "Norway": 14,
+            "Sweden": 13}
 
 def c_of_d(ys_orig, ys_line):
     """Compute the line R squared."""
@@ -203,6 +207,7 @@ def plot_countries(datasets, month, country):
 
     # plot slowdown
     if country in SLOWDOWN:
+        plt.axvline(SLOWDOWN[country], linewidth=2, color='orange')
         plt.scatter(x_slow, y_slow, color='g',
                     label="Daily Cases Slower")
         plt.plot(x_slow, poly_x_s, '-g')
