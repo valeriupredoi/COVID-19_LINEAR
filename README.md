@@ -55,10 +55,10 @@ Situation around the world (updated daily)
 ------------------------------------------
 
 Even though most of the countries display an exponential spread,
-some of the (smaller) countries that have bad measures taken
-display a slow-down in the number of daily cases (WARNING: this
-could well be because of a drop in number of tests!). Look
-for the green lines, representing slow-down.
+some of the (smaller) countries (Belgium, Netherlands) are starting to
+display a slow-down in the rate of daily cases (**WARNING**: this
+could well be because of a drop in number of tests or testing procedures!).
+Look for the green lines, representing the new, slow-down increase.
 
 ![COVID-19 France Evolution](country_plots/COVID-19_LIN_France.png)
 ![COVID-19 Belgium Evolution](country_plots/COVID-19_LIN_Belgium.png)
