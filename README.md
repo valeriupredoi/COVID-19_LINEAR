@@ -165,3 +165,7 @@ Official data source: https://www.gov.uk/government/publications/covid-19-track-
 Worldwide Data
 ==============
 Johns Hopkins University CSSE gitHub repository: https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_daily_reports
+
+Italy Data
+==========
+https://github.com/pcm-dpc/COVID-19/blob/master/dati-andamento-nazionale/dpc-covid19-ita-andamento-nazionale.csv
