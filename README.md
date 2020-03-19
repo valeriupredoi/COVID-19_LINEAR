@@ -52,7 +52,10 @@ a slower infectious spread at a rate of 0.23 day-1,
 as compared to the initial 0.41 day-1.
 
 Situation around the world (updated daily)
-------------------------------------------
+==========================================
+
+Western, Central and Eastern Europe (and the US and Canada)
+-----------------------------------------------------------
 
 Even though most of the countries display an exponential spread,
 some of the (smaller) countries (Belgium, Netherlands) are starting to
@@ -65,18 +68,35 @@ Look for the green lines, representing the new, slow-down increase.
 ![COVID-19 Spain Evolution](country_plots/COVID-19_LIN_Spain.png)
 ![COVID-19 Italy Evolution](country_plots/COVID-19_LIN_Italy.png)
 ![COVID-19 Romania Evolution](country_plots/COVID-19_LIN_Romania.png)
-![COVID-19 Canada Evolution](country_plots/COVID-19_LIN_Canada.png)
+![COVID-19 Portugal Evolution](country_plots/COVID-19_LIN_Portugal.png)
 ![COVID-19 Germany Evolution](country_plots/COVID-19_LIN_Germany.png)
 ![COVID-19 Netherlands Evolution](country_plots/COVID-19_LIN_Netherlands.png)
 ![COVID-19 Bulgaria Evolution](country_plots/COVID-19_LIN_Bulgaria.png)
 ![COVID-19 Ireland Evolution](country_plots/COVID-19_LIN_Ireland.png)
 ![COVID-19 Slovakia Evolution](country_plots/COVID-19_LIN_Slovakia.png)
+![COVID-19 Poland Evolution](country_plots/COVID-19_LIN_Poland.png)
 ![COVID-19 US Evolution](country_plots/COVID-19_LIN_US.png)
+![COVID-19 Canada Evolution](country_plots/COVID-19_LIN_Canada.png)
+
+Scandinavian countries
+----------------------
+
+It is very intriguing to see that all Scandinavian countries show a significant
+decrease in the spread rate after (roughly) March 14, 2020.
+
+![COVID-19 Denmark Evolution](country_plots/COVID-19_LIN_Denmark.png)
+![COVID-19 Finland Evolution](country_plots/COVID-19_LIN_Finland.png)
+![COVID-19 Sweden Evolution](country_plots/COVID-19_LIN_Sweden.png)
+![COVID-19 Norway Evolution](country_plots/COVID-19_LIN_Norway.png)
+
+Viral Parameters
+----------------
+
 ![COVID-19 Doubling Time Evolution](country_plots/Histogram_Doubling_Time.png)
 ![COVID-19 Rzero Evolution](country_plots/Histogram_Basic_Reproductive_Number.png)
 
-Parameters
-----------
+Data Parameters
+---------------
 
 - `b`: exponential rate at which daily cases rise (in units `day-1`);
 - `m`: exponential rate at which daily deaths rise (in units `day-1`);
