@@ -334,8 +334,12 @@ def plot_official_uk_data(download):
     sim_y_2_f = sim_y_2_real[-1] * np.exp(10. * slope_d)
     sim_y_3_f = sim_y_3_real[-1] * np.exp(10. * slope_d)
     sim_y_4_f = sim_y_4_real[-1] * np.exp(10. * slope_d)
-    # estimate time for 65M
-    full_time = (np.log(65 * 1e6) - np.log(sim_y_1_real[-1])) / slope_d
+
+    # estimate time for 65M total infection
+    full_time_0 = (np.log(65 * 1e6) - np.log(sim_y_0_real[-1])) / slope_d
+    full_time_1 = (np.log(65 * 1e6) - np.log(sim_y_1_real[-1])) / slope_d
+    full_time_2 = (np.log(65 * 1e6) - np.log(sim_y_2_real[-1])) / slope_d
+    full_time_3 = (np.log(65 * 1e6) - np.log(sim_y_3_real[-1])) / slope_d
 
     # plot parameters: deaths
     plot_text_d = get_deaths_plot_text(
@@ -419,7 +423,7 @@ def plot_official_uk_data(download):
     plt.title("COVID-19 in UK starting March 1, 2020\n" + \
               "Sim cases are based on mortality fraction M and delayed by 10 days\n" + \
               "Sim cumulative no. cases: measured deaths x 1/M\n" + \
-              "Estimated time for complete infection: %i days (M=0.01)" % int(full_time),
+              "Est. time for total infection: %i days (M=0.03); %i days (M=0.02); %i days (M=0.01); %i days (M=0.005)" % (int(full_time_3), int(full_time_2), int(full_time_1), int(full_time_0)),
               fontsize=10)
     plt.savefig(os.path.join("country_plots",
                              "COVID-19_LIN_UK-GOV_SIM_CASES.png"))
