@@ -15,6 +15,9 @@ statistical weight to these parts of the country, given overwheling numbers).
 
 United Kingdom (updated daily)
 ------------------------------
+**TLDR: UK is as of 20 March in exponential spread phase with infected population doubling
+time of about 3 days and a very high mortality, suggesting a combination of biased testing and
+much higher actual infection numbers.**
 
 ![COVID-19 UK Evolution](country_plots/COVID-19_LIN_UK-GOV.png)
 
@@ -24,6 +27,10 @@ Data is piped automatically from the official database provided by the
 
 Flattening the curve example
 ----------------------------
+**TLDR: Italy has achieved a reduction in the spread rate: numbers from there suggest
+that measures taken may reduce the number of cases by 20%, converseley, for a daily
+increase in cases of 10,000 and an avergage death rate of 0.02, that means saving 200
+lives per day.**
 
 Daily-updated comparison between linear fits to exponential spreads in the UK and Denmark.
 The UK is displaying an almost-perfect exponential spread at a rate of 0.25 day-1 giving a
@@ -53,11 +60,20 @@ its initial rate that would mean in a week this number rises to ~310,000 resulti
 a constant rate of 0.19 will result in a total of 120,000 cases in a week, with a total of 2,000 more
 deaths, factor five less.
 
-![COVID-19 Italy-UK Start Evolution](START_PLOTS/COV19_LIN_START_9-03-2020_UK-Italy.png)
+Infection starts (UK and Italy)                           |  Current evolution in Italy
+:--------------------------------------------------------:|:-----------------------------:
+![ST](START_PLOTS/COV19_LIN_START_9-03-2020_UK-Italy.png) |  ![IT](country_plots/COVID-19_LIN_Italy.png)
 
-Figure above: comparison of infection starts for Italy (February) and UK (March);
-Italy shows a faster infectious spread at a rate of 0.32 day-1
-as compared to the UK's 0.23 day-1
+Figure above (left): comparison of infection starts (shifted in time to overlap)
+for Italy (February, ending March 1st) and UK (March); Italy shows a faster infectious spread at a
+rate of 0.32 day-1 as compared to the UK's 0.23 day-1; Figure above (right): current
+situation in Italy: social distancing measures reduce the the spread rate t0 0.18 day-1, with an
+actually even slower emergent trend in the last days.
+
+A reduction in exponential rate from 0.3 day-1 to 0.15 day-1 due to active measures
+translates, for an infection that produces 10,000 new cases in one day, to a reduction
+of 20% new cases the next day and that means, on average,
+that 200 people will not die 10-14 days later.
 
 Probably the most evident case of a (rather strong) quarantine can be seen in China in the figure below:
 the Chinese government has instituted it on January 23 and effects can be seen as early as January 27.
