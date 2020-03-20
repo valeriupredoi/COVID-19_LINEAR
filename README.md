@@ -28,6 +28,10 @@ actual cases at the time of the infection, assume average desease span of 10 day
 to moment of death). we compute the simulated number of actual cases deaths x 1/M and shift in time by 10 days,
 then extrapolate via the exponential evolution of deaths to the current date.
 
+Current full population infection time shown in the plot header. This is, by all means, the darkest and most
+brutal scenario, containing a lot of assumptions, but it is, however, statistically plausible. Let's all hope
+not even a tenth of is true.
+
 Spread in the UK: measured cases and deaths  |  Simulated actual cases
 :-------------------------------------------:|:-------------------------:
 ![UK](country_plots/COVID-19_LIN_UK-GOV.png) |  ![UKS](country_plots/COVID-19_LIN_UK-GOV_SIM_CASES.png)
