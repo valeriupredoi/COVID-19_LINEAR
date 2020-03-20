@@ -19,11 +19,18 @@ United Kingdom (updated daily)
 time of about 3 days and a very high mortality, suggesting a combination of biased testing and
 much higher actual infection numbers.**
 
-![COVID-19 UK Evolution](country_plots/COVID-19_LIN_UK-GOV.png)
+Spread in the UK: measured cases and deaths  |  Simulated actual cases
+:-------------------------------------------:|:-------------------------:
+![UK](country_plots/COVID-19_LIN_UK-GOV.png) |  ![UKS](country_plots/COVID-19_LIN_UK-GOV_SIM_CASES.png)
 
 Linear fit of the exponential spread in the United Kingdom, starting March 1st, 2020.
 Data is piped automatically from the official database provided by the
 [UK Government](https://www.gov.uk/government/publications/covid-19-track-coronavirus-cases).
+Left plot (Spread in the UK: measured cases and deaths) the measured and reported number of cases
+and deaths are plotted, together with their model fits. Right plot: we simulate the actual cumulative
+number of cases based on the reported number of deaths multiplied by 1/mortality rate `Mr`; mortality rate
+values are 0.005, 0.01, 0.02, 0.03 and 0.04 - we see that the the simulated number of cases for `Mr = 0.005`
+are below the reported one so we can put a lower limit on `Mr` to 0.005.
 
 Flattening the curve example
 ----------------------------
