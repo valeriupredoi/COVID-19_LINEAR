@@ -29,8 +29,7 @@ Data is piped automatically from the official database provided by the
 Left plot (Spread in the UK: measured cases and deaths) the measured and reported number of cases
 and deaths are plotted, together with their model fits. Right plot: we simulate the actual cumulative
 number of cases based on the reported number of deaths multiplied by 1/mortality rate `Mr`; mortality rate
-values are 0.005, 0.01, 0.02, 0.03 and 0.04 - we see that the the simulated number of cases for `Mr = 0.005`
-are below the reported one so we can put a lower limit on `Mr` to 0.005.
+values are 0.005, 0.01, 0.02, 0.03 and 0.04.
 
 Flattening the curve example
 ----------------------------
