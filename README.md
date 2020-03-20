@@ -19,6 +19,15 @@ United Kingdom (updated daily)
 time of about 3 days and a very high mortality, suggesting a combination of biased testing and
 much higher actual infection numbers.**
 
+![UKS](country_plots/COVID-19_LIN_UK-GOV_SIM_CASES.png)
+
+Simulating the actual number of infected individuals based on the number of recorded deaths and the
+exponential evolution of this number: numbers of deaths evolve exponentially with the rate `m` and we
+can use a set of possible mortality fractions `M` (M is defined as the number of deaths / number of
+actual cases at the time of the infection, assume average desease span of 10 days: from moment of infection
+to moment of death). we compute the simulated number of actual cases deaths x 1/M and shift in time by 10 days,
+then extrapolate via the exponential evolution of deaths to the current date.
+
 Spread in the UK: measured cases and deaths  |  Simulated actual cases
 :-------------------------------------------:|:-------------------------:
 ![UK](country_plots/COVID-19_LIN_UK-GOV.png) |  ![UKS](country_plots/COVID-19_LIN_UK-GOV_SIM_CASES.png)
