@@ -269,15 +269,40 @@ def plot_official_uk_data(download):
     avg_mort = np.mean(mort)
     stdev_mort = np.std(mort)
 
+    # simulate by death rate scenario
+    sim_y_0_real = np.array(y_deaths_real) * 50.  # mrate=0.005
+    sim_y_1_real = np.array(y_deaths_real) * 100.  # mrate=0.01
+    sim_y_2_real = np.array(y_deaths_real) * 200.  # mrate=0.02
+    sim_y_3_real = np.array(y_deaths_real) * 300.  # mrate=0.03
+    sim_y_4_real = np.array(y_deaths_real) * 400.  # mrate=0.04
+
     # all in one
     y_all_real = []
     y_all_real.extend(y_deaths_real)
     y_all_real.extend(y_data_real)
     y_all = np.log(y_all_real)
 
+    # all in one for sims
+    y_sim_real = []
+    y_sim_real.extend(y_deaths_real)
+    y_sim_real.extend(y_data_real)
+    y_sim_real.extend(sim_y_0_real)
+    y_sim_real.extend(sim_y_1_real)
+    y_sim_real.extend(sim_y_2_real)
+    y_sim_real.extend(sim_y_3_real)
+    y_sim_real.extend(sim_y_4_real)
+    y_sim = np.log(y_sim_real)
+
     # logarithimc regression
     y_data = np.log(y_data_real)
     y_deaths = np.log(y_deaths_real)
+
+    # log the simulations too
+    sim_y_0 = list(np.log(sim_y_0_real))
+    sim_y_1 = list(np.log(sim_y_1_real))
+    sim_y_2 = list(np.log(sim_y_2_real))
+    sim_y_3 = list(np.log(sim_y_3_real))
+    sim_y_4 = list(np.log(sim_y_4_real))
 
     # x-time series, days: cases start 1st March
     # deths start 13th March
@@ -325,6 +350,43 @@ def plot_official_uk_data(download):
     plt.yticks(y_all, [np.int(y01) for y01 in y_all_real])
     plt.tick_params(axis="y", labelsize=8)
     plt.savefig(os.path.join("country_plots", plot_name))
+    plt.close()
+
+    # plot simulated cases
+    plt.scatter(x_data, y_data, color='r',
+                label="Daily Cases")
+    plt.plot(x_data, poly_x, '--k')
+    plt.scatter(x_deaths, y_deaths, marker='v',
+                color='b', label="Daily Deaths")
+    plt.plot(x_deaths, poly_x_d, '--b')
+    plt.errorbar(x_data, y_data, yerr=y_err, fmt='o', color='r')
+    plt.errorbar(x_deaths, y_deaths, yerr=y_err_d, fmt='v', color='b')
+    plt.plot(x_deaths, sim_y_0, label="Mr=0.005")
+    plt.plot(x_deaths, sim_y_1, label="Mr=0.01")
+    plt.plot(x_deaths, sim_y_2, label="Mr=0.02")
+    plt.plot(x_deaths, sim_y_3, label="Mr=0.03")
+    plt.plot(x_deaths, sim_y_4, label="Mr=0.04")
+    plt.grid()
+    plt.xlim(0., x_data[-1] + 1.5)
+    plt.ylim(0., sim_y_4[-1] + 3.)
+    plt.text(2., sim_y_4[-1] + 0.7, plot_text, fontsize=8, color="red")
+    plt.text(2., sim_y_4[-1] - 1.3, plot_text_d, fontsize=8, color="blue")
+    plt.legend(loc="lower left")
+    plt.yticks(y_all, [np.int(y01) for y01 in y_all_real])
+    plt.tick_params(axis="y", labelsize=8)
+    plt.annotate(str(int(sim_y_4_real[-1])),xy=(x_deaths[-1],sim_y_4[-1]))
+    plt.annotate(str(int(sim_y_0_real[-1])),xy=(x_deaths[-1],sim_y_0[-1]))
+    plt.annotate(str(int(sim_y_1_real[-1])),xy=(x_deaths[-1],sim_y_1[-1]))
+    plt.annotate(str(int(sim_y_2_real[-1])),xy=(x_deaths[-1],sim_y_2[-1]))
+    plt.annotate(str(int(sim_y_3_real[-1])),xy=(x_deaths[-1],sim_y_3[-1]))
+    plt.xlabel("Time [days, starting March 1st, 2020]")
+    plt.ylabel("Cumulative no. of confirmed and simulated cases and deaths")
+    plt.title("COVID-19 in UK starting March 1, 2020\n" + \
+              "Simulated cases are based on possible mortality rates Mr\n" + \
+              "Simulated cumulative no. cases: measured deaths x 1/Mr",
+              fontsize=10)
+    plt.savefig(os.path.join("country_plots",
+                             "COVID-19_LIN_UK-GOV_SIM_CASES.png"))
     plt.close()
 
 
