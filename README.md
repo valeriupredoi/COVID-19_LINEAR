@@ -29,7 +29,7 @@ Flattening the curve example
 ----------------------------
 **TLDR: Italy has achieved a reduction in the spread rate: numbers from there suggest
 that measures taken may reduce the number of cases by 20%, converseley, for a daily
-increase in cases of 10,000 and an avergage death rate of 0.02, that means saving 200
+increase in cases of 10,000 and an average death rate of 2%, that means saving 200
 lives per day.**
 
 Daily-updated comparison between linear fits to exponential spreads in the UK and Denmark.
