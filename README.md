@@ -1,5 +1,15 @@
 COVID-19: Exponential Phase
 ===========================
+Table of Contents
+-----------------
+* [Introduction](#Introduction)
+* [United Kingdon](#United Kingdom)
+* [United Kingdom Current Situation](#UK current situation a tale of too late)
+* [Situation around the world](#world situation)
+* [Europe, US and Canada](#euuscan)
+
+Introduction
+============
 
 Current results for linear fit for logarithmic data of daily number of cases and daily number of
 deaths per country. Almost every country is undergoing an expoenential infection spread phase,
@@ -14,7 +24,8 @@ and by **driver** regions (like Lombardia in Italy or London in UK, ultimately a
 statistical weight to these parts of the country, given overwheling numbers).
 
 United Kingdom (updated daily)
-------------------------------
+==============================
+
 **TLDR: UK is as of 20 March in exponential spread phase with infected population doubling
 time of about 3 days and a very high mortality, suggesting a combination of biased testing and
 much higher actual infection numbers.**
