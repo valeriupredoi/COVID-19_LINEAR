@@ -3,16 +3,16 @@ COVID-19: Exponential Phase
 Table of Contents
 -----------------
 * [Introduction](#Introduction)
-* [United Kingdom (updated daily)](#United Kingdom)
-* [Flattening the curve example](#Flattening the curve example)
-* [UK current situation: a tale of too late](#UK current situation: a tale of too late)
-* [Situation around the world (updated daily)](#Situation around the world (updated daily))
-* [Western, Central and Eastern Europe (inc Israel, and the US and Canada)](##Western, Central and Eastern Europe (inc Israel, and the US and Canada))
-* [Scandinavian countries](##Scandinavian countries)
-* [Viral Parameters](##Viral Parameters)
-* [Data Parameters](##Data Parameters)
-* [Simple script that plots the evolution of COVID-19](#Simple script that plots the evolution of COVID-19)
-* [APPENDIX: data](#APPENDIX: data)
+* [United Kingdom (updated daily)](#UnitedKingdom)
+* [Flattening the curve example](#Flatteningthecurve example)
+* [UK current situation: a tale of too late](#UKcurrentsituationataleoftoolate)
+* [Situation around the world (updated daily)](#Situationaroundtheworldupdated daily)
+* [Western, Central and Eastern Europe (inc Israel, and the US and Canada)](##WesternCentralandEasternEurope)
+* [Scandinavian countries](##Scandinaviancountries)
+* [Viral Parameters](##ViralParameters)
+* [Data Parameters](##DataParameters)
+* [Simple script that plots the evolution of COVID-19](#SimplescriptthatplotstheevolutionofCOVID-19)
+* [APPENDIX: data](#APPENDIXdata)
 
 Introduction
 ============
