@@ -31,7 +31,7 @@ statistical weight to these parts of the country, given overwheling numbers).
 time of about 3 days and a very high mortality, suggesting a combination of biased testing and
 much higher actual infection numbers.**
 
-![UKS](country_plots/COVID-19_LIN_UK-GOV_SIM_CASES.png)
+![UKS](country_plots/COVID-19_LIN_UK_SIM_CASES.png)
 
 Simulating the actual number of infected individuals based on the number of recorded deaths and the
 exponential evolution of this number: numbers of deaths evolve exponentially with the rate `m` and we
@@ -46,7 +46,7 @@ not even a tenth of is true.
 
 Spread in the UK: measured cases and deaths  |  Simulated actual cases
 :-------------------------------------------:|:-------------------------:
-![UK](country_plots/COVID-19_LIN_UK-GOV.png) |  ![UKS](country_plots/COVID-19_LIN_UK-GOV_SIM_CASES.png)
+![UK](country_plots/COVID-19_LIN_UK.png) |  ![UKS](country_plots/COVID-19_LIN_UK_SIM_CASES.png)
 
 Linear fit of the exponential spread in the United Kingdom, starting March 1st, 2020.
 Data is piped automatically from the official database provided by the
@@ -75,7 +75,7 @@ is less than 3 days currently in the UK (18 March, 2020).
 
 Spread in the UK                             |  Spread in Denmark
 :-------------------------------------------:|:-------------------------:
-![UK](country_plots/COVID-19_LIN_UK-GOV.png) |  ![Denmark](country_plots/COVID-19_LIN_Denmark.png)
+![UK](country_plots/COVID-19_LIN_UK.png) |  ![Denmark](country_plots/COVID-19_LIN_Denmark.png)
 
 There a few examples already that show that the combination of better testing and restricted
 social interactions contribute to bringing down the acceleration of the spread: the figure shows
@@ -131,32 +131,84 @@ display a slow-down in the rate of daily cases (**WARNING**: this
 could well be because of a drop in number of tests or testing procedures!).
 Look for the green lines, representing the new, slow-down increase.
 
+## France
 ![COVID-19 France Evolution](country_plots/COVID-19_LIN_France.png)
+![COVID-19 France Evolution](country_plots/COVID-19_LIN_France_SIM_CASES.png)
+
+## Belgium
 ![COVID-19 Belgium Evolution](country_plots/COVID-19_LIN_Belgium.png)
+![COVID-19 Belgium Evolution](country_plots/COVID-19_LIN_Belgium_SIM_CASES.png)
+
+## Spain
 ![COVID-19 Spain Evolution](country_plots/COVID-19_LIN_Spain.png)
+![COVID-19 Spain Evolution](country_plots/COVID-19_LIN_Spain_SIM_CASES.png)
+
+## Italy
 ![COVID-19 Italy Evolution](country_plots/COVID-19_LIN_Italy.png)
+![COVID-19 Italy Evolution](country_plots/COVID-19_LIN_Italy_SIM_CASES.png)
+
+## Romania
 ![COVID-19 Romania Evolution](country_plots/COVID-19_LIN_Romania.png)
+
+## Portugal
 ![COVID-19 Portugal Evolution](country_plots/COVID-19_LIN_Portugal.png)
+![COVID-19 Portugal Evolution](country_plots/COVID-19_LIN_Portugal_SIM_CASES.png)
+
+## Germany
 ![COVID-19 Germany Evolution](country_plots/COVID-19_LIN_Germany.png)
+![COVID-19 Germany Evolution](country_plots/COVID-19_LIN_Germany_SIM_CASES.png)
+
+## Austria
 ![COVID-19 Austria Evolution](country_plots/COVID-19_LIN_Austria.png)
+![COVID-19 Austria Evolution](country_plots/COVID-19_LIN_Austria_SIM_CASES.png)
+
+## Netherlands
 ![COVID-19 Netherlands Evolution](country_plots/COVID-19_LIN_Netherlands.png)
+![COVID-19 Netherlands Evolution](country_plots/COVID-19_LIN_Netherlands_SIM_CASES.png)
+
+## Bulgaria
 ![COVID-19 Bulgaria Evolution](country_plots/COVID-19_LIN_Bulgaria.png)
+![COVID-19 Bulgaria Evolution](country_plots/COVID-19_LIN_Bulgaria_SIM_CASES.png)
+
+## Ireland
 ![COVID-19 Ireland Evolution](country_plots/COVID-19_LIN_Ireland.png)
+![COVID-19 Ireland Evolution](country_plots/COVID-19_LIN_Ireland_SIM_CASES.png)
+
+## Slovakia
 ![COVID-19 Slovakia Evolution](country_plots/COVID-19_LIN_Slovakia.png)
+
+## Poland
 ![COVID-19 Poland Evolution](country_plots/COVID-19_LIN_Poland.png)
+![COVID-19 Poland Evolution](country_plots/COVID-19_LIN_Poland_SIM_CASES.png)
+
+## Israel
 ![COVID-19 Israel Evolution](country_plots/COVID-19_LIN_Israel.png)
 
 It is very intriguing to see that all Scandinavian countries show a significant
 decrease in the spread rate after (roughly) March 14, 2020.
 
+## Denmark
 ![COVID-19 Denmark Evolution](country_plots/COVID-19_LIN_Denmark.png)
+![COVID-19 Denmark Evolution](country_plots/COVID-19_LIN_Denmark_SIM_CASES.png)
+
+## Finland
 ![COVID-19 Finland Evolution](country_plots/COVID-19_LIN_Finland.png)
+
+## Sweden
 ![COVID-19 Sweden Evolution](country_plots/COVID-19_LIN_Sweden.png)
+![COVID-19 Sweden Evolution](country_plots/COVID-19_LIN_Sweden_SIM_CASES.png)
+
+## Norway
 ![COVID-19 Norway Evolution](country_plots/COVID-19_LIN_Norway.png)
+![COVID-19 Norway Evolution](country_plots/COVID-19_LIN_Norway_SIM_CASES.png)
 
 # US-Canada
 
+## US
 ![COVID-19 US Evolution](country_plots/COVID-19_LIN_US.png)
+![COVID-19 US Evolution](country_plots/COVID-19_LIN_US_SIM_CASES.png)
+
+## Canada
 ![COVID-19 Canada Evolution](country_plots/COVID-19_LIN_Canada.png)
 
 # Parameters
