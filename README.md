@@ -4,9 +4,9 @@ Table of Contents
 -----------------
 * [Introduction](#Introduction)
 * [United Kingdom (updated daily)](#UnitedKingdom)
-* [Flattening the curve example](#Flatteningthecurve example)
+* [Flattening the curve example](#Flatteningthecurveexample)
 * [UK current situation: a tale of too late](#UKcurrentsituationataleoftoolate)
-* [Situation around the world (updated daily)](#Situationaroundtheworldupdated daily)
+* [Situation around the world (updated daily)](#Situationaroundtheworldupdateddaily)
 * [Western, Central and Eastern Europe (inc Israel, and the US and Canada)](##WesternCentralandEasternEurope)
 * [Scandinavian countries](##Scandinaviancountries)
 * [Viral Parameters](##ViralParameters)
