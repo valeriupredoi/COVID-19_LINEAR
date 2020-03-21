@@ -484,8 +484,12 @@ def _extract_from_csv(data_object, country, param_idx,
     return param
 
 
-def _get_daily_countries_data(date, country):
+def _get_daily_countries_data(date, country, region):
     """Get all countries data via csv file reading."""
+    # geography index in file
+    cidx = 1
+    if region:
+        cidx = 0
     # date[0] = DAY(DD), date[1] = MONTH(MM)
     file_name = "{}-{}-2020.csv".format(date[1], date[0])
     data_dir = os.path.join("country_data",
@@ -504,19 +508,26 @@ def _get_daily_countries_data(date, country):
 
         # country data
         # dates
-        exp_dates = _extract_from_csv(data_read, country, 2, 1)
+        exp_dates = _extract_from_csv(data_read, country, 2, cidx)
         # cases
-        count_cases = _extract_from_csv(data_read, country, 3, 1,
-                                        special_case=True, numeric=True)
+        count_cases = _extract_from_csv(data_read, country, 3, cidx,
+                                        special_case=True,
+                                        numeric=True)
         # deaths
-        count_deaths = _extract_from_csv(data_read, country, 4, 1,
+        count_deaths = _extract_from_csv(data_read, country, 4, cidx,
                                          special_case=True, numeric=True)
         # recoveries
-        count_rec = _extract_from_csv(data_read, country, 5, 1,
+        count_rec = _extract_from_csv(data_read, country, 5, cidx,
                                       special_case=True, numeric=True)
+        csv_file.close()
+        os.remove(fullpath_file)
 
     country_data = ',' + ','.join([country, exp_dates, str(count_cases),
                                    str(count_deaths), str(count_rec)])
+    if region:
+        country_data = ','.join([country, "REGION",exp_dates,
+                                 str(count_cases),
+                                 str(count_deaths), str(count_rec)])
 
     # overwrite so to optimize disk use
     with open(fullpath_file, "w") as file:
@@ -525,7 +536,7 @@ def _get_daily_countries_data(date, country):
     return count_cases, count_deaths, count_rec, exp_dates
 
 
-def _get_monthly_countries_data(country, month):
+def _get_monthly_countries_data(country, month, region):
     """Assemble monthly data per country."""
     m_cases = []
     m_deaths = []
@@ -541,7 +552,7 @@ def _get_monthly_countries_data(country, month):
                                year=2020).strftime('%d-%m-%Y')
         date = (date_object.split("-")[0], date_object.split("-")[1])
         month_cases, month_deaths, month_rec, exp_dates = \
-            _get_daily_countries_data(date, country)
+            _get_daily_countries_data(date, country, region)
         m_cases.append(month_cases)
         m_deaths.append(month_deaths)
         m_rec.append(month_rec)
@@ -609,6 +620,18 @@ def plot_parameters(doubling_time, basic_reproductive):
 
     plt.close()
 
+
+def _get_geography(arg):
+    """Parse args to get either countries or regions."""
+    if not os.path.isfile(arg):
+        geographies = arg.split(",")
+    else:
+        with open(arg, "r") as file:
+            geographies = [coun.strip() for coun in file.readlines()]
+
+    return geographies
+
+
 def main():
     """Execute the plotter."""
     # parse command line args
@@ -623,6 +646,11 @@ def main():
                         type=str,
                         default="COUNTRIES",
                         help='List OR file with list of countries.')
+    parser.add_argument('-r',
+                        '--regions',
+                        type=str,
+                        default=None,
+                        help='List OR file with list of regions or US states.')
     parser.add_argument('-m',
                         '--month',
                         type=int,
@@ -634,22 +662,30 @@ def main():
     if args.download_data:
         download = True
 
-    # get countries
-    if not os.path.isfile(args.countries):
-        countries = args.countries.split(",")
+    countries = _get_geography(args.countries)
+    if not args.regions:
+        regions = []
     else:
-        with open(args.countries, "r") as file:
-            countries = [coun.strip() for coun in file.readlines()]
+        regions = _get_geography(args.regions)
 
     # plot other countries
     double_time = []
     basic_rep = []
     for country in countries:
-        monthly_numbers = _get_monthly_countries_data(country, args.month)
+        monthly_numbers = _get_monthly_countries_data(country,
+                                                      args.month,
+                                                      region=False)
         d_time, R0 = plot_countries(monthly_numbers,
                                     args.month, country, download)
         double_time.append(d_time)
         basic_rep.append(R0)
+    if regions:
+        for region in regions:
+            monthly_numbers = _get_monthly_countries_data(region,
+                                                          args.month,
+                                                          region=True)
+            plot_countries(monthly_numbers,
+                           args.month, region, download=False)
 
     # plot viral parameters
     plot_parameters(double_time, basic_rep)

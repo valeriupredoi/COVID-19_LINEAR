@@ -215,6 +215,18 @@ decrease in the spread rate after (roughly) March 14, 2020.
 ## Canada
 ![COVID-19 Canada Evolution](country_plots/COVID-19_LIN_Canada.png)
 
+## Kentucky
+![COVID-19 Kentucky Evolution](country_plots/COVID-19_LIN_Kentucky.png)
+![COVID-19 Kentucky Evolution](country_plots/COVID-19_LIN_Kentucky_SIM_CASES.png)
+
+## Tennessee
+![COVID-19 Tennessee Evolution](country_plots/COVID-19_LIN_Tennessee.png)
+![COVID-19 Tennessee Evolution](country_plots/COVID-19_LIN_Tennessee_SIM_CASES.png)
+
+## Orgeon
+![COVID-19 Oregon Evolution](country_plots/COVID-19_LIN_Oregon.png)
+![COVID-19 Oregon Evolution](country_plots/COVID-19_LIN_Oregon_SIM_CASES.png)
+
 # Parameters
 
 ![COVID-19 Doubling Time Evolution](country_plots/Histogram_Doubling_Time.png)
@@ -253,10 +265,12 @@ Requirements:
 
 Command line use:
 
-`python cov_lin_models.py --countries COUNTRIES --month 3`
+`python cov_lin_models.py --countries COUNTRIES --regions REGIONS --month 3`
 
 where `--countries` is a list of countries to study
 or `file: COUNTRIES` (just add your country there);
+`--regions` is a list of countries to study
+or `file: REGIONS` (just add your region or US state there)
 `download-data`: `True` (default) for downloading the
 data to the `country_data` directory or `False` to use
 an older copy from the said directory;
