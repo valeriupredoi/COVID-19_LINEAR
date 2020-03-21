@@ -199,6 +199,11 @@ def plot_countries(datasets, month, country):
         y_all_real.extend(deaths)
     y_all_real.extend(cases)
     y_all = np.log(y_all_real)
+    last_tick_real = []
+    if deaths:
+        last_tick_real.append(deaths[-1])
+    last_tick_real.append(y_all_real[-1])
+    last_tick = np.log(last_tick_real)
 
     # plotting cases
     plt.scatter(x_cases, y_cases, color='r',
@@ -235,7 +240,7 @@ def plot_countries(datasets, month, country):
         if deaths:
             plt.text(1., y_cases[-1] - 2.1, plot_text_d, fontsize=8, color='b')
     plt.legend(loc="lower left")
-    plt.yticks(y_all, [np.int(y01) for y01 in y_all_real])
+    plt.yticks(last_tick, [np.int(y01) for y01 in last_tick_real])
     plt.tick_params(axis="y", labelsize=8)
     plt.savefig(os.path.join("country_plots", plot_name))
     plt.close()
