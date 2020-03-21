@@ -143,9 +143,9 @@ def make_evolution_plot(variable_pack, country):
     """Make the exponential evolution plot."""
     # unpack variables
     (x_cases, y_cases, x_slow, y_slow, cases, deaths,
-     x_deaths, y_deaths, poly_x, poly_x_s,
+     x_deaths, deaths, y_deaths, poly_x, poly_x_s,
      poly_x_d, y_err, y_err_d, plot_text, plot_text_s,
-     plot_text_d, plot_name) = variable_pack
+     plot_text_d, plot_name, slope_d) = variable_pack
 
     # repack some data
     y_all_real = []
@@ -282,16 +282,58 @@ def plot_countries(datasets, month, country, download):
 
     variable_pack = (x_cases, y_cases, x_slow, y_slow,
                      cases, deaths,
-                     x_deaths, y_deaths, poly_x, poly_x_s,
+                     x_deaths, deaths, y_deaths, poly_x, poly_x_s,
                      poly_x_d, y_err, y_err_d, plot_text,
-                     plot_text_s, plot_text_d, plot_name)
+                     plot_text_s, plot_text_d, plot_name, slope_d)
+
     make_evolution_plot(variable_pack, country)
+    if deaths and len(deaths) > 3.0:
+        make_simulations_plot(variable_pack, country)
 
     return d_time, R0
 
 
-def _plug_simulated_cases(y_deaths_real, slope_d):
-    """Plug smulated cases based on mortality."""
+def _get_official_uk_data(download):
+    """Get the official UK data starting March 1st, 2020."""
+    uk_cases_url = UK_DAILY_CASES_DATA
+    cases_cells = get_excel_data(uk_cases_url, "UK_cases",
+                                 "DailyConfirmedCases", 2,
+                                 download=download)
+    uk_deaths_url = UK_DAILY_DEATH_DATA
+    # TODO check for possible future book.name == DailyIndicators
+    death_cells = get_excel_data(uk_deaths_url, "UK_deaths",
+                                 "Sheet1", 3,
+                                 download=download)
+
+    # data cells: cases and deaths
+    y_data_real = cases_cells[31:]
+    y_deaths_real = load_daily_deaths_history()
+
+    # append to file if new data
+    if death_cells[1:] not in y_deaths_real:
+        y_deaths_real.extend(death_cells[1:])
+        with open("country_data/UK_deaths_history", "a") as file:
+            file.write(str(death_cells[1:][0]) + "\n")
+
+    x_data = [np.float(x) for x in range(1, len(y_data_real) + 1)]
+    x_deaths = [np.float(x) for x in range(13, len(y_deaths_real) + 13)]
+
+    # compute average mortality
+    mort = np.array(y_deaths_real) / np.array(y_data_real[12:])
+    avg_mort = np.mean(mort)
+    stdev_mort = np.std(mort)
+
+    return (x_data, y_data_real, x_deaths,
+        y_deaths_real, avg_mort, stdev_mort)
+
+
+def make_simulations_plot(variable_pack, country):
+    # get variable pack
+    (x_data, y_data, x_slow, y_slow, y_data_real, y_deaths_real,
+     x_deaths, y_deaths_real, y_deaths, poly_x, poly_x_s,
+     poly_x_d, y_err, y_err_d, plot_text, plot_text_s,
+     plot_text_d, plot_name, slope_d) = variable_pack
+
     # simulate by death rate scenario
     sim_y_0_real = np.array(y_deaths_real) * 200.  # mrate=0.005
     sim_y_1_real = np.array(y_deaths_real) * 100.  # mrate=0.01
@@ -330,48 +372,26 @@ def _plug_simulated_cases(y_deaths_real, slope_d):
     full_time_2 = (np.log(65 * 1e6) - np.log(sim_y_2_real[-1])) / slope_d
     full_time_3 = (np.log(65 * 1e6) - np.log(sim_y_3_real[-1])) / slope_d
 
+    y_all_real = []
+    y_all_real.extend(y_deaths_real)
+    y_all_real.extend(y_data_real)
+    y_all = np.log(y_all_real)
+    last_tick_real = []
+    last_tick_real.append(y_deaths_real[-1])
+    last_tick_real.append(y_data_real[-1])
+    last_tick = np.log(last_tick_real)
 
-def _get_official_uk_data(download):
-    """Get the official UK data starting March 1st, 2020."""
-    uk_cases_url = UK_DAILY_CASES_DATA
-    cases_cells = get_excel_data(uk_cases_url, "UK_cases",
-                                 "DailyConfirmedCases", 2,
-                                 download=download)
-    uk_deaths_url = UK_DAILY_DEATH_DATA
-    # TODO check for possible future book.name == DailyIndicators
-    death_cells = get_excel_data(uk_deaths_url, "UK_deaths",
-                                 "Sheet1", 3,
-                                 download=download)
-
-    # data cells: cases and deaths
-    y_data_real = cases_cells[31:]
-    y_deaths_real = load_daily_deaths_history()
-
-    # append to file if new data
-    if death_cells[1:] not in y_deaths_real:
-        y_deaths_real.extend(death_cells[1:])
-        with open("country_data/UK_deaths_history", "a") as file:
-            file.write(str(death_cells[1:][0]) + "\n")
-
-    x_data = [np.float(x) for x in range(1, len(y_data_real) + 1)]
-    x_deaths = [np.float(x) for x in range(13, len(y_deaths_real) + 13)]
-
-    # compute average mortality
-    mort = np.array(y_deaths_real) / np.array(y_data_real[12:])
-    avg_mort = np.mean(mort)
-    stdev_mort = np.std(mort)
-
-    return (x_data, y_data_real, x_deaths,
-        y_deaths_real, avg_mort, stdev_mort)
-
-
-def plot_simulations():
     # plot simulated cases
     plt.scatter(x_data, y_data, color='r',
                 label="Cum. Cases")
     plt.plot(x_data, poly_x, '--r')
     plt.scatter(x_deaths, y_deaths, marker='v',
                 color='b', label="Cum. Deaths")
+    if country in SLOWDOWN:
+        plt.axvline(SLOWDOWN[country], linewidth=2, color='orange')
+        plt.scatter(x_slow, y_slow, color='g',
+                    label="Daily Cases Slower")
+        plt.plot(x_slow, poly_x_s, '-g')
     plt.scatter(x_deaths[-1], np.log(sim_y_0_f), marker='x', color='b')
     plt.scatter(x_deaths[-1], np.log(sim_y_1_f), marker='x', color='g')
     plt.scatter(x_deaths[-1], np.log(sim_y_2_f), marker='x', color='r')
@@ -393,8 +413,9 @@ def plot_simulations():
     plt.grid()
     plt.xlim(0., x_data[-1] + 1.5)
     plt.ylim(0., np.log(sim_y_0_f) + 3.)
-    # plt.text(2., sim_y_4[-1] + 0.7, plot_text, fontsize=8, color="red")
-    plt.text(2., sim_y_0[-1] + 4., plot_text_d, fontsize=8, color="blue")
+    if country in SLOWDOWN:
+        plt.xlim(0., x_slow[-1] + 1.5)
+    # plt.text(2., sim_y_0[-1] + 4., plot_text_d, fontsize=8, color="blue")
     plt.legend(loc="lower left", fontsize=9)
     last_tick = list(last_tick)
     last_tick.append(np.log(sim_y_0_f))
@@ -407,7 +428,6 @@ def plot_simulations():
     last_tick_real.append(sim_y_2_f)
     last_tick_real.append(sim_y_3_f)
     last_tick_real.append(sim_y_4_f)
-    # plt.yticks(y_all, [np.int(y01) for y01 in y_all_real])
     plt.yticks(last_tick, [np.int(y01) for y01 in last_tick_real])
     plt.tick_params(axis="y", labelsize=8)
     plt.annotate(str(int(sim_y_4_real[-1])),xy=(x_deaths[-1]-10,sim_y_4[-1]))
@@ -417,13 +437,13 @@ def plot_simulations():
     plt.annotate(str(int(sim_y_3_real[-1])),xy=(x_deaths[-1]-10,sim_y_3[-1]))
     plt.xlabel("Time [days, starting March 1st, 2020]")
     plt.ylabel("Cumulative no. of deaths and reported and simulated cases")
-    plt.title("COVID-19 in UK starting March 1, 2020\n" + \
+    plt.title("COVID-19 in {} starting March 1, 2020\n".format(country) + \
               "Sim cases are based on mortality fraction M and delayed by 10 days\n" + \
               "Sim cumulative no. cases: measured deaths x 1/M\n" + \
               "Est. time for total infection: %i days (M=0.03); %i days (M=0.02); %i days (M=0.01); %i days (M=0.005)" % (int(full_time_3), int(full_time_2), int(full_time_1), int(full_time_0)),
               fontsize=10)
     plt.savefig(os.path.join("country_plots",
-                             "COVID-19_LIN_UK-GOV_SIM_CASES.png"))
+                             "COVID-19_LIN_{}_SIM_CASES.png".format(country)))
     plt.close()
 
 
