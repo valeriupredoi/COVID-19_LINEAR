@@ -3,13 +3,12 @@ COVID-19: Exponential Phase
 Table of Contents
 -----------------
 * [Introduction](#Introduction)
-* [United Kingdom](#UnitedKingdom)
-* [Flattening the curve](#Flatteningthecurve)
+* [UK](#UnitedKingdom)
+* [Quarantines](#Flatteningthecurve)
 * [Europe](#europe)
-* [US and Canada](#USandcanada)
-* [Viral Parameters](#ViralParameters)
-* [Data Parameters](#DataParameters)
-* [Simple script](#Simplescript)
+* [US-Canada](#USandcanada)
+* [Parameters](#ViralParameters)
+* [Script](#Simplescript)
 * [APPENDIX](#APPENDIX)
 
 # Introduction
@@ -26,7 +25,7 @@ The results are affected by poor testing in certain areas and countries,
 and by **driver** regions (like Lombardia in Italy or London in UK, ultimately assigning a lot of
 statistical weight to these parts of the country, given overwheling numbers).
 
-# United Kingdom
+# UK
 
 **TLDR: UK is as of 20 March in exponential spread phase with infected population doubling
 time of about 3 days and a very high mortality, suggesting a combination of biased testing and
@@ -57,7 +56,7 @@ and deaths are plotted, together with their model fits. Right plot: we simulate 
 number of cases based on the reported number of deaths multiplied by 1/mortality rate `Mr`; mortality rate
 values are 0.005, 0.01, 0.02, 0.03 and 0.04.
 
-# Flattening the curve
+# Quarantines
 
 TLDR: Italy has achieved a reduction in the spread rate: numbers from there suggest
 that measures taken may reduce the number of cases by 20%, converseley, for a daily
@@ -155,17 +154,16 @@ decrease in the spread rate after (roughly) March 14, 2020.
 ![COVID-19 Sweden Evolution](country_plots/COVID-19_LIN_Sweden.png)
 ![COVID-19 Norway Evolution](country_plots/COVID-19_LIN_Norway.png)
 
-# US and Canada
+# US-Canada
 
 ![COVID-19 US Evolution](country_plots/COVID-19_LIN_US.png)
 ![COVID-19 Canada Evolution](country_plots/COVID-19_LIN_Canada.png)
 
-#Viral Parameters
+# Parameters
 
 ![COVID-19 Doubling Time Evolution](country_plots/Histogram_Doubling_Time.png)
 ![COVID-19 Rzero Evolution](country_plots/Histogram_Basic_Reproductive_Number.png)
 
-# Data Parameters
 
 - `b`: exponential rate at which daily cases rise (in units `day-1`);
 - `m`: exponential rate at which daily deaths rise (in units `day-1`);
@@ -174,7 +172,7 @@ decrease in the spread rate after (roughly) March 14, 2020.
 - Estimated R0: the number of people a single infected person will infect per day, on average;
 - Average Mortality Rate: average percent of number of cases that die.
 
-# Simple script
+# Script
 
 This is a simple and easily adaptible script that plots the
 log number of daily cases of COVID-19 and deaths vs time. It does the
