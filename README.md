@@ -12,7 +12,7 @@ Table of Contents
 * [Simple script](#Simplescript)
 * [APPENDIX](#APPENDIX)
 
-#Introduction
+# Introduction
 
 Current results for linear fit for logarithmic data of daily number of cases and daily number of
 deaths per country. Almost every country is undergoing an expoenential infection spread phase,
@@ -26,7 +26,7 @@ The results are affected by poor testing in certain areas and countries,
 and by **driver** regions (like Lombardia in Italy or London in UK, ultimately assigning a lot of
 statistical weight to these parts of the country, given overwheling numbers).
 
-#United Kingdom
+# United Kingdom
 
 **TLDR: UK is as of 20 March in exponential spread phase with infected population doubling
 time of about 3 days and a very high mortality, suggesting a combination of biased testing and
@@ -57,7 +57,7 @@ and deaths are plotted, together with their model fits. Right plot: we simulate 
 number of cases based on the reported number of deaths multiplied by 1/mortality rate `Mr`; mortality rate
 values are 0.005, 0.01, 0.02, 0.03 and 0.04.
 
-#Flattening the curve
+# Flattening the curve
 
 TLDR: Italy has achieved a reduction in the spread rate: numbers from there suggest
 that measures taken may reduce the number of cases by 20%, converseley, for a daily
@@ -124,7 +124,7 @@ as compared to the initial 0.41 day-1.
 - that puts us in a very bad position because the epidemic is much more advanced than what we declare at the moment, and we are actually not at all behind neither France nor Spain (Spain is suffering from very bad testing too); if we instate strong measures now, the effect will have been felt only much later ie in a full infectious phase time 10-14 days from now, and even then I can not tell how how strong the effect is; my estimate is we will stay in exponential phase for a long time, but similar to Italy the rate will gradually decrease; a rate of 0.25 would mean in a week from now we will have reported ~19,000 cases but if the testing is not fixed that would be a France reported equivalent of ~60,000 cases out of which 20% in hospital-condition =12,000 needing hospitalization; two weeks from now, provided that the rate will have decreased to 0.2 due to the imposed measures the total number of realistic cases would be 240,000 meaning about 40,000 needing hospitalization, and even if the patients from previous week have had recovered completely that would mean we need 30,000 beds.
 
 
-#Europe
+# Europe
 
 Even though most of the countries display an exponential spread,
 some of the (smaller) countries (Belgium, Netherlands) are starting to
@@ -155,7 +155,7 @@ decrease in the spread rate after (roughly) March 14, 2020.
 ![COVID-19 Sweden Evolution](country_plots/COVID-19_LIN_Sweden.png)
 ![COVID-19 Norway Evolution](country_plots/COVID-19_LIN_Norway.png)
 
-#US and Canada
+# US and Canada
 
 ![COVID-19 US Evolution](country_plots/COVID-19_LIN_US.png)
 ![COVID-19 Canada Evolution](country_plots/COVID-19_LIN_Canada.png)
@@ -165,7 +165,7 @@ decrease in the spread rate after (roughly) March 14, 2020.
 ![COVID-19 Doubling Time Evolution](country_plots/Histogram_Doubling_Time.png)
 ![COVID-19 Rzero Evolution](country_plots/Histogram_Basic_Reproductive_Number.png)
 
-#Data Parameters
+# Data Parameters
 
 - `b`: exponential rate at which daily cases rise (in units `day-1`);
 - `m`: exponential rate at which daily deaths rise (in units `day-1`);
@@ -174,7 +174,7 @@ decrease in the spread rate after (roughly) March 14, 2020.
 - Estimated R0: the number of people a single infected person will infect per day, on average;
 - Average Mortality Rate: average percent of number of cases that die.
 
-#Simple script
+# Simple script
 
 This is a simple and easily adaptible script that plots the
 log number of daily cases of COVID-19 and deaths vs time. It does the
@@ -208,7 +208,7 @@ data to the `country_data` directory or `False` to use
 an older copy from the said directory;
 `--month`: numeral of the month to plot.
 
-#APPENDIX
+# APPENDIX
 
 UK Data:
 
