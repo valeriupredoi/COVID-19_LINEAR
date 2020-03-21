@@ -3,12 +3,12 @@ COVID-19: Exponential Phase
 Table of Contents
 -----------------
 * [Introduction](#Introduction)
-* [UK](#UnitedKingdom)
-* [Quarantines](#Flatteningthecurve)
+* [UK](#uk)
+* [Quarantines](#quarantines)
 * [Europe](#europe)
-* [US-Canada](#USandcanada)
-* [Parameters](#ViralParameters)
-* [Script](#Simplescript)
+* [US-Canada](#us-canada)
+* [Parameters](#Parameters)
+* [Script](#Script)
 * [APPENDIX](#APPENDIX)
 
 # Introduction
