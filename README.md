@@ -3,10 +3,16 @@ COVID-19: Exponential Phase
 Table of Contents
 -----------------
 * [Introduction](#Introduction)
-* [United Kingdon](#United Kingdom)
-* [United Kingdom Current Situation](#UK current situation a tale of too late)
-* [Situation around the world](#world situation)
-* [Europe, US and Canada](#euuscan)
+* [United Kingdom (updated daily)](#United Kingdom)
+* [Flattening the curve example](#Flattening the curve example)
+* [UK current situation: a tale of too late](#UK current situation: a tale of too late)
+* [Situation around the world (updated daily)](#Situation around the world (updated daily))
+* [Western, Central and Eastern Europe (inc Israel, and the US and Canada)](##Western, Central and Eastern Europe (inc Israel, and the US and Canada))
+* [Scandinavian countries](##Scandinavian countries)
+* [Viral Parameters](##Viral Parameters)
+* [Data Parameters](##Data Parameters)
+* [Simple script that plots the evolution of COVID-19](#Simple script that plots the evolution of COVID-19)
+* [APPENDIX: data](#APPENDIX: data)
 
 Introduction
 ============
@@ -56,7 +62,8 @@ number of cases based on the reported number of deaths multiplied by 1/mortality
 values are 0.005, 0.01, 0.02, 0.03 and 0.04.
 
 Flattening the curve example
-----------------------------
+============================
+
 **TLDR: Italy has achieved a reduction in the spread rate: numbers from there suggest
 that measures taken may reduce the number of cases by 20%, converseley, for a daily
 increase in cases of 10,000 and an average death rate of 2%, that means saving 200
@@ -219,15 +226,16 @@ data to the `country_data` directory or `False` to use
 an older copy from the said directory;
 `--month`: numeral of the month to plot.
 
+APPENDIX: data
+==============
 UK Data
-=======
-
+-------
 Official data source: https://www.gov.uk/government/publications/covid-19-track-coronavirus-cases
 
 Worldwide Data
-==============
+--------------
 Johns Hopkins University CSSE gitHub repository: https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_daily_reports
 
 Italy Data
-==========
+----------
 https://github.com/pcm-dpc/COVID-19/blob/master/dati-andamento-nazionale/dpc-covid19-ita-andamento-nazionale.csv
