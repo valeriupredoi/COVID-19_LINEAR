@@ -166,6 +166,10 @@ Look for the green lines, representing the new, slow-down increase.
 ![COVID-19 Netherlands Evolution](country_plots/COVID-19_LIN_Netherlands.png)
 ![COVID-19 Netherlands Evolution](country_plots/COVID-19_LIN_Netherlands_SIM_CASES.png)
 
+## Switzerland
+![COVID-19 Switzerland Evolution](country_plots/COVID-19_LIN_Switzerland.png)
+![COVID-19 Switzerland Evolution](country_plots/COVID-19_LIN_Switzerland_SIM_CASES.png)
+
 ## Bulgaria
 ![COVID-19 Bulgaria Evolution](country_plots/COVID-19_LIN_Bulgaria.png)
 ![COVID-19 Bulgaria Evolution](country_plots/COVID-19_LIN_Bulgaria_SIM_CASES.png)
