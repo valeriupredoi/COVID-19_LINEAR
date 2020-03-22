@@ -361,6 +361,10 @@ def make_simulations_plot(variable_pack, country):
      poly_x_d, y_err, y_err_d, plot_text, plot_text_s,
      plot_text_d, plot_name, slope_d, slope) = variable_pack
 
+    # extract last points for dsiplay
+    curr_case = y_data_real[-1]
+    curr_death = y_deaths_real[-1]
+
     # simulate by death rate scenario
     sim_y_0_real = np.array(y_deaths_real) * 200.  # mrate=0.005
     sim_y_1_real = np.array(y_deaths_real) * 100.  # mrate=0.01
@@ -479,9 +483,11 @@ def make_simulations_plot(variable_pack, country):
         # projection data and ticks
         x0, y0, y0d, y, yd, y_min, yd_min = _compute_projection_uk()
         log_ticks = [np.log(y0), np.log(y), np.log(y0d), np.log(yd),
-                     np.log(y_min), np.log(yd_min)]
+                     np.log(y_min), np.log(yd_min), np.log(curr_case),
+                     np.log(curr_death)]
         real_ticks = [int(y0), int(y), int(y0d), int(yd),
-                      int(y_min), int(yd_min)]
+                      int(y_min), int(yd_min), int(curr_case),
+                      int(curr_death)]
 
         # if slowdown
         if country in SLOWDOWN:
@@ -515,6 +521,7 @@ def make_simulations_plot(variable_pack, country):
         # plot anciliaries
         plt.xlim(0., x0 + 11.5)
         plt.yticks(log_ticks, real_ticks)
+        plt.tick_params(axis="y", labelsize=7)
         plt.xlabel("Time [days, starting March 1st, 2020]")
         plt.ylabel("Cumulative no. of deaths and reported and simulated cases")
         plt.grid()
