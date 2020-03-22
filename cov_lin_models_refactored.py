@@ -44,19 +44,27 @@ SLOWDOWN = {"Belgium": 13,
 
 
 def _compute_projection_uk():
-    """Compute projection at 21 March 2020 for 10 days."""
-    # cases
-    b = 0.25
-    y0 = 5018.
-    x0 = 21.
-    y = y0 * np.exp(b * 10.)
-
+    """Compute projection from 21 March 2020 for 10 days."""
+    # fixed numbers on March 21, one day after pubs, cafes etc
+    # have been shut
+    # reported cases
+    b = 0.25  # exp rate
+    y0 = 5018.  # no of reported cases
+    x0 = 21.  # day: March 21
+    y = y0 * np.exp(b * 10.)  # evolution (R=0.99)
     # deaths
-    m = 0.37
-    y0d = 233.
-    yd = y0d * np.exp(m * 10.)
+    m = 0.37  # exp rate
+    y0d = 233.  # no of reported deaths
+    yd = y0d * np.exp(m * 10.)  # evolution (R=0.97)
 
-    return x0, y0, y0d, y, yd
+    # allow for an immediate decrease in exp rates,
+    # equivalent to some places where quarantines
+    b_min = 0.2
+    m_min = 0.2
+    y_min = y0 * np.exp(b_min * 10.)
+    yd_min = y0d * np.exp(m_min * 10.)
+
+    return (x0, y0, y0d, y, yd, y_min, yd_min)
 
 
 def c_of_d(ys_orig, ys_line):
@@ -465,39 +473,60 @@ def make_simulations_plot(variable_pack, country):
                              "COVID-19_LIN_{}_SIM_CASES.png".format(country)))
     plt.close()
 
-    # do full 10-day projection
+    # do full 10-day running projection
+    # with initial conditions on March 21
     if country == "UK":
-        x0, y0, y0d, y, yd = _compute_projection_uk()
-        # plot simulated cases
-        plt.scatter(x_data, y_data, color='r',
-                    label="Cum. Cases")
-        ticks = [y, yd]
-        ticks_real = []
-        plt.plot(x_data, poly_x, '--r')
-        plt.scatter(x_deaths, y_deaths, marker='v',
-                    color='b', label="Cum. Deaths")
-        plt.plot(x_deaths, poly_x_d, '--b')
+        # projection data and ticks
+        x0, y0, y0d, y, yd, y_min, yd_min = _compute_projection_uk()
+        log_ticks = [np.log(y0), np.log(y), np.log(y0d), np.log(yd),
+                     np.log(y_min), np.log(yd_min)]
+        real_ticks = [int(y0), int(y), int(y0d), int(yd),
+                      int(y_min), int(yd_min)]
+
+        # if slowdown
         if country in SLOWDOWN:
             plt.axvline(SLOWDOWN[country], linewidth=2, color='orange')
             plt.scatter(x_slow, y_slow, color='g',
                         label="Daily Cases Slower")
             plt.plot(x_slow, poly_x_s, '-g')
-        plt.scatter((x0, x0 + 10.), (np.log(y0), np.log(y)), color='r', label="Proj. Cases")
-        plt.scatter((x0, x0 + 10.), (np.log(y0d), np.log(yd)), marker='v', color='b', label="Proj. Deaths")
+        plt.scatter((x0, x0 + 10.), (np.log(y0), np.log(y)),
+                    color='k', label="Worst Cases Proj")
+        plt.scatter((x0, x0 + 10.), (np.log(y0), np.log(y_min)),
+                    color='g', label="Best Cases Proj")
+
+        # plot projections
+        plt.scatter((x0, x0 + 10.), (np.log(y0d), np.log(yd)), marker='v',
+                    color='k', label="Worst Death Proj")
+        plt.scatter((x0, x0 + 10.), (np.log(y0d), np.log(yd_min)), marker='v',
+                    color='g', label="Best Death Proj")
         plt.plot((x0, x0 + 10.), (np.log(y0), np.log(y)), "--k")
+        plt.plot((x0, x0 + 10.), (np.log(y0), np.log(y_min)), "--g")
         plt.plot((x0, x0 + 10.), (np.log(y0d), np.log(yd)), "--k")
+        plt.plot((x0, x0 + 10.), (np.log(y0d), np.log(yd_min)), "--g")
+
+        # plot reported evolving numbers
+        plt.scatter(x_data, y_data, color='r',
+                    label="Cases")  # reported cases
+        plt.plot(x_data, poly_x, '--r')
+        plt.scatter(x_deaths, y_deaths, marker='v',
+                    color='b', label="Deaths")  # reported deaths
+        plt.plot(x_deaths, poly_x_d, '--b')
+
+        # plot anciliaries
         plt.xlim(0., x0 + 11.5)
-        print([int(np.log(y0)), int(np.log(y)), int(np.log(y0d)), int(np.log(yd))])
-        plt.yticks([np.log(y0), np.log(y), np.log(y0d), np.log(yd)],
-                   [int(y0), int(y), int(y0d), int(yd)])
+        plt.yticks(log_ticks, real_ticks)
         plt.xlabel("Time [days, starting March 1st, 2020]")
         plt.ylabel("Cumulative no. of deaths and reported and simulated cases")
         plt.grid()
-        plt.legend(loc="lower left")
+        plt.annotate("Pubs shut", xy=(20.7, 0.5), color='red')
+        plt.annotate("London: 2000 cases", xy=(20.5, np.log(y0) - 0.5),
+                     color='red', fontsize=8)
+        plt.legend(loc="lower right", fontsize=9)
         plt.axvline(20, color="red")
-        plt.title("COVID-19 in {} starting March 1, 2020 spun up to 10 days\n".format(country) + \
-                  "Frozen b=0.25 (R=0.99) and m=0.37 (R=0.97) as of March 21, 2020",
-                  fontsize=10)
+        plt.suptitle("COVID-19 in {} starting March 1, 2020 spun up 10 days\n".format(country) + \
+                     "Worst case: March 21 rates b=0.25 (R=0.99) and m=0.37 (R=0.97)",
+                     fontsize=10)
+        plt.title("Best case: quarantine rates b=m=0.2", color='green', fontsize=10)
         plt.savefig(os.path.join("country_plots",
                                  "COVID-19_LIN_{}_DARK_SIM_UK.png".format(country)))
         plt.close()
