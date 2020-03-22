@@ -522,9 +522,11 @@ def make_simulations_plot(variable_pack, country):
         plt.annotate("London: 2000 cases", xy=(20.5, np.log(y0) - 0.5),
                      color='red', fontsize=8)
         plt.legend(loc="lower right", fontsize=9)
+        plt.text(1., y_data[-1] + 0.3, plot_text, fontsize=8, color='r')
+        plt.text(1., y_data[-1] - 2.1, plot_text_d, fontsize=8, color='b')
         plt.axvline(20, color="red")
         plt.suptitle("COVID-19 in {} starting March 1, 2020 spun up 10 days\n".format(country) + \
-                     "Worst case: March 21 rates b=0.25 (R=0.99) and m=0.37 (R=0.97)",
+                     "Worst case: March 21 rates b=0.25/DT=2.8d (R=0.99) and m=0.37/DT=1.9d (R=0.97)",
                      fontsize=10)
         plt.title("Best case: quarantine rates b=m=0.2", color='green', fontsize=10)
         plt.savefig(os.path.join("country_plots",
