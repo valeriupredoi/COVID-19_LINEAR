@@ -16,7 +16,7 @@ Requirements
 
 Command line use
 ----------------
-`python cov_lin_models.py --countries COUNTRIES --regions REGIONS --month 3 --download True`
+`python cov_lin_models_refactored.py --countries COUNTRIES --regions REGIONS --month 3 --download True`
 
 where `--countries` is a list of countries to study
 or `file: COUNTRIES` (just add your country there);
