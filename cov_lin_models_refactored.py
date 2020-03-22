@@ -211,7 +211,8 @@ def plot_countries(datasets, month, country, download):
         for c in datasets[3] if c != 'NN'
     ]
     # pad for unavailable data from 1st of month
-    if actual_days[0] != 1 and actual_days[0] < 10:
+    print(actual_days)
+    if actual_days[0] != 1 and actual_days[0] < 15:
         x_cases = actual_days
     else:
         x_cases = [float(n) for n in range(1, len(cases) + 1)]
