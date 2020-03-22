@@ -42,6 +42,23 @@ SLOWDOWN = {"Belgium": 13,
             "Norway": 14,
             "Sweden": 13}
 
+
+def _compute_projection_uk():
+    """Compute projection at 21 March 2020 for 10 days."""
+    # cases
+    b = 0.25
+    y0 = 5018.
+    x0 = 21.
+    y = y0 * np.exp(b * 10.)
+
+    # deaths
+    m = 0.37
+    y0d = 233.
+    yd = y0d * np.exp(m * 10.)
+
+    return x0, y0, y0d, y, yd
+
+
 def c_of_d(ys_orig, ys_line):
     """Compute the line R squared."""
     y_mean_line = [np.mean(ys_orig) for y in ys_orig]
@@ -145,7 +162,7 @@ def make_evolution_plot(variable_pack, country):
     (x_cases, y_cases, x_slow, y_slow, cases, deaths,
      x_deaths, deaths, y_deaths, poly_x, poly_x_s,
      poly_x_d, y_err, y_err_d, plot_text, plot_text_s,
-     plot_text_d, plot_name, slope_d) = variable_pack
+     plot_text_d, plot_name, slope_d, slope) = variable_pack
 
     # repack some data
     y_all_real = []
@@ -280,11 +297,13 @@ def plot_countries(datasets, month, country, download):
             avg_mort, stdev_mort
         )
 
-    variable_pack = (x_cases, y_cases, x_slow, y_slow,
-                     cases, deaths,
-                     x_deaths, deaths, y_deaths, poly_x, poly_x_s,
-                     poly_x_d, y_err, y_err_d, plot_text,
-                     plot_text_s, plot_text_d, plot_name, slope_d)
+    variable_pack = (
+        x_cases, y_cases, x_slow, y_slow,
+        cases, deaths, x_deaths, deaths,
+        y_deaths, poly_x, poly_x_s, poly_x_d,
+        y_err, y_err_d, plot_text, plot_text_s,
+        plot_text_d, plot_name, slope_d, slope
+    )
 
     make_evolution_plot(variable_pack, country)
     if deaths and len(deaths) > 3.0:
@@ -332,7 +351,7 @@ def make_simulations_plot(variable_pack, country):
     (x_data, y_data, x_slow, y_slow, y_data_real, y_deaths_real,
      x_deaths, y_deaths_real, y_deaths, poly_x, poly_x_s,
      poly_x_d, y_err, y_err_d, plot_text, plot_text_s,
-     plot_text_d, plot_name, slope_d) = variable_pack
+     plot_text_d, plot_name, slope_d, slope) = variable_pack
 
     # simulate by death rate scenario
     sim_y_0_real = np.array(y_deaths_real) * 200.  # mrate=0.005
@@ -441,9 +460,47 @@ def make_simulations_plot(variable_pack, country):
               "Sim cases are based on mortality fraction M and delayed by 10 days\n" + \
               "Sim cumulative no. cases: measured deaths x 1/M",
               fontsize=10)
+
     plt.savefig(os.path.join("country_plots",
                              "COVID-19_LIN_{}_SIM_CASES.png".format(country)))
     plt.close()
+
+    # do full 10-day projection
+    if country == "UK":
+        x0, y0, y0d, y, yd = _compute_projection_uk()
+        # plot simulated cases
+        plt.scatter(x_data, y_data, color='r',
+                    label="Cum. Cases")
+        ticks = [y, yd]
+        ticks_real = []
+        plt.plot(x_data, poly_x, '--r')
+        plt.scatter(x_deaths, y_deaths, marker='v',
+                    color='b', label="Cum. Deaths")
+        plt.plot(x_deaths, poly_x_d, '--b')
+        if country in SLOWDOWN:
+            plt.axvline(SLOWDOWN[country], linewidth=2, color='orange')
+            plt.scatter(x_slow, y_slow, color='g',
+                        label="Daily Cases Slower")
+            plt.plot(x_slow, poly_x_s, '-g')
+        plt.scatter((x0, x0 + 10.), (np.log(y0), np.log(y)), color='r', label="Proj. Cases")
+        plt.scatter((x0, x0 + 10.), (np.log(y0d), np.log(yd)), marker='v', color='b', label="Proj. Deaths")
+        plt.plot((x0, x0 + 10.), (np.log(y0), np.log(y)), "--k")
+        plt.plot((x0, x0 + 10.), (np.log(y0d), np.log(yd)), "--k")
+        plt.xlim(0., x0 + 11.5)
+        print([int(np.log(y0)), int(np.log(y)), int(np.log(y0d)), int(np.log(yd))])
+        plt.yticks([np.log(y0), np.log(y), np.log(y0d), np.log(yd)],
+                   [int(y0), int(y), int(y0d), int(yd)])
+        plt.xlabel("Time [days, starting March 1st, 2020]")
+        plt.ylabel("Cumulative no. of deaths and reported and simulated cases")
+        plt.grid()
+        plt.legend(loc="lower left")
+        plt.axvline(20, color="red")
+        plt.title("COVID-19 in {} starting March 1, 2020 spun up to 10 days\n".format(country) + \
+                  "Frozen b=0.25 (R=0.99) and m=0.37 (R=0.97) as of March 21, 2020",
+                  fontsize=10)
+        plt.savefig(os.path.join("country_plots",
+                                 "COVID-19_LIN_{}_DARK_SIM_UK.png".format(country)))
+        plt.close()
 
 
 def _check_for_us(param, country):
