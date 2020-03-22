@@ -35,7 +35,7 @@ much higher actual infection numbers.**
 
 Spread in the UK: measured cases and deaths  |  10-day projections
 :-------------------------------------------:|:-------------------------:
-![UK](country_plots/COVID-19_LIN_UK.png) |  ![UKS](country_plots/country_plots/COVID-19_LIN_UK_DARK_SIM_UK.png)
+![UK](country_plots/COVID-19_LIN_UK.png)     | ![UKP](country_plots/COVID-19_LIN_UK_DARK_SIM_UK.png)
 
 Left panel: daily cumulative numbers of reported cases and deaths (updated daily); right panel: same numbers
 only with two best- and worst-case projections over the next 10 days (March 20-March 30); worst-case
