@@ -39,10 +39,10 @@ Spread in the UK: measured cases and deaths  |  10-day projections
 
 Left panel: daily cumulative numbers of reported cases and deaths (updated daily); right panel: same numbers
 only with two best- and worst-case projections over the next 10 days (March 20-March 30); worst-case
-projection uses the growth rates for reported cases and deaths and spins up the exponential models
-for 10 days; best-case does the same only using quarantine-like rates. Prediction: number of deaths
-on March 30: between 1700-9000. Given that on March 21 2000 out of the reported 5000 cases were in
-London, the estimate is 40% of the deaths in 10 days time will be in London.
+projection uses the measured growth rates for reported cases and deaths as of March 21 and spins up the exponential models
+over 10 days; best-case projection does the same, only using quarantine-like rates. Prediction: number of deaths
+on March 30: between 1700-9000. Given that on March 21, about 2000 out of the reported 5000 cases were in
+London, the estimate is 40% of the deaths in 10 days time will be in London, meaning anywhere in between 600 and 3600.
 
 ![UKS](country_plots/COVID-19_LIN_UK_SIM_CASES.png)
 
