@@ -439,8 +439,7 @@ def make_simulations_plot(variable_pack, country):
     plt.ylabel("Cumulative no. of deaths and reported and simulated cases")
     plt.title("COVID-19 in {} starting March 1, 2020\n".format(country) + \
               "Sim cases are based on mortality fraction M and delayed by 10 days\n" + \
-              "Sim cumulative no. cases: measured deaths x 1/M\n" + \
-              "Est. time for total infection: %i days (M=0.03); %i days (M=0.02); %i days (M=0.01); %i days (M=0.005)" % (int(full_time_3), int(full_time_2), int(full_time_1), int(full_time_0)),
+              "Sim cumulative no. cases: measured deaths x 1/M",
               fontsize=10)
     plt.savefig(os.path.join("country_plots",
                              "COVID-19_LIN_{}_SIM_CASES.png".format(country)))
