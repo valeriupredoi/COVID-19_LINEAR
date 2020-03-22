@@ -298,6 +298,7 @@ Official data source: https://www.gov.uk/government/publications/covid-19-track-
 Worldwide Data:
 
 Johns Hopkins University CSSE gitHub repository: https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_daily_reports
+Alternative JHU cleaned up data: https://raw.githubusercontent.com/jbarton311/coronavirus-analysis/master/coronavirus/output_data/HOPKINS_CLEANED.csv
 
 Italy Data:
 
