@@ -43,6 +43,10 @@ SLOWDOWN = {"Belgium": 13,
             "Poland": 16,
             "Sweden": 13}
 
+# countries that need their data to be summed;
+# same for US states
+COUNTRIES_TO_SUM = ["US", "France", "Denmark",
+                    "Netherlands"]
 
 def _compute_projection_uk():
     """Compute projection from 21 March 2020 for 10 days."""
@@ -220,6 +224,7 @@ def make_evolution_plot(variable_pack, country):
     plt.legend(loc="lower left")
     plt.yticks(last_tick, [np.int(y01) for y01 in last_tick_real])
     plt.tick_params(axis="y", labelsize=8)
+    print(plot_name)
     plt.savefig(os.path.join("country_plots", plot_name))
     plt.close()
 
@@ -232,10 +237,12 @@ def plot_countries(datasets, month, country, download):
     deaths = [d for d in deaths if d > 0.]
     recs = [float(c) for c in datasets[2] if c != 'NN']
 
+    time_fmt = "%Y-%m-%dT%H:%M:%S"
     actual_days = [
-        datetime.strptime(c, "%Y-%m-%dT%H:%M:%S").day
+        datetime.strptime(c, time_fmt).day
         for c in datasets[3] if c != 'NN'
     ]
+
     # pad for unavailable data from 1st of month
     if actual_days[0] != 1 and actual_days[0] < 15:
         x_cases = actual_days
@@ -542,19 +549,35 @@ def make_simulations_plot(variable_pack, country):
         plt.close()
 
 
-def _check_for_us(param, country):
+def _sum_up(param, country):
     """Get special csv param for US - summing is needed."""
-    if country != "US":
+    if country not in COUNTRIES_TO_SUM:
         param = param[0]
     else:
-        param = sum(param)
+        if not len(set(param)) > 1:
+            param = param[0]
+        else:
+            param = sum(param)
+        
 
     return param
 
 
 def _extract_from_csv(data_object, country, param_idx,
-                      country_idx, special_case=False, numeric=False):
-    """Extract and return the needed field from csv file."""
+                      country_idx, numeric=False):
+    """
+    Extract and return the needed field from csv file.
+
+    Data before 23 March 2020 is in an old format:
+    sep/state country date cases deaths coord1 coord2
+    ,Belgium,2020-03-22T14:13:06,3401.0,75.0,263.0
+
+    JHU have changed the format from 23 March 2020 as:
+    FIPS Admin2 Province_State Country_Region Last_Update Lat Long_ Confirmed Deaths Recovered Active Combined_Key
+    53001,Adams,Washington,US,2020-03-23 23:19:34,46.98299757,-118.56017340000001,1,0,0,0,"Adams, Washington, US"
+    ,,,Belgium,2020-03-23 23:19:21,50.8333,4.469936,3743,88,401,3254,Belgium
+
+    """
     if not numeric:
         param = [
             tab[param_idx] for tab in data_object if tab[country_idx] == country
@@ -570,21 +593,57 @@ def _extract_from_csv(data_object, country, param_idx,
         param = 'NN'
         return param
 
-    if not special_case:
-        param = param[0]
-    else:
-        # list of specific data checks
-        param = _check_for_us(param, country)
+    # list of specific data checks
+    param = _sum_up(param, country)
 
     return param
 
 
+def _reformat_date(exp_dates):
+    """Reformat dates to common format."""
+    time_fmt = "%Y-%m-%dT%H:%M:%S"
+    wrong_time_fmt = "%Y-%m-%d %H:%M:%S"
+    if exp_dates == 'NN':
+        return exp_dates
+    if exp_dates != 'NN' and not isinstance(exp_dates, list):
+        try:
+            datetime.strptime(exp_dates, time_fmt)
+        except ValueError:
+            exp_dates = datetime.strptime(exp_dates,
+                                          wrong_time_fmt).strftime(time_fmt)
+
+    if exp_dates != 'NN' and isinstance(exp_dates, list):
+        try:
+            datetime.strptime(exp_dates[0], time_fmt)
+        except ValueError:
+            exp_dates = [datetime.strptime(c, wrong_time_fmt).strftime(time_fmt)
+                         for c in exp_dates]
+
+    return exp_dates
+
+
+def _get_extracted(data_read, country, idx_pack, cidx):
+    """Get the extracted numbers depending on various data format indeces."""
+    # country data
+    # dates
+    exp_dates = _extract_from_csv(data_read, country, idx_pack[0], cidx)
+    exp_dates = _reformat_date(exp_dates)
+    
+    # cases
+    count_cases = _extract_from_csv(data_read, country, idx_pack[1], cidx,
+                                    numeric=True)
+    # deaths
+    count_deaths = _extract_from_csv(data_read, country, idx_pack[2], cidx,
+                                     numeric=True)
+    # recoveries
+    count_rec = _extract_from_csv(data_read, country, idx_pack[3], cidx,
+                                  numeric=True)
+
+    return (exp_dates, count_cases, count_deaths, count_rec)
+
+
 def _get_daily_countries_data(date, country, region):
     """Get all countries data via csv file reading."""
-    # geography index in file
-    cidx = 1
-    if region:
-        cidx = 0
     # date[0] = DAY(DD), date[1] = MONTH(MM)
     file_name = "{}-{}-2020.csv".format(date[1], date[0])
     data_dir = os.path.join("country_data",
@@ -601,22 +660,28 @@ def _get_daily_countries_data(date, country, region):
         reader = csv.reader(csv_file, delimiter=',', quotechar='"')
         data_read = [row for row in reader]
 
-        # country data
-        # dates
-        exp_dates = _extract_from_csv(data_read, country, 2, cidx)
-        # cases
-        count_cases = _extract_from_csv(data_read, country, 3, cidx,
-                                        special_case=True,
-                                        numeric=True)
-        # deaths
-        count_deaths = _extract_from_csv(data_read, country, 4, cidx,
-                                         special_case=True, numeric=True)
-        # recoveries
-        count_rec = _extract_from_csv(data_read, country, 5, cidx,
-                                      special_case=True, numeric=True)
+        # parse for both older JHU data format and newer
+        if date[1] == '03' and int(float(date[0])) < 23:
+            # geography index in file
+            cidx = 1
+            if region:
+                cidx = 0
+            idx_pack = [2, 3, 4, 5]
+        else:
+            # geography index in file
+            cidx = 3
+            if region:
+                cidx = 2
+            idx_pack = [4, 7, 8, 9]
+        (exp_dates, 
+         count_cases, 
+         count_deaths, 
+         count_rec) = _get_extracted(data_read, country, idx_pack, cidx)
         csv_file.close()
         os.remove(fullpath_file)
 
+    # keeping simplified data format equivalent to JHU data format from
+    # before March 23: ,sep/state,country,date,cases,deaths
     country_data = ',' + ','.join([country, exp_dates, str(count_cases),
                                    str(count_deaths), str(count_rec)])
     if region:
@@ -776,6 +841,7 @@ def main():
         basic_rep.append(R0)
     if regions:
         for region in regions:
+            COUNTRIES_TO_SUM.append(region)
             monthly_numbers = _get_monthly_countries_data(region,
                                                           args.month,
                                                           region=True)
