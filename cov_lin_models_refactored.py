@@ -532,13 +532,20 @@ def make_simulations_plot(variable_pack, country):
         plt.xlabel("Time [days, starting March 1st, 2020]")
         plt.ylabel("Cumulative no. of deaths and reported and simulated cases")
         plt.grid()
-        plt.annotate("Pubs shut", xy=(20.7, 0.5), color='red')
-        plt.annotate("London: 2000 cases", xy=(20.5, np.log(y0) - 0.5),
+        plt.annotate("Pubs", xy=(20.5, 0.9), color='red')
+        plt.annotate("shut", xy=(20.5, 0.6), color='red')
+        plt.annotate("Lockdown", xy=(23.5, 3.3), color='red')
+        plt.annotate("London:", xy=(20.5, np.log(y0) - 0.25),
+                     color='red', fontsize=8)
+        plt.annotate("2000", xy=(20.5, np.log(y0) - 0.5),
+                     color='red', fontsize=8)
+        plt.annotate("London: 2872", xy=(23.5, np.log(y0)),
                      color='red', fontsize=8)
         plt.legend(loc="lower right", fontsize=9)
         plt.text(1., y_data[-1] + 0.3, plot_text, fontsize=8, color='r')
         plt.text(1., y_data[-1] - 2.1, plot_text_d, fontsize=8, color='b')
         plt.axvline(20, color="red")
+        plt.axvline(23, color="red")
         plt.suptitle("COVID-19 in {} starting March 1, 2020 spun up 10 days\n".format(country) + \
                      "Worst case: March 21 rates b=0.25/DT=2.8d (R=0.99) and m=0.37/DT=1.9d (R=0.97)",
                      fontsize=10)
