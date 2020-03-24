@@ -224,7 +224,6 @@ def make_evolution_plot(variable_pack, country):
     plt.legend(loc="lower left")
     plt.yticks(last_tick, [np.int(y01) for y01 in last_tick_real])
     plt.tick_params(axis="y", labelsize=8)
-    print(plot_name)
     plt.savefig(os.path.join("country_plots", plot_name))
     plt.close()
 
@@ -667,27 +666,37 @@ def _get_daily_countries_data(date, country, region):
             if region:
                 cidx = 0
             idx_pack = [2, 3, 4, 5]
+            (exp_dates,
+             count_cases,
+             count_deaths,
+             count_rec) = _get_extracted(data_read, country, idx_pack, cidx)
+            country_data = ',' + ','.join([country, exp_dates,
+                                           str(count_cases),
+                                           str(count_deaths), str(count_rec)])
+            if region:
+                country_data = ','.join([country, "REGION",exp_dates,
+                                         str(count_cases),
+                                         str(count_deaths), str(count_rec)]) 
         else:
             # geography index in file
             cidx = 3
             if region:
                 cidx = 2
             idx_pack = [4, 7, 8, 9]
-        (exp_dates, 
-         count_cases, 
-         count_deaths, 
-         count_rec) = _get_extracted(data_read, country, idx_pack, cidx)
+            (exp_dates, 
+             count_cases, 
+             count_deaths, 
+             count_rec) = _get_extracted(data_read, country, idx_pack, cidx)
+            country_data = ',,,' + ','.join([country, exp_dates, "c1", "c2",
+                                             str(count_cases),
+                                             str(count_deaths), str(count_rec)])
+            if region:
+                country_data = ',,' + ','.join([country, "REGION",exp_dates,
+                                                "c1", "c2",
+                                                str(count_cases),
+                                                str(count_deaths), str(count_rec)])
         csv_file.close()
         os.remove(fullpath_file)
-
-    # keeping simplified data format equivalent to JHU data format from
-    # before March 23: ,sep/state,country,date,cases,deaths
-    country_data = ',' + ','.join([country, exp_dates, str(count_cases),
-                                   str(count_deaths), str(count_rec)])
-    if region:
-        country_data = ','.join([country, "REGION",exp_dates,
-                                 str(count_cases),
-                                 str(count_deaths), str(count_rec)])
 
     # overwrite so to optimize disk use
     with open(fullpath_file, "w") as file:
