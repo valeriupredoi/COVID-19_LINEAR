@@ -41,6 +41,7 @@ SLOWDOWN = {"Belgium": 13,
             "Netherlands": 13,
             "Norway": 14,
             "Poland": 16,
+            "Slovakia": 21,
             "Sweden": 13}
 
 # countries that need their data to be summed;
