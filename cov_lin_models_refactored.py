@@ -42,7 +42,8 @@ SLOWDOWN = {"Belgium": 13,
             "Norway": 14,
             "Poland": 16,
             "Slovakia": 21,
-            "Sweden": 13}
+            "Sweden": 13,
+            "UK": 21}
 
 # countries that need their data to be summed;
 # same for US states
@@ -280,6 +281,7 @@ def plot_countries(datasets, month, country, download):
         x_cases,
         y_cases)
     if d_time_s and R0_s:
+        # compute MEAN doublind time for the combined fast&slow
         d_time = np.mean(np.append(d_time, d_time_s))
         R0 = np.mean(np.append(R0, R0_s))
 
@@ -500,9 +502,9 @@ def make_simulations_plot(variable_pack, country):
         # if slowdown
         if country in SLOWDOWN:
             plt.axvline(SLOWDOWN[country], linewidth=2, color='orange')
-            plt.scatter(x_slow, y_slow, color='g',
+            plt.scatter(x_slow, y_slow, color='darkolivegreen', marker='s',
                         label="Daily Cases Slower")
-            plt.plot(x_slow, poly_x_s, '-g')
+            plt.plot(x_slow, poly_x_s, linestyle='-', color='darkolivegreen')
         plt.scatter((x0, x0 + 10.), (np.log(y0), np.log(y)),
                     color='k', label="Worst Cases Proj")
         plt.scatter((x0, x0 + 10.), (np.log(y0), np.log(y_min)),
@@ -535,7 +537,7 @@ def make_simulations_plot(variable_pack, country):
         plt.grid()
         plt.annotate("Pubs", xy=(20.5, 0.9), color='red')
         plt.annotate("shut", xy=(20.5, 0.6), color='red')
-        plt.annotate("Lockdown", xy=(23.5, 3.3), color='red')
+        plt.annotate("Lockdown", xy=(23.5, 3.6), color='red')
         plt.annotate("London:", xy=(20.5, np.log(y0) - 0.25),
                      color='red', fontsize=8)
         plt.annotate("2000", xy=(20.5, np.log(y0) - 0.5),
@@ -543,8 +545,9 @@ def make_simulations_plot(variable_pack, country):
         plt.annotate("London: 2872", xy=(23.5, np.log(y0)),
                      color='red', fontsize=8)
         plt.legend(loc="lower right", fontsize=9)
-        plt.text(1., y_data[-1] + 0.3, plot_text, fontsize=8, color='r')
-        plt.text(1., y_data[-1] - 2.1, plot_text_d, fontsize=8, color='b')
+        plt.text(1., y_slow[-1] + 0.3, plot_text_s, fontsize=8, color='darkolivegreen')
+        plt.text(1., y_data[-1] - 0.7, plot_text, fontsize=8, color='r')
+        plt.text(1., y_data[-1] - 2.4, plot_text_d, fontsize=8, color='b')
         plt.axvline(20, color="red")
         plt.axvline(23, color="red")
         plt.suptitle("COVID-19 in {} starting March 1, 2020 spun up 10 days\n".format(country) + \
