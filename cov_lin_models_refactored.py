@@ -38,12 +38,17 @@ SLOWDOWN = {"Belgium": 13,
             "Denmark": 13, 
             "Finland": 14,
             "Ireland": 16,
+            "Italy": 21,
             "Netherlands": 13,
             "Norway": 14,
             "Poland": 16,
             "Slovakia": 21,
+            "Spain": 19,
             "Sweden": 13,
             "UK": 21}
+# same for deaths
+SLOWDOWN_DEATHS = {"Italy": 21,
+                   "Spain": 15}
 
 # countries that need their data to be summed;
 # same for US states
@@ -99,9 +104,13 @@ def get_linear_parameters(x, y):
     return poly1d_fn(x), R, y_err, slope, d_time, R0
 
 
-def get_plot_text(slope, country, R, d_time, R0, x, month):
+def get_plot_text(slope, country, R, d_time, R0, x,
+                  month, deaths_label=False):
     """Set plot title, subtitle, text."""
-    plot_text = "Daily Cases:" + "\n" + \
+    header = "Daily Cases:"
+    if deaths_label:
+        header = "Daily Deaths (slower):"
+    plot_text = header + "\n" + \
                 "Date: %s-%s-2020" % (str(int(x[-1])), month) + "\n" + \
                 "Line fit $N=Ce^{bt}$ with rate $b=$%.2f" % slope + "\n" + \
                 "Coefficient of determination R=%.3f" % R + "\n" + \
@@ -150,9 +159,12 @@ def load_daily_deaths_history():
     return list(np.loadtxt("country_data/UK_deaths_history", dtype='float'))
 
 
-def _compute_slowdown(x_cases, y_cases, country, month):
+def _compute_slowdown(x_cases, y_cases, country, month, deaths=False):
     """Get numbers for slowdown phase."""
-    slowdown_index = x_cases.index(SLOWDOWN[country])
+    if not deaths:
+        slowdown_index = x_cases.index(SLOWDOWN[country])
+    else:
+        slowdown_index = x_cases.index(SLOWDOWN_DEATHS[country])
     y_slow = y_cases[slowdown_index:]
     x_slow = x_cases[slowdown_index:]
     x_cases = x_cases[0:slowdown_index]
@@ -165,19 +177,26 @@ def _compute_slowdown(x_cases, y_cases, country, month):
     plot_text_s, plot_name_s = get_plot_text(slope_s, country,
                                              R_s, d_time_s, R0_s,
                                              x_slow,
-                                             month)
+                                             month,
+                                             deaths_label=deaths)
     return (x_cases, y_cases, x_slow, y_slow,
         poly_x_s, R_s, y_err_s, slope_s, d_time_s, R0_s,
         plot_text_s, plot_name_s)
 
 
-def make_evolution_plot(variable_pack, country):
+def make_evolution_plot(variable_pack, country, slowdown_deaths=None):
     """Make the exponential evolution plot."""
     # unpack variables
     (x_cases, y_cases, x_slow, y_slow, cases, deaths,
      x_deaths, deaths, y_deaths, poly_x, poly_x_s,
      poly_x_d, y_err, y_err_d, plot_text, plot_text_s,
      plot_text_d, plot_name, slope_d, slope) = variable_pack
+
+    if slowdown_deaths is not None:
+        (x_deaths, y_deaths, x_deaths_slow, y_deaths_slow,
+         poly_x_d_s, R_d_s, y_err_d_s,
+         slope_d_s, d_time_d_s, R0_d_s,
+         plot_text_d_s, plot_name_d_s) = slowdown_deaths
 
     # repack some data
     y_all_real = []
@@ -204,6 +223,13 @@ def make_evolution_plot(variable_pack, country):
         plt.scatter(x_deaths, y_deaths, marker='v',
                     color='b', label="Daily Deaths")
         plt.plot(x_deaths, poly_x_d, '--b')
+        if country in SLOWDOWN_DEATHS:
+            plt.scatter(x_deaths_slow, y_deaths_slow, marker='v',
+                        color='g', label="Daily Deaths Slower")
+            plt.plot(x_deaths_slow, poly_x_d_s, '--g')
+            plt.errorbar(x_deaths_slow, y_deaths_slow, yerr=y_err_d_s,
+                         fmt='v', color='g')
+
     plt.errorbar(x_cases, y_cases, yerr=y_err, fmt='o', color='r')
     if deaths:
         plt.errorbar(x_deaths, y_deaths, yerr=y_err_d, fmt='v', color='b')
@@ -219,10 +245,16 @@ def make_evolution_plot(variable_pack, country):
         plt.text(1., y_slow[-1] - 1.5, plot_text, fontsize=8, color='r')
         if deaths:
             plt.text(1., y_slow[-1] - 3.1, plot_text_d, fontsize=8, color='b')
+            if country in SLOWDOWN_DEATHS:
+                plt.text(1., y_deaths_slow[-1] - 3.7, plot_text_d_s, fontsize=8,
+                         color='g')
     else:
         plt.text(1., y_cases[-1] + 0.3, plot_text, fontsize=8, color='r')
         if deaths:
             plt.text(1., y_cases[-1] - 2.1, plot_text_d, fontsize=8, color='b')
+            if country in SLOWDOWN_DEATHS:
+                plt.text(1., y_deaths_slow[-1] - 3.3, plot_text_d_s, fontsize=8,
+                         color='g')
     plt.legend(loc="lower left")
     plt.yticks(last_tick, [np.int(y01) for y01 in last_tick_real])
     plt.tick_params(axis="y", labelsize=8)
@@ -274,7 +306,8 @@ def plot_countries(datasets, month, country, download):
         (x_cases, y_cases, x_slow, y_slow,
         poly_x_s, R_s, y_err_s, slope_s, d_time_s, R0_s,
         plot_text_s, plot_name_s) = _compute_slowdown(x_cases, y_cases,
-                                                      country, month)
+                                                      country, month,
+                                                      deaths=False)
 
     # get linear params
     poly_x, R, y_err, slope, d_time, R0 = get_linear_parameters(
@@ -302,6 +335,14 @@ def plot_countries(datasets, month, country, download):
     poly_x_d = R_d = y_err_d = slope_d = \
         d_time_d = R0_d = plot_text_d = None
     if deaths:
+        if country in SLOWDOWN_DEATHS:
+            (x_deaths, y_deaths, x_deaths_slow, y_deaths_slow,
+             poly_x_d_s, R_d_s, y_err_d_s, slope_d_s, d_time_d_s, R0_d_s,
+             plot_text_d_s, plot_name_d_s) = _compute_slowdown(x_deaths,
+                                                               y_deaths,
+                                                               country,
+                                                               month,
+                                                               deaths=True)
         (poly_x_d, R_d, y_err_d,
          slope_d, d_time_d, R0_d) = get_linear_parameters(
             x_deaths,
@@ -322,10 +363,17 @@ def plot_countries(datasets, month, country, download):
         y_err, y_err_d, plot_text, plot_text_s,
         plot_text_d, plot_name, slope_d, slope
     )
-
-    make_evolution_plot(variable_pack, country)
+    if country not in SLOWDOWN_DEATHS:
+        make_evolution_plot(variable_pack, country)
+    else:
+        slowdown_deaths = (x_deaths, y_deaths, x_deaths_slow, y_deaths_slow,
+                           poly_x_d_s, R_d_s, y_err_d_s,
+                           slope_d_s, d_time_d_s, R0_d_s,
+                           plot_text_d_s, plot_name_d_s)
+        make_evolution_plot(variable_pack, country, slowdown_deaths)
     if deaths and len(deaths) > 3.0:
-        make_simulations_plot(variable_pack, country)
+        if country not in SLOWDOWN_DEATHS:
+            make_simulations_plot(variable_pack, country)
 
     return d_time, R0
 
