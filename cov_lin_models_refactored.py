@@ -37,6 +37,7 @@ JOHN_HOPKINS = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master
 SLOWDOWN = {"Belgium": 13,
             "Denmark": 13, 
             "Finland": 14,
+            "France": 16,
             "Germany": 20,
             "Ireland": 16,
             "Italy": 21,
@@ -48,7 +49,8 @@ SLOWDOWN = {"Belgium": 13,
             "Sweden": 13,
             "UK": 21}
 # same for deaths
-SLOWDOWN_DEATHS = {"Germany": 20,
+SLOWDOWN_DEATHS = {"France": 20,
+                   "Germany": 20,
                    "Italy": 21,
                    "Spain": 15,
                    "UK": 21}
