@@ -37,6 +37,7 @@ JOHN_HOPKINS = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master
 SLOWDOWN = {"Belgium": 13,
             "Denmark": 13, 
             "Finland": 14,
+            "Germany": 20,
             "Ireland": 16,
             "Italy": 21,
             "Netherlands": 13,
@@ -47,8 +48,10 @@ SLOWDOWN = {"Belgium": 13,
             "Sweden": 13,
             "UK": 21}
 # same for deaths
-SLOWDOWN_DEATHS = {"Italy": 21,
-                   "Spain": 15}
+SLOWDOWN_DEATHS = {"Germany": 20,
+                   "Italy": 21,
+                   "Spain": 15,
+                   "UK": 21}
 
 # countries that need their data to be summed;
 # same for US states
@@ -255,7 +258,7 @@ def make_evolution_plot(variable_pack, country, slowdown_deaths=None):
             if country in SLOWDOWN_DEATHS:
                 plt.text(1., y_deaths_slow[-1] - 3.3, plot_text_d_s, fontsize=8,
                          color='g')
-    plt.legend(loc="lower left")
+    plt.legend(loc="lower left", fontsize=7)
     plt.yticks(last_tick, [np.int(y01) for y01 in last_tick_real])
     plt.tick_params(axis="y", labelsize=8)
     plt.savefig(os.path.join("country_plots", plot_name))
@@ -376,15 +379,16 @@ def plot_countries(datasets, month, country, download):
     )
     if country not in SLOWDOWN_DEATHS:
         make_evolution_plot(variable_pack, country)
+        if deaths and len(deaths) > 3.0:
+            make_simulations_plot(variable_pack, country)
     else:
         slowdown_deaths = (x_deaths, y_deaths, x_deaths_slow, y_deaths_slow,
                            poly_x_d_s, R_d_s, y_err_d_s,
                            slope_d_s, d_time_d_s, R0_d_s,
                            plot_text_d_s, plot_name_d_s)
         make_evolution_plot(variable_pack, country, slowdown_deaths)
-    if deaths and len(deaths) > 3.0:
-        if country not in SLOWDOWN_DEATHS:
-            make_simulations_plot(variable_pack, country)
+        if deaths and len(deaths) > 3.0:
+            make_simulations_plot(variable_pack, country, slowdown_deaths)
 
     return Pdt, Pr0, [pr - 0.5 for pr in Pr]
 
@@ -423,12 +427,22 @@ def _get_official_uk_data(download):
         y_deaths_real, avg_mort, stdev_mort)
 
 
-def make_simulations_plot(variable_pack, country):
+def make_simulations_plot(variable_pack, country, slowdown_deaths=None):
     # get variable pack
     (x_data, y_data, x_slow, y_slow, y_data_real, y_deaths_real,
      x_deaths, y_deaths_real, y_deaths, poly_x, poly_x_s,
      poly_x_d, y_err, y_err_d, plot_text, plot_text_s,
      plot_text_d, plot_name, slope_d, slope) = variable_pack
+
+    if slowdown_deaths is not None:
+        (x_deaths, y_deaths, x_deaths_slow, y_deaths_slow,
+         poly_x_d_s, R_d_s, y_err_d_s,
+         slope_d_s, d_time_d_s, R0_d_s,
+         plot_text_d_s, plot_name_d_s) = slowdown_deaths
+        x_deaths = np.append(x_deaths, x_deaths_slow)
+        y_deaths = np.append(y_deaths, y_deaths_slow)
+        poly_x_d = np.append(poly_x_d, poly_x_d_s)
+        y_err_d = np.append(y_err_d, y_err_d_s)
 
     # extract last points for dsiplay
     curr_case = y_data_real[-1]
@@ -460,17 +474,15 @@ def make_simulations_plot(variable_pack, country):
     sim_y_4 = list(np.log(sim_y_4_real))
 
     # forecast the cases in 10 days
-    sim_y_0_f = sim_y_0_real[-1] * np.exp(10. * slope_d)
-    sim_y_1_f = sim_y_1_real[-1] * np.exp(10. * slope_d)
-    sim_y_2_f = sim_y_2_real[-1] * np.exp(10. * slope_d)
-    sim_y_3_f = sim_y_3_real[-1] * np.exp(10. * slope_d)
-    sim_y_4_f = sim_y_4_real[-1] * np.exp(10. * slope_d)
-
-    # estimate time for 65M total infection
-    full_time_0 = (np.log(65 * 1e6) - np.log(sim_y_0_real[-1])) / slope_d
-    full_time_1 = (np.log(65 * 1e6) - np.log(sim_y_1_real[-1])) / slope_d
-    full_time_2 = (np.log(65 * 1e6) - np.log(sim_y_2_real[-1])) / slope_d
-    full_time_3 = (np.log(65 * 1e6) - np.log(sim_y_3_real[-1])) / slope_d
+    if slowdown_deaths is not None:
+        slope_sim = slope_d_s
+    else:
+        slope_sim = slope_d
+    sim_y_0_f = sim_y_0_real[-1] * np.exp(10. * slope_sim)
+    sim_y_1_f = sim_y_1_real[-1] * np.exp(10. * slope_sim)
+    sim_y_2_f = sim_y_2_real[-1] * np.exp(10. * slope_sim)
+    sim_y_3_f = sim_y_3_real[-1] * np.exp(10. * slope_sim)
+    sim_y_4_f = sim_y_4_real[-1] * np.exp(10. * slope_sim)
 
     y_all_real = []
     y_all_real.extend(y_deaths_real)
