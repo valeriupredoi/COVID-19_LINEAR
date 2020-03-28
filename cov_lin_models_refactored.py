@@ -297,10 +297,11 @@ def plot_countries(datasets, month, country, download):
     y_deaths = np.log(deaths)
 
     # statistics: cases: account for slowdown
-    d_time_s = []
-    R0_s = []
-    x_slow = y_slow = poly_x_s = R_s = y_err_s = slope_s = \
-        plot_text_s = plot_name_s = None
+    Pdt = []
+    Pr0 = []
+    Pr = []
+    x_slow = y_slow = poly_x_s = y_err_s = slope_s = \
+        d_time_s = R0_s = R_s = plot_text_s = plot_name_s = None
 
     if country in SLOWDOWN:
         (x_cases, y_cases, x_slow, y_slow,
@@ -308,11 +309,21 @@ def plot_countries(datasets, month, country, download):
         plot_text_s, plot_name_s) = _compute_slowdown(x_cases, y_cases,
                                                       country, month,
                                                       deaths=False)
+        # get data for plotting
+        Pdt.append(d_time_s)
+        Pr0.append(R0_s)
+        Pr.append(R_s)
 
     # get linear params
     poly_x, R, y_err, slope, d_time, R0 = get_linear_parameters(
         x_cases,
         y_cases)
+
+    # get data for plotting
+    Pdt.append(d_time)
+    Pr0.append(R0)
+    Pr.append(R)
+
     if d_time_s and R0_s:
         # compute MEAN doublind time for the combined fast&slow
         d_time = np.mean(np.append(d_time, d_time_s))
@@ -375,7 +386,7 @@ def plot_countries(datasets, month, country, download):
         if country not in SLOWDOWN_DEATHS:
             make_simulations_plot(variable_pack, country)
 
-    return d_time, R0
+    return Pdt, Pr0, [pr - 0.5 for pr in Pr]
 
 
 def _get_official_uk_data(download):
@@ -800,21 +811,23 @@ def _read_write_parameter(filename, parameter, stddev_parameter):
             file.write(str(parameter) + ' ' + str(stddev_parameter) + "\n")
 
 
-def plot_parameters(doubling_time, basic_reproductive):
+def plot_parameters(doubling_time, basic_reproductive,
+                    lin_fit_quality, no_countries):
     """Plot simple viral infection parameters."""
-    plt.hist(doubling_time, bins=len(doubling_time), histtype='step',
-             normed=False, cumulative=False)
+    plt.hist(doubling_time, bins=20, color='darkolivegreen',
+             normed=True, cumulative=False, weights=lin_fit_quality)
     plt.grid()
     plt.xlabel("Cases doubling time [days]")
     plt.ylabel("Number")
     mean_dt = np.mean(doubling_time)
     std_dt = np.std(doubling_time)
     plt.axvline(np.mean(mean_dt), color='red', linestyle='--')
-    header = "Cases doubling time [days] for %i countries\n" % len(doubling_time)
-    mean_text = "%.1f+/-%.1f (standard deviation)" % (mean_dt, std_dt)
+    header = "Cases doubling time [days] for %i countries\n" % no_countries
+    mean_text = "%.1f days (+/-%.1f days, standard deviation)" % (mean_dt, std_dt)
     title = header + \
             "Vertical line: mean doubling time: " + \
-            mean_text
+            mean_text + '\n' + \
+            "weighted by quality of fit $f=R^2-0.5$; incl.some US states"
     plt.title(title, fontsize=10)
     plt.savefig(os.path.join("country_plots", "Histogram_Doubling_Time.png"))
     plt.close()
@@ -823,28 +836,36 @@ def plot_parameters(doubling_time, basic_reproductive):
     _read_write_parameter("country_data/mean_doubling_time", mean_dt, std_dt)
 
     R_0 = [c * 10. for c in basic_reproductive]
-    plt.hist(R_0, bins=len(R_0), histtype='step',
-             normed=False, cumulative=False)
+    plt.hist(R_0, bins=20, color='darkolivegreen',
+             normed=True, cumulative=False, weights=lin_fit_quality)
     plt.grid()
     plt.xlabel("Basic Reproductive Number")
     plt.ylabel("Number")
     mean_r0 = np.mean(R_0)
     std_r0 = np.std(R_0)
     plt.axvline(mean_r0, color='red', linestyle='--')
-    header = "Basic reproductive number $R_0$ for %i countries\n" % len(R_0)
+    header = "Basic reproductive number $R_0$ for %i countries\n" % no_countries
     mean_title = \
-        "Vertical line: mean number: %.1f+/-%.1f (standard deviation)\n" % (mean_r0,
-                                                                          std_r0)
+        "%.1f (+/-%.1f, standard deviation)\n" % (mean_r0, std_r0)
     title = header + \
-            "Vertical line: mean number: %.1f+/-%.1f (standard deviation) " + \
+            "Vertical line: mean $R_0$: " + \
             mean_title + \
-            "(assuming an avg infectious phase 10 days)"
+            "Avg infectious phase 10 days; weighted by quality of fit $f=R^2-0.5$; incl.some US states"
     plt.title(title, fontsize=8)
     plt.savefig(os.path.join("country_plots",
                              "Histogram_Basic_Reproductive_Number.png"))
     # append historical data
     _read_write_parameter("country_data/basic_reproductive_number",
                           mean_r0, std_r0)
+
+    # record data at fixed 10-day intervals
+    # TODO uncomment every 10 days
+    with open("country_data/DT_27-03-2020", "w") as file:
+        for dt in doubling_time:
+            file.write(str(dt) + "\n")
+    with open("country_data/R0_27-03-2020", "w") as file:
+        for r0 in R_0:
+            file.write(str(r0) + "\n")
 
     plt.close()
 
@@ -899,25 +920,31 @@ def main():
     # plot other countries
     double_time = []
     basic_rep = []
+    lin_fit_quality = []
     for country in countries:
         monthly_numbers = _get_monthly_countries_data(country,
                                                       args.month,
                                                       region=False)
-        d_time, R0 = plot_countries(monthly_numbers,
-                                    args.month, country, download)
-        double_time.append(d_time)
-        basic_rep.append(R0)
+        d_time, R0, lin_fit = plot_countries(monthly_numbers,
+                                             args.month, country, download)
+        double_time.extend(d_time)
+        basic_rep.extend(R0)
+        lin_fit_quality.extend(lin_fit)
     if regions:
         for region in regions:
             COUNTRIES_TO_SUM.append(region)
             monthly_numbers = _get_monthly_countries_data(region,
                                                           args.month,
                                                           region=True)
-            plot_countries(monthly_numbers,
-                           args.month, region, download=False)
+            d_timeR, R0R, lin_fitR = plot_countries(monthly_numbers,
+                                                    args.month, region,
+                                                    download=False)
+            double_time.extend(d_timeR)
+            basic_rep.extend(R0R)
+            lin_fit_quality.extend(lin_fitR)
 
     # plot viral parameters
-    plot_parameters(double_time, basic_rep)
+    plot_parameters(double_time, basic_rep, lin_fit_quality, len(countries))
 
 
 if __name__ == '__main__':
