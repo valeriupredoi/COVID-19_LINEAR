@@ -275,6 +275,13 @@ Requirements:
 
 - `python2.7` or higher (ok with `python3.x`);
 - Package `xlrd` available from PyPi via `pip install xlrd`;
+- Package `scipy`: for an easy installation I recommend using `miniconda/anaconda`;
+  for a `pip` installation on an older architecture and `python2.7` you will have
+  to install the `lapack` and `blas` libraries, a Fortran compiler and `python-dev`:
+  - `sudo apt-get install python-dev`
+  - `sudo apt-get install gfortran`
+  - `sudo apt-get install libblas3 liblapack3 liblapack-dev libblas-dev`
+  - `sudo pip install scipy==0.16`
 
 Command line use:
 
