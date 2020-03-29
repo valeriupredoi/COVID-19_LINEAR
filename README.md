@@ -16,20 +16,16 @@ Table of Contents
 Current results for linear fit for logarithmic data of daily number of cases and daily number of
 deaths per country. Almost every country is undergoing an expoenential infection spread phase,
 `exp(bt)`, characterised by the increase rate `b` (units: 1/day or day-1) and time coordinate `t` (units: day);
-in most cases, the exponential rates `b` are 0.25-0.3 day-1 
-(except recent phases of Scandinavian countries that show a significantly lower rate),
-yieling reported cases doubling times of 2-3 days (again, except the Scandinavian countries that
-show doubling times of order 10 days or more, using recent data).
+in most cases, the exponential rates `b` are 0.25-0.3 day-1 in the first phase, subsequently decreasing
+to values of 0.1-0.2 day-1 after a 7-10 days (except recent phases of Scandinavian countries that show
+a significantly lower rate), yieling reported cases doubling times of 2-3 days, intially, subsequently
+these doubling times increasing to 3-4 days.
 
 The results are affected by poor testing in certain areas and countries,
 and by **driver** regions (like Lombardia in Italy or London in UK, ultimately assigning a lot of
 statistical weight to these parts of the country, given overwheling numbers).
 
 # UK
-
-**TLDR: UK is as of 20 March in exponential spread phase with infected population doubling
-time of about 3 days and a very high mortality, suggesting a combination of biased testing and
-much higher actual infection numbers.**
 
 ## Current reported situation and projections
 
@@ -44,6 +40,36 @@ over 10 days; best-case projection does the same, only using quarantine-like rat
 on March 30: between 1700-9000. Given that on March 21, about 2000 out of the reported 5000 cases were in
 London, the estimate is 40% of the deaths in 10 days time will be in London, meaning anywhere in between 600 and 3600.
 
+## Using a Kolmogorov-Smirnoff test
+
+We can use a Kolmogorov-Smirnoff test (KS) to compare cases and deaths distributions
+between the UK and similar-sized countries in Europe:
+
+cases: KS statistic  |  cases: KS p-value
+:-------------------:|:------------------:
+France: 0.25 | France: 0.30
+Spain: 0.36 | Spain: 0.04
+Italy: 0.57 | Italy: 0.00
+Germany: 0.32 | Germany: 0.09
+
+
+deaths: KS statistic  |  deaths: KS p-value
+:-------------------:|:------------------:
+France: 0.26 | France: 0.44
+Spain: 0.35 | Spain: 0.15
+Italy: 0.58 | Italy: 0.00
+Germany: 0.39 | Germany: 0.10
+
+The KS statistic needs to be small and the p-value high for similarity between distributions,
+so `p-value - KS` is a good metric for evaluation:
+
+![UKkS](country_plots/UK-KS.png)
+
+From the figure above we notice that only France shows significant similarity with UK's reported
+cases and deaths distributions.
+
+## Simulating the actual cases
+
 ![UKS](country_plots/COVID-19_LIN_UK_SIM_CASES.png)
 
 Simulating the actual number of infected individuals based on the number of recorded deaths and the
@@ -52,10 +78,6 @@ can use a set of possible mortality fractions `M` (M is defined as the number of
 actual cases at the time of the infection, assume average desease span of 10 days: from moment of infection
 to moment of death). we compute the simulated number of actual cases deaths x 1/M and shift in time by 10 days,
 then extrapolate via the exponential evolution of deaths to the current date.
-
-Current full population infection time shown in the plot header. This is, by all means, the darkest and most
-brutal scenario, containing a lot of assumptions, but it is, however, statistically plausible. Let's all hope
-not even a tenth of is true.
 
 Spread in the UK: measured cases and deaths  |  Simulated actual cases
 :-------------------------------------------:|:-------------------------:

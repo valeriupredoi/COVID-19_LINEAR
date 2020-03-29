@@ -24,6 +24,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import urllib
 from xlrd import open_workbook
+from scipy import stats
 
 # data stores: governemental data
 UK_DAILY_CASES_DATA = "https://www.arcgis.com/sharing/rest/content/items/e5fd11150d274bebaaf8fe2a7a2bda11/data"
@@ -393,7 +394,7 @@ def plot_countries(datasets, month, country, download):
         if deaths and len(deaths) > 3.0:
             make_simulations_plot(variable_pack, country, slowdown_deaths)
 
-    return Pdt, Pr0, [pr - 0.5 for pr in Pr]
+    return Pdt, Pr0, [pr - 0.5 for pr in Pr], (np.array(cases), np.array(deaths))
 
 
 def _get_official_uk_data(download):
@@ -896,6 +897,75 @@ def _get_geography(arg):
     return geographies
 
 
+def ks_test(nums_cases, nums_deaths):
+    """Run a simple Kolmogorov-Sminroff test on populations."""
+    # first compare UK to a few representative countries
+    uk_france_cases = stats.ks_2samp(nums_cases["UK"],
+                                     nums_cases["France"])
+    uk_france_deaths = stats.ks_2samp(nums_deaths["UK"],
+                                      nums_deaths["France"])
+    uk_spain_cases = stats.ks_2samp(nums_cases["UK"],
+                                    nums_cases["Spain"])
+    uk_spain_deaths = stats.ks_2samp(nums_deaths["UK"],
+                                     nums_deaths["Spain"])
+    uk_italy_cases = stats.ks_2samp(nums_cases["UK"],
+                                    nums_cases["Italy"])
+    uk_italy_deaths = stats.ks_2samp(nums_deaths["UK"],
+                                     nums_deaths["Italy"])
+    uk_germany_cases = stats.ks_2samp(nums_cases["UK"],
+                                      nums_cases["Germany"])
+    uk_germany_deaths = stats.ks_2samp(nums_deaths["UK"],
+                                       nums_deaths["Germany"])
+    print("KS Statistic Results comparing UK to other European Countries")
+    print("=============================================================")
+    print("\n")
+    print("cases: KS statistic  |  cases: KS p-value")
+    print(":-------------------:|:------------------:")
+    print("France: %.2f | France: %.2f" % (uk_france_cases[0], uk_france_cases[1]))
+    print("Spain: %.2f | Spain: %.2f" % (uk_spain_cases[0], uk_spain_cases[1]))
+    print("Italy: %.2f | Italy: %.2f" % (uk_italy_cases[0], uk_italy_cases[1]))
+    print("Germany: %.2f | Germany: %.2f" % (uk_germany_cases[0], uk_germany_cases[1]))
+    print("\n")
+    print("deaths: KS statistic  |  deaths: KS p-value")
+    print(":-------------------:|:------------------:")
+    print("France: %.2f | France: %.2f" % (uk_france_deaths[0], uk_france_deaths[1]))
+    print("Spain: %.2f | Spain: %.2f" % (uk_spain_deaths[0], uk_spain_deaths[1]))
+    print("Italy: %.2f | Italy: %.2f" % (uk_italy_deaths[0], uk_italy_deaths[1]))
+    print("Germany: %.2f | Germany: %.2f" % (uk_germany_deaths[0], uk_germany_deaths[1]))
+    print("\n")
+
+    # get ad hoc metrics
+    uk_france_metric = uk_france_cases[1] - uk_france_cases[0]
+    uk_france_deaths_metric = uk_france_deaths[1] - uk_france_deaths[0]
+    uk_spain_metric = uk_spain_cases[1] - uk_spain_cases[0]
+    uk_spain_deaths_metric = uk_spain_deaths[1] - uk_spain_deaths[0]
+    uk_italy_metric = uk_italy_cases[1] - uk_italy_cases[0]
+    uk_italy_deaths_metric = uk_italy_deaths[1] - uk_italy_deaths[0]
+    uk_germany_metric = uk_germany_cases[1] - uk_germany_cases[0]
+    uk_germany_deaths_metric = uk_germany_deaths[1] - uk_germany_deaths[0]
+
+    # plot the metrics
+    labels = ['France', 'Spain', 'Italy', 'Germany']
+    men_means = [uk_france_metric, uk_spain_metric, uk_italy_metric,
+                 uk_germany_metric]
+    women_means = [uk_france_deaths_metric, uk_spain_deaths_metric,
+                   uk_italy_deaths_metric, uk_germany_deaths_metric]
+    x = np.arange(len(labels))  # the label locations
+    width = 0.35  # the width of the bars
+    fig, ax = plt.subplots()
+    rects1 = ax.bar(x - width/2, men_means, width, color='red', label='Cases Score')
+    rects2 = ax.bar(x + width/2, women_means, width, label='Deaths Score')
+    # Add some text for labels, title and custom x-axis tick labels, etc.
+    ax.set_ylabel('KS Scores')
+    ax.set_title('Kolmogorov-Smirnoff Scores by no. of cases and no. of deaths')
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels)
+    ax.grid()
+    ax.legend()
+    plt.savefig("country_plots/UK-KS.png")
+    plt.close()
+
+
 def main():
     """Execute the plotter."""
     # parse command line args
@@ -936,30 +1006,36 @@ def main():
     double_time = []
     basic_rep = []
     lin_fit_quality = []
+    nums_cases = {}
+    nums_deaths = {}
     for country in countries:
         monthly_numbers = _get_monthly_countries_data(country,
                                                       args.month,
                                                       region=False)
-        d_time, R0, lin_fit = plot_countries(monthly_numbers,
-                                             args.month, country, download)
+        d_time, R0, lin_fit, nums = plot_countries(monthly_numbers,
+                                                   args.month, country,
+                                                   download)
         double_time.extend(d_time)
         basic_rep.extend(R0)
         lin_fit_quality.extend(lin_fit)
+        nums_cases[country] = nums[0]
+        nums_deaths[country] = nums[1]
     if regions:
         for region in regions:
             COUNTRIES_TO_SUM.append(region)
             monthly_numbers = _get_monthly_countries_data(region,
                                                           args.month,
                                                           region=True)
-            d_timeR, R0R, lin_fitR = plot_countries(monthly_numbers,
-                                                    args.month, region,
-                                                    download=False)
+            d_timeR, R0R, lin_fitR, nums = plot_countries(monthly_numbers,
+                                                          args.month, region,
+                                                          download=False)
             double_time.extend(d_timeR)
             basic_rep.extend(R0R)
             lin_fit_quality.extend(lin_fitR)
 
     # plot viral parameters
     plot_parameters(double_time, basic_rep, lin_fit_quality, len(countries))
+    ks_test(nums_cases, nums_deaths)
 
 
 if __name__ == '__main__':
