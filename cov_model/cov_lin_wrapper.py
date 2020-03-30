@@ -33,11 +33,10 @@ from projections import uk
 # same for US states
 COUNTRIES_TO_SUM = ["US", "France", "Denmark",
                     "Netherlands"]
-SLOWDOWN = linear.SLOWDOWN
-SLOWDOWN_DEATHS = linear.SLOWDOWN_DEATHS
 
-
-def make_evolution_plot(variable_pack, country, slowdown_deaths=None):
+def make_evolution_plot(variable_pack, country,
+                        SLOWDOWN, SLOWDOWN_DEATHS,
+                        slowdown_deaths=None):
     """Make the exponential evolution plot."""
     # unpack variables
     (x_cases, y_cases, x_slow, y_slow, cases, deaths,
@@ -123,6 +122,8 @@ def plot_countries(datasets, month, country, download):
     deaths = [d for d in deaths if d > 0.]
     recs = [float(c) for c in datasets[2] if c != 'NN']
 
+    SLOWDOWN, SLOWDOWN_DEATHS = linear.get_slowdown(month)
+
     time_fmt = "%Y-%m-%dT%H:%M:%S"
     actual_days = [
         datetime.strptime(c, time_fmt).day
@@ -143,7 +144,7 @@ def plot_countries(datasets, month, country, download):
     if country == "UK":
         (x_cases, cases, x_deaths,
         deaths, avg_mort,
-        stdev_mort) = get_official_uk_data(download)
+        stdev_mort) = get_official_uk_data(month, download)
 
     # log data
     y_cases = np.log(cases)
@@ -228,24 +229,29 @@ def plot_countries(datasets, month, country, download):
         plot_text_d, plot_name, slope_d, slope
     )
     if country not in SLOWDOWN_DEATHS:
-        make_evolution_plot(variable_pack, country)
+        make_evolution_plot(variable_pack, country, SLOWDOWN, SLOWDOWN_DEATHS)
         if deaths and len(deaths) > 3.0:
-            make_simulations_plot(variable_pack, country)
+            make_simulations_plot(variable_pack, country,
+                                  SLOWDOWN, SLOWDOWN_DEATHS)
     else:
         slowdown_deaths = (x_deaths, y_deaths, x_deaths_slow, y_deaths_slow,
                            poly_x_d_s, R_d_s, y_err_d_s,
                            slope_d_s, d_time_d_s, R0_d_s,
                            plot_text_d_s, plot_name_d_s)
-        make_evolution_plot(variable_pack, country, slowdown_deaths)
+        make_evolution_plot(variable_pack, country, SLOWDOWN,
+                            SLOWDOWN_DEATHS, slowdown_deaths)
         if deaths and len(deaths) > 3.0:
-            make_simulations_plot(variable_pack, country, slowdown_deaths)
+            make_simulations_plot(variable_pack, country, SLOWDOWN,
+                                  SLOWDOWN_DEATHS, slowdown_deaths)
 
     return Pdt, Pr0, [pr - 0.5 for pr in Pr], (np.array(cases), np.array(deaths))
 
 
 
 
-def make_simulations_plot(variable_pack, country, slowdown_deaths=None):
+def make_simulations_plot(variable_pack, country,
+                          SLOWDOWN, SLOWDOWN_DEATHS,
+                          slowdown_deaths=None):
     # get variable pack
     (x_data, y_data, x_slow, y_slow, y_data_real, y_deaths_real,
      x_deaths, y_deaths_real, y_deaths, poly_x, poly_x_s,
