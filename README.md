@@ -75,8 +75,8 @@ cases and deaths distributions.
 Simulating the actual number of infected individuals based on the number of recorded deaths and the
 exponential evolution of this number: numbers of deaths evolve exponentially with the rate `m` and we
 can use a set of possible mortality fractions `M` (M is defined as the number of deaths / number of
-actual cases at the time of the infection, assume average desease span of 10 days: from moment of infection
-to moment of death). we compute the simulated number of actual cases deaths x 1/M and shift in time by 10 days,
+actual cases at the time of the infection, assume average desease span of 20 days: from moment of infection
+to moment of death). we compute the simulated number of actual cases deaths x 1/M and shift in time by 20 days,
 then extrapolate via the exponential evolution of deaths to the current date.
 
 Spread in the UK: measured cases and deaths  |  Simulated actual cases

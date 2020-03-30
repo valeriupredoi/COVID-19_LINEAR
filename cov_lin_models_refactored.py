@@ -478,15 +478,16 @@ def make_simulations_plot(variable_pack, country, slowdown_deaths=None):
     sim_y_4 = list(np.log(sim_y_4_real))
 
     # forecast the cases in 10 days
+    # correction: 20 days is probably more realistic
     if slowdown_deaths is not None:
         slope_sim = slope_d_s
     else:
         slope_sim = slope_d
-    sim_y_0_f = sim_y_0_real[-1] * np.exp(10. * slope_sim)
-    sim_y_1_f = sim_y_1_real[-1] * np.exp(10. * slope_sim)
-    sim_y_2_f = sim_y_2_real[-1] * np.exp(10. * slope_sim)
-    sim_y_3_f = sim_y_3_real[-1] * np.exp(10. * slope_sim)
-    sim_y_4_f = sim_y_4_real[-1] * np.exp(10. * slope_sim)
+    sim_y_0_f = sim_y_0_real[-1] * np.exp(20. * slope_sim)
+    sim_y_1_f = sim_y_1_real[-1] * np.exp(20. * slope_sim)
+    sim_y_2_f = sim_y_2_real[-1] * np.exp(20. * slope_sim)
+    sim_y_3_f = sim_y_3_real[-1] * np.exp(20. * slope_sim)
+    sim_y_4_f = sim_y_4_real[-1] * np.exp(20. * slope_sim)
 
     y_all_real = []
     y_all_real.extend(y_deaths_real)
@@ -513,19 +514,19 @@ def make_simulations_plot(variable_pack, country, slowdown_deaths=None):
     plt.scatter(x_deaths[-1], np.log(sim_y_2_f), marker='x', color='r')
     plt.scatter(x_deaths[-1], np.log(sim_y_3_f), marker='x', color='c')
     plt.scatter(x_deaths[-1], np.log(sim_y_4_f), marker='x', color='m')
-    plt.plot([list(np.array(x_deaths) - 10.)[-1], x_deaths[-1]], [sim_y_0[-1], np.log(sim_y_0_f)], '--b')
-    plt.plot([list(np.array(x_deaths) - 10.)[-1], x_deaths[-1]], [sim_y_1[-1], np.log(sim_y_1_f)], '--g')
-    plt.plot([list(np.array(x_deaths) - 10.)[-1], x_deaths[-1]], [sim_y_2[-1], np.log(sim_y_2_f)], '--r')
-    plt.plot([list(np.array(x_deaths) - 10.)[-1], x_deaths[-1]], [sim_y_3[-1], np.log(sim_y_3_f)], '--c')
-    plt.plot([list(np.array(x_deaths) - 10.)[-1], x_deaths[-1]], [sim_y_4[-1], np.log(sim_y_4_f)], '--m')
+    plt.plot([list(np.array(x_deaths) - 20.)[-1], x_deaths[-1]], [sim_y_0[-1], np.log(sim_y_0_f)], '--b')
+    plt.plot([list(np.array(x_deaths) - 20.)[-1], x_deaths[-1]], [sim_y_1[-1], np.log(sim_y_1_f)], '--g')
+    plt.plot([list(np.array(x_deaths) - 20.)[-1], x_deaths[-1]], [sim_y_2[-1], np.log(sim_y_2_f)], '--r')
+    plt.plot([list(np.array(x_deaths) - 20.)[-1], x_deaths[-1]], [sim_y_3[-1], np.log(sim_y_3_f)], '--c')
+    plt.plot([list(np.array(x_deaths) - 20.)[-1], x_deaths[-1]], [sim_y_4[-1], np.log(sim_y_4_f)], '--m')
     plt.plot(x_deaths, poly_x_d, '--b')
     plt.errorbar(x_data, y_data, yerr=y_err, fmt='o', color='r')
     plt.errorbar(x_deaths, y_deaths, yerr=y_err_d, fmt='v', color='b')
-    plt.plot(np.array(x_deaths) - 10., sim_y_0, label="M=0.5%")
-    plt.plot(np.array(x_deaths) - 10., sim_y_1, label="M=1%")
-    plt.plot(np.array(x_deaths) - 10., sim_y_2, label="M=2%")
-    plt.plot(np.array(x_deaths) - 10., sim_y_3, label="M=3%")
-    plt.plot(np.array(x_deaths) - 10., sim_y_4, label="M=4%")
+    plt.plot(np.array(x_deaths) - 20., sim_y_0, label="M=0.5%")
+    plt.plot(np.array(x_deaths) - 20., sim_y_1, label="M=1%")
+    plt.plot(np.array(x_deaths) - 20., sim_y_2, label="M=2%")
+    plt.plot(np.array(x_deaths) - 20., sim_y_3, label="M=3%")
+    plt.plot(np.array(x_deaths) - 20., sim_y_4, label="M=4%")
     plt.grid()
     plt.xlim(0., x_data[-1] + 1.5)
     plt.ylim(0., np.log(sim_y_0_f) + 3.)
@@ -546,15 +547,15 @@ def make_simulations_plot(variable_pack, country, slowdown_deaths=None):
     last_tick_real.append(sim_y_4_f)
     plt.yticks(last_tick, [np.int(y01) for y01 in last_tick_real])
     plt.tick_params(axis="y", labelsize=8)
-    plt.annotate(str(int(sim_y_4_real[-1])),xy=(x_deaths[-1]-10,sim_y_4[-1]))
-    plt.annotate(str(int(sim_y_0_real[-1])),xy=(x_deaths[-1]-10,sim_y_0[-1]))
-    plt.annotate(str(int(sim_y_1_real[-1])),xy=(x_deaths[-1]-10,sim_y_1[-1]))
-    plt.annotate(str(int(sim_y_2_real[-1])),xy=(x_deaths[-1]-10,sim_y_2[-1]))
-    plt.annotate(str(int(sim_y_3_real[-1])),xy=(x_deaths[-1]-10,sim_y_3[-1]))
+    plt.annotate(str(int(sim_y_4_real[-1])),xy=(x_deaths[-1]-20,sim_y_4[-1]))
+    plt.annotate(str(int(sim_y_0_real[-1])),xy=(x_deaths[-1]-20,sim_y_0[-1]))
+    plt.annotate(str(int(sim_y_1_real[-1])),xy=(x_deaths[-1]-20,sim_y_1[-1]))
+    plt.annotate(str(int(sim_y_2_real[-1])),xy=(x_deaths[-1]-20,sim_y_2[-1]))
+    plt.annotate(str(int(sim_y_3_real[-1])),xy=(x_deaths[-1]-20,sim_y_3[-1]))
     plt.xlabel("Time [days, starting March 1st, 2020]")
     plt.ylabel("Cumulative no. of deaths and reported and simulated cases")
     plt.title("COVID-19 in {} starting March 1, 2020\n".format(country) + \
-              "Sim cases are based on mortality fraction M and delayed by 10 days\n" + \
+              "Sim cases are based on mortality fraction M and delayed by 20 days\n" + \
               "Sim cumulative no. cases: measured deaths x 1/M",
               fontsize=10)
 
