@@ -3,35 +3,46 @@ Line fit via numpy polyfit.
 """
 import numpy as np
 
+
 # slowing countries: countries that show a consistent slowing trend
 # slowing down value = date in March that is roughly the start of slowdown
-SLOWDOWN = {"Belgium": 13,
-            "Bulgaria": 22,
-            "Denmark": 13,
-            "Finland": 14,
-            "France": 16,
-            "Germany": 20,
-            "Ireland": 16,
-            "Italy": 21,
-            "Netherlands": 13,
-            "Norway": 14,
-            "Poland": 16,
-            "Romania": 24,
-            "Slovakia": 21,
-            "Spain": 19,
-            "Sweden": 13,
-            "UK": 21}
-# same for deaths
-SLOWDOWN_DEATHS = {"France": 20,
-                   "Germany": 20,
-                   "Italy": 21,
-                   "Netherlands": 22,
-                   "Romania": 27,
-                   "Spain": 15,
-                   "UK": 21}
+def get_slowdown(month):
+    """Set the correct slowdowns depending on month."""
+    if month == 3:
+        SLOWDOWN = {"Belgium": 13,
+                    "Bulgaria": 22,
+                    "Denmark": 13,
+                    "Finland": 14,
+                    "France": 16,
+                    "Germany": 20,
+                    "Ireland": 16,
+                    "Italy": 21,
+                    "Netherlands": 13,
+                    "Norway": 14,
+                    "Poland": 16,
+                    "Romania": 24,
+                    "Slovakia": 21,
+                    "Spain": 19,
+                    "Sweden": 13,
+                    "UK": 21}
+        # same for deaths
+        SLOWDOWN_DEATHS = {"France": 20,
+                           "Germany": 20,
+                           "Italy": 21,
+                           "Netherlands": 22,
+                           "Romania": 27,
+                           "Spain": 15,
+                           "UK": 21}
+    elif month == 4:
+        SLOWDOWN = {"Italy": 2}
+        SLOWDOWN_DEATHS = {"Italy": 2}
+
+    return SLOWDOWN, SLOWDOWN_DEATHS
+
 
 def compute_slowdown(x_cases, y_cases, country, month, deaths=False):
     """Get numbers for slowdown phase."""
+    SLOWDOWN, SLOWDOWN_DEATHS = get_slowdown(month)
     if not deaths:
         slowdown_index = x_cases.index(SLOWDOWN[country])
     else:
