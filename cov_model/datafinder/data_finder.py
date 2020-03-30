@@ -252,7 +252,6 @@ def get_monthly_countries_data(country, month, region):
     # start date / actual date
     today_date = datetime.today().strftime('%m-%d-%Y')
     today_day = today_date.split("-")[1]
-    today_day = 4
     for day in range(1, int(float(today_day))):
         date_object = datetime(day=day,
                                month=month,
