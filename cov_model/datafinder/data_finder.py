@@ -51,12 +51,18 @@ def get_excel_data(url, country_table, table_name, column, download):
     return cells
 
 
-def load_daily_deaths_history():
+def load_daily_deaths_history(month):
     """Load previously written to disk deaths numbers."""
-    return list(np.loadtxt("country_data/UK_deaths_history", dtype='float'))
+    if month == 3:
+        deaths_list = \
+            list(np.loadtxt("country_data/UK_deaths_history", dtype='float'))[0:19]
+    elif month == 3:
+        deaths_list = \
+            list(np.loadtxt("country_data/UK_deaths_history", dtype='float'))[19:]
+    return deaths_list
 
 
-def get_official_uk_data(download):
+def get_official_uk_data(month, download):
     """Get the official UK data starting March 1st, 2020."""
     uk_cases_url = UK_DAILY_CASES_DATA
     cases_cells = get_excel_data(uk_cases_url, "UK_cases",
@@ -69,8 +75,11 @@ def get_official_uk_data(download):
                                  download=download)
 
     # data cells: cases and deaths
-    y_data_real = cases_cells[31:]
-    y_deaths_real = load_daily_deaths_history()
+    if month == 3:
+        y_data_real = cases_cells[31:]
+    elif month == 4:
+        y_data_real = cases_cells[62:]
+    y_deaths_real = load_daily_deaths_history(month)
 
     # append to file if new data
     if death_cells[1:] not in y_deaths_real:
@@ -243,6 +252,7 @@ def get_monthly_countries_data(country, month, region):
     # start date / actual date
     today_date = datetime.today().strftime('%m-%d-%Y')
     today_day = today_date.split("-")[1]
+    today_day = 4
     for day in range(1, int(float(today_day))):
         date_object = datetime(day=day,
                                month=month,
