@@ -36,6 +36,7 @@ JOHN_HOPKINS = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master
 # slowing countries: countries that show a consistent slowing trend
 # slowing down value = date in March that is roughly the start of slowdown
 SLOWDOWN = {"Belgium": 13,
+            "Bulgaria": 22,
             "Denmark": 13, 
             "Finland": 14,
             "France": 16,
@@ -54,6 +55,7 @@ SLOWDOWN = {"Belgium": 13,
 SLOWDOWN_DEATHS = {"France": 20,
                    "Germany": 20,
                    "Italy": 21,
+                   "Romania": 27,
                    "Spain": 15,
                    "UK": 21}
 
