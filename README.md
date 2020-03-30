@@ -106,7 +106,9 @@ by Denmark to 0.06 day-1 and 12.5 days.
 Denmark experiences a sharp decrease in the virus spread after 13 March, 2020, reducing the
 spread rate from a (noisy) 0.49 day-1 to a stable 0.06 day-1; in terms of infected population
 growth this means it will double almost every two weeks - the same population doubling time
-is less than 3 days currently in the UK (18 March, 2020).
+is less than 3 days currently in the UK (18 March, 2020) -- **THIS is an example of reducing
+the numbers of tests and it is not a consequence of social distancing measures, this is why
+such results need to be placed in the context of actual country-specific situations.**
 
 Spread in the UK                             |  Spread in Denmark
 :-------------------------------------------:|:-------------------------:
