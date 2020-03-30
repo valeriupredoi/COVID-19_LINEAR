@@ -294,9 +294,9 @@ def make_simulations_plot(variable_pack, country, slowdown_deaths=None):
     # forecast the cases in 10 days
     # correction: 20 days is probably more realistic
     if slowdown_deaths is not None:
-        slope_sim = slope_d_s
+        slope_sim = slope_d_s / 2.0
     else:
-        slope_sim = slope_d
+        slope_sim = slope_d / 2.0
     sim_y_0_f = sim_y_0_real[-1] * np.exp(20. * slope_sim)
     sim_y_1_f = sim_y_1_real[-1] * np.exp(20. * slope_sim)
     sim_y_2_f = sim_y_2_real[-1] * np.exp(20. * slope_sim)
@@ -370,7 +370,7 @@ def make_simulations_plot(variable_pack, country, slowdown_deaths=None):
     plt.ylabel("Cumulative no. of deaths and reported and simulated cases")
     plt.title("COVID-19 in {} starting March 1, 2020\n".format(country) + \
               "Sim cases are based on mortality fraction M and delayed by 20 days\n" + \
-              "Sim cumulative no. cases: measured deaths x 1/M",
+              "Sim cumulative no. cases: measured deaths x 1/M; extrapolated rate 0.5 current death rate",
               fontsize=10)
 
     plt.savefig(os.path.join("country_plots",

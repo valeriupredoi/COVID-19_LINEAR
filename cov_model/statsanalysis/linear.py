@@ -25,6 +25,7 @@ SLOWDOWN = {"Belgium": 13,
 SLOWDOWN_DEATHS = {"France": 20,
                    "Germany": 20,
                    "Italy": 21,
+                   "Netherlands": 22,
                    "Romania": 27,
                    "Spain": 15,
                    "UK": 21}
