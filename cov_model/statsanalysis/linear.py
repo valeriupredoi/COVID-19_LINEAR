@@ -9,7 +9,8 @@ import numpy as np
 def get_slowdown(month):
     """Set the correct slowdowns depending on month."""
     if month == 3:
-        SLOWDOWN = {"Belgium": 13,
+        SLOWDOWN = {"Austria": 26,
+                    "Belgium": 13,
                     "Bulgaria": 22,
                     "Denmark": 13,
                     "Finland": 14,

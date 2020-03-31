@@ -177,9 +177,13 @@ def plot_countries(datasets, month, country, download):
     Pdt.append(d_time)
     Pr0.append(R0)
     Pr.append(R)
+    double_cases = d_time
+    rate_cases = slope
 
     if d_time_s and R0_s:
         # compute MEAN doublind time for the combined fast&slow
+        rate_cases = slope_s
+        double_cases = d_time_s
         d_time = np.mean(np.append(d_time, d_time_s))
         R0 = np.mean(np.append(R0, R0_s))
 
@@ -199,7 +203,9 @@ def plot_countries(datasets, month, country, download):
     # statistics: deaths
     poly_x_d = R_d = y_err_d = slope_d = \
         d_time_d = R0_d = plot_text_d = None
+    rate_deaths = double_deaths = 'nan'
     if deaths:
+        d_time_d_s = None
         if country in SLOWDOWN_DEATHS:
             (x_deaths, y_deaths, x_deaths_slow, y_deaths_slow,
              poly_x_d_s, R_d_s, y_err_d_s, slope_d_s, d_time_d_s, R0_d_s,
@@ -220,7 +226,14 @@ def plot_countries(datasets, month, country, download):
             R_d, d_time_d,
             avg_mort, stdev_mort
         )
+        if not d_time_d_s:
+            rate_deaths = slope_d
+            double_deaths = d_time_d
+        else:
+            rate_deaths = slope_d_s
+            double_deaths = d_time_d_s
 
+    s1 = s2 = s3 = 0
     variable_pack = (
         x_cases, y_cases, x_slow, y_slow,
         cases, deaths, x_deaths, deaths,
@@ -231,8 +244,8 @@ def plot_countries(datasets, month, country, download):
     if country not in SLOWDOWN_DEATHS:
         make_evolution_plot(variable_pack, country, SLOWDOWN, SLOWDOWN_DEATHS)
         if deaths and len(deaths) > 3.0:
-            make_simulations_plot(variable_pack, country,
-                                  SLOWDOWN, SLOWDOWN_DEATHS)
+            s1, s2, s3 = make_simulations_plot(variable_pack, country,
+                                               SLOWDOWN, SLOWDOWN_DEATHS)
     else:
         slowdown_deaths = (x_deaths, y_deaths, x_deaths_slow, y_deaths_slow,
                            poly_x_d_s, R_d_s, y_err_d_s,
@@ -241,8 +254,16 @@ def plot_countries(datasets, month, country, download):
         make_evolution_plot(variable_pack, country, SLOWDOWN,
                             SLOWDOWN_DEATHS, slowdown_deaths)
         if deaths and len(deaths) > 3.0:
-            make_simulations_plot(variable_pack, country, SLOWDOWN,
-                                  SLOWDOWN_DEATHS, slowdown_deaths)
+            s1, s2, s3 = make_simulations_plot(variable_pack, country, SLOWDOWN,
+                                               SLOWDOWN_DEATHS, slowdown_deaths)
+    with open("country_data/all_countries_data.csv", "a") as file:
+
+        data_line = ",".join([country, str(rate_cases), str(rate_deaths),
+                              str(double_cases), str(double_deaths),
+                              str(s1), str(s2),
+                              str(s3)]) + '\n'
+        file.write(data_line)
+
 
     return Pdt, Pr0, [pr - 0.5 for pr in Pr], (np.array(cases), np.array(deaths))
 
@@ -307,7 +328,7 @@ def make_simulations_plot(variable_pack, country,
     sim_y_1_f = sim_y_1_real[-1] * np.exp(20. * slope_sim)
     sim_y_2_f = sim_y_2_real[-1] * np.exp(20. * slope_sim)
     sim_y_3_f = sim_y_3_real[-1] * np.exp(20. * slope_sim)
-    sim_y_4_f = sim_y_4_real[-1] * np.exp(20. * slope_sim)
+    sim_y_4_f = sim_y_4_real[-1] * np.exp(20. * slope_sim) 
 
     y_all_real = []
     y_all_real.extend(y_deaths_real)
@@ -454,7 +475,7 @@ def make_simulations_plot(variable_pack, country,
                                  "COVID-19_LIN_{}_DARK_SIM_UK.png".format(country)))
         plt.close()
 
-
+    return (sim_y_0_f, sim_y_1_f, sim_y_2_f)
 
 
 def _read_write_parameter(filename, parameter, stddev_parameter):
