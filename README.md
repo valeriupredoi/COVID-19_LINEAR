@@ -13,24 +13,31 @@ Table of Contents
 
 # Introduction
 
+## Summary
+
 Current results for linear fit for logarithmic data of daily number of cases and daily number of
-deaths per country. Almost every country is undergoing an expoenential infection spread phase,
-`exp(bt)`, characterised by the increase rate `b` (units: 1/day or day-1) and time coordinate `t` (units: day);
-in most cases, the exponential rates `b` are 0.25-0.3 day-1 in the first phase, subsequently decreasing
+deaths per country. Almost every country is undergoing an exponential infection spread phase,
+`exp(bt)`, characterised by the increase rate `b` for reported cases (units: 1/day or day-1)
+and time coordinate `t` (units: day); similar exponential evolution for deaths `exp(mt)
+characterised by the increase rate of fatalities `m` for reported cases (units: 1/day or day-1);
+in most cases, the exponential rates `b` are 0.25-0.35 day-1 in the first phase, subsequently decreasing
 to values of 0.1-0.2 day-1 after a 7-10 days (except recent phases of Scandinavian countries that show
-a significantly lower rate due to reduction in number of tests), yieling reported cases doubling times of
-2-3 days, intially, subsequently these doubling times increasing to 3-4 days.
+a significantly lower rate due to reduction in number of tests) and even lower for advanced phases (eg Italy),
+yieling reported cases doubling times of 2-3 days, intially, subsequently these doubling times increasing to 3-4 days.
+In a similar manner `m` sees large values eg 0.30-0.35 for the first 7-10 of reporting, subsequently lower
+values in the region of 0.2-0.3 later and even lower after the effects of quarantine are felt.
 
 We also simulate the number of actual cases by shifting the deaths curve by 20 days in the past and multiplying
-with a set of possible mortality rates: 0.5%, 1%, 2%, 3% and 4%, then extrapolating the number of cases to
-present day via a forecasted rate of deaths over the next 20 days equal to half the current deaths rate.
+with a set of possible mortality ratios `M` (not to be confused with the deaths increase rate `m`):
+0.5%, 1%, 2%, 3% and 4%, then extrapolating the number of cases to
+present day via a forecasted rate of deaths `m` over the next 20 days equal to half the current deaths rate.
 
 Results for March are included in [this table](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/ALL_COUNTRIES_DATA_31-03-2020.csv)
 The simulated number of cases give a rough proportion of the total country population that has been in fected so far,
 an example is given below for a group of countries; these results are in good agreement with the Imperial College
 London [report](https://www.imperial.ac.uk/media/imperial-college/medicine/sph/ide/gida-fellowships/Imperial-College-COVID19-Europe-estimates-and-NPI-impact-30-03-2020.pdf) for a mortality rate of 1%.
 
-Country  |  % pop infctd. m=0.5% | % pop infctd. m=1% | % pop infctd. at m=2% | Imp. Coll. Rep.
+Country  |  % pop infctd. M=0.5% | % pop infctd. M=1% | % pop infctd. at M=2% | Imp. Coll. Rep.
 :-------:|:-------------------------:|:----------------------:|:-------------:|:---------------:
 Austria | 4% | 2%  | 1% | 1.1%
 United Kingdom | 3% | 1.5% | 0.75% | 2.7%
