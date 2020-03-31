@@ -30,18 +30,23 @@ The simulated number of cases give a rough proportion of the total country popul
 an example is given below for a group of countries; these results are in good agreement with the Imperial College
 London [report](https://www.imperial.ac.uk/media/imperial-college/medicine/sph/ide/gida-fellowships/Imperial-College-COVID19-Europe-estimates-and-NPI-impact-30-03-2020.pdf) for a mortality rate of 1%.
 
-Country  |  % pop infected at m=0.5% | % pop infected at m=1% | % pop infected at m=2%
-:-------:|:-------------------------:|:----------------------:|:----------------------:
-Austria | 4% | 2% | 1%
-United Kingdom | 3% | 1.5% | 0.75%
-Spain | 32% | 16% | 8%
-Italy | 10% | 5% | 2.5%
-Germany | 2% | 1% | 0.5%
-France | 6.4%  | 3.2% | 1.6%
-Sweden | 5% | 2.5% | 1.3%
-United States | 2% | 1% | 0.5%
+Country  |  % pop infctd. m=0.5% | % pop infctd. m=1% | % pop infctd. at m=2% | Imp. Coll. Rep.
+:-------:|:-------------------------:|:----------------------:|:-------------:|:---------------:
+Austria | 4% | 2%  | 1% | 1.1%
+United Kingdom | 3% | 1.5% | 0.75% | 2.7%
+Spain | 32% | 16% | 8% | 15%
+Italy | 10% | 5% | 2.5% | 9.8%
+Germany | 2% | 1% | 0.5% | 0.72%
+France | 6.4%  | 3.2% | 1.6% | 3%
+Sweden | 5% | 2.5% | 1.3% | 3.1%
+United States | 2% | 1% | 0.5% | n/a
+Norway | 0.5% | 0.3% | 0.15% | 0.41%
+Denmark | 4% | 2% | 1% | 1.1%
+Belgium | 27% | 13% | 7% | 3.7%
+Switzerland | 11% | 5.5% | 2.8% | 3.1%
+Romania | 12% | 6% | 3% | n/a
 
-Table date: 31-03-2020
+**Table date: 31-03-2020; Imp. Coll. Rep = Imperial College Report for 30/03/2020, Table 1.**
 
 # UK
 
