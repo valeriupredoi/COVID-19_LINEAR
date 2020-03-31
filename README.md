@@ -41,6 +41,8 @@ France | 6.4%  | 3.2% | 1.6%
 Sweden | 5% | 2.5% | 1.3%
 United States | 2% | 1% | 0.5%
 
+Table date: 31-03-2020
+
 # UK
 
 ## Current reported situation and projections
