@@ -256,13 +256,13 @@ def plot_countries(datasets, month, country, download):
         if deaths and len(deaths) > 3.0:
             s1, s2, s3 = make_simulations_plot(variable_pack, country, SLOWDOWN,
                                                SLOWDOWN_DEATHS, slowdown_deaths)
-    with open("country_data/all_countries_data.csv", "a") as file:
-
-        data_line = ",".join([country, str(rate_cases), str(rate_deaths),
-                              str(double_cases), str(double_deaths),
-                              str(s1), str(s2),
-                              str(s3)]) + '\n'
-        file.write(data_line)
+    # run this periodically
+    # with open("country_data/all_countries_data.csv", "a") as file:
+    #     data_line = ",".join([country, str(rate_cases), str(rate_deaths),
+    #                           str(double_cases), str(double_deaths),
+    #                           str(s1), str(s2),
+    #                           str(s3)]) + '\n'
+    #    file.write(data_line)
 
 
     return Pdt, Pr0, [pr - 0.5 for pr in Pr], (np.array(cases), np.array(deaths))
