@@ -18,12 +18,25 @@ deaths per country. Almost every country is undergoing an expoenential infection
 `exp(bt)`, characterised by the increase rate `b` (units: 1/day or day-1) and time coordinate `t` (units: day);
 in most cases, the exponential rates `b` are 0.25-0.3 day-1 in the first phase, subsequently decreasing
 to values of 0.1-0.2 day-1 after a 7-10 days (except recent phases of Scandinavian countries that show
-a significantly lower rate), yieling reported cases doubling times of 2-3 days, intially, subsequently
-these doubling times increasing to 3-4 days.
+a significantly lower rate due to reduction in number of tests), yieling reported cases doubling times of
+2-3 days, intially, subsequently these doubling times increasing to 3-4 days.
 
-The results are affected by poor testing in certain areas and countries,
-and by **driver** regions (like Lombardia in Italy or London in UK, ultimately assigning a lot of
-statistical weight to these parts of the country, given overwheling numbers).
+We also simulate the number of actual cases by shifting the deaths curve by 20 days in the past and multiplying
+with a set of possible mortality rates: 0.5%, 1%, 2%, 3% and 4%, then extrapolating the number of cases to
+present day via a forecasted rate of deaths over the next 20 days equal to half the current deaths rate.
+
+Results for March are included in [this table](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/ALL_COUNTRIES_DATA_31-03-2020.csv)
+The simulated number of cases give a rough proportion of the total country population that has been in fected so far,
+an example is given below for a group of countries:
+
+Country  |  % pop infected at m=0.5% | % pop infected at m=1% | % pop infected at m=2%
+:-------:|:-------------------------:|:----------------------:|:----------------------:
+United Kingdom | 3% | 1.5% | 0.75%
+Spain | 32% | 16% | 8%
+Italy | 10% | 5% | 2.5%
+Germany | 2% | 1% | 0.5%
+France | 6.4%  | 3.2% | 1.6%
+United States | 2% | 1% | 0.5%
 
 # UK
 
