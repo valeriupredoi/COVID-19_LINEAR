@@ -31,11 +31,13 @@ an example is given below for a group of countries:
 
 Country  |  % pop infected at m=0.5% | % pop infected at m=1% | % pop infected at m=2%
 :-------:|:-------------------------:|:----------------------:|:----------------------:
+Austria | 4% | 2% | 1%
 United Kingdom | 3% | 1.5% | 0.75%
 Spain | 32% | 16% | 8%
 Italy | 10% | 5% | 2.5%
 Germany | 2% | 1% | 0.5%
 France | 6.4%  | 3.2% | 1.6%
+Sweden | 5% | 2.5% | 1.3%
 United States | 2% | 1% | 0.5%
 
 # UK
