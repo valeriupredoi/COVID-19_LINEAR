@@ -25,6 +25,7 @@ def get_slowdown(month):
                     "Slovakia": 21,
                     "Spain": 19,
                     "Sweden": 13,
+                    "Switzerland": 25,
                     "UK": 21}
         # same for deaths
         SLOWDOWN_DEATHS = {"France": 20,
@@ -33,6 +34,7 @@ def get_slowdown(month):
                            "Netherlands": 22,
                            "Romania": 27,
                            "Spain": 15,
+                           "Switzerland": 26,
                            "UK": 21}
     elif month == 4:
         SLOWDOWN = {"Italy": 2}
