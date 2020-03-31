@@ -18,7 +18,7 @@ Table of Contents
 Current results for linear fit for logarithmic data of daily number of cases and daily number of
 deaths per country. Almost every country is undergoing an exponential infection spread phase,
 `exp(bt)`, characterised by the increase rate `b` for reported cases (units: 1/day or day-1)
-and time coordinate `t` (units: day); similar exponential evolution for deaths `exp(mt)
+and time coordinate `t` (units: day); similar exponential evolution for deaths `exp(mt)`
 characterised by the increase rate of fatalities `m` for reported cases (units: 1/day or day-1);
 in most cases, the exponential rates `b` are 0.25-0.35 day-1 in the first phase, subsequently decreasing
 to values of 0.1-0.2 day-1 after a 7-10 days (except recent phases of Scandinavian countries that show
