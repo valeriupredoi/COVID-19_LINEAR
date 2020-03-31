@@ -35,7 +35,7 @@ present day via a forecasted rate of deaths `m` over the next 20 days equal to h
 Results for March are included in [this table](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/ALL_COUNTRIES_DATA_31-03-2020.csv)
 The simulated number of cases give a rough proportion of the total country population that has been in fected so far,
 an example is given below for a group of countries; these results are in good agreement with the Imperial College
-London [report](https://www.imperial.ac.uk/media/imperial-college/medicine/sph/ide/gida-fellowships/Imperial-College-COVID19-Europe-estimates-and-NPI-impact-30-03-2020.pdf) for a mortality rate of 1%.
+London [report](https://www.imperial.ac.uk/media/imperial-college/medicine/sph/ide/gida-fellowships/Imperial-College-COVID19-Europe-estimates-and-NPI-impact-30-03-2020.pdf) for a mortality rate of **M~0.5-1%**.
 
 Country  |  % pop infctd. M=0.5% | % pop infctd. M=1% | % pop infctd. at M=2% | Imp. Coll. Rep.
 :-------:|:-------------------------:|:----------------------:|:-------------:|:---------------:
