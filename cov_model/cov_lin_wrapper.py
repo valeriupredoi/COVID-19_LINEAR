@@ -257,11 +257,11 @@ def plot_countries(datasets, month, country, download):
             s1, s2, s3 = make_simulations_plot(variable_pack, country, SLOWDOWN,
                                                SLOWDOWN_DEATHS, slowdown_deaths)
     # run this periodically
-    # with open("country_data/all_countries_data.csv", "a") as file:
-    #     data_line = ",".join([country, str(rate_cases), str(rate_deaths),
-    #                           str(double_cases), str(double_deaths),
-    #                           str(s1), str(s2),
-    #                           str(s3)]) + '\n'
+    #with open("country_data/all_countries_data.csv", "a") as file:
+    #    data_line = ",".join([country, str(rate_cases), str(rate_deaths),
+    #                          str(double_cases), str(double_deaths),
+    #                          str(s1), str(s2),
+    #                          str(s3)]) + '\n'
     #    file.write(data_line)
 
 

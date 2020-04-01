@@ -9,32 +9,47 @@ import numpy as np
 def get_slowdown(month):
     """Set the correct slowdowns depending on month."""
     if month == 3:
-        SLOWDOWN = {"Austria": 26,
+        SLOWDOWN = {"Argentina": 26,
+                    "Austria": 26,
                     "Belgium": 13,
+                    "Brazil": 25,
                     "Bulgaria": 22,
+                    "Colombia": 26,
                     "Denmark": 13,
                     "Finland": 14,
                     "France": 16,
                     "Germany": 20,
+                    "Greece": 23,
                     "Ireland": 16,
                     "Italy": 21,
+                    "Indonesia": 25,
+                    "Moldova": 26,
                     "Netherlands": 13,
                     "Norway": 14,
+                    "Pakistan": 25,
                     "Poland": 16,
+                    "Portugal": 25,
                     "Romania": 24,
                     "Slovakia": 21,
                     "Spain": 19,
                     "Sweden": 13,
                     "Switzerland": 25,
-                    "UK": 21}
+                    "Turkey": 26,
+                    "UK": 21,
+                    "US": 27}
         # same for deaths
-        SLOWDOWN_DEATHS = {"France": 20,
+        SLOWDOWN_DEATHS = {"Austria": 26,
+                           "Brazil": 25,
+                           "France": 20,
                            "Germany": 20,
                            "Italy": 21,
+                           "Indonesia": 26,
                            "Netherlands": 22,
+                           "Portugal": 28,
                            "Romania": 27,
                            "Spain": 15,
                            "Switzerland": 26,
+                           "Turkey": 27,
                            "UK": 21}
     elif month == 4:
         SLOWDOWN = {"Italy": 2}
