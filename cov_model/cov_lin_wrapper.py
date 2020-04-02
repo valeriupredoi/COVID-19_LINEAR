@@ -270,21 +270,21 @@ def plot_countries(datasets, month, country, download):
     if country in COUNTRY_PARAMS:
         iso_country = COUNTRY_PARAMS[country][0]
         pop = COUNTRY_PARAMS[country][1]
-        cs = str(cases[-1])
+        cs = str(int(cases[-1]))
         if deaths:
-            ds = str(deaths[-1])
+            ds = str(int(deaths[-1]))
         else:
             ds = '0'
-        br = "%.3f" % rate_cases
-        mr = "%.3f" % rate_deaths
+        br = "%.0f" % (rate_cases * 100.)
+        mr = "%.0f" % (rate_deaths * 100.)
         dc = "%.1f" % double_cases
         dd = "%.1f" % double_deaths
-        f1 = "%.3f" % (s1 / 1000. / pop)
-        f2 = "%.3f" % (s2 / 1000. / pop)
-        f3 = "%.3f" % (s3 / 1000. / pop)
-        s1 = "%.3f" % s1
-        s2 = "%.3f" % s2
-        s3 = "%.3f" % s3
+        f1 = "%.2f" % (s1 / 1000. / pop * 100.)
+        f2 = "%.2f" % (s2 / 1000. / pop * 100.)
+        f3 = "%.2f" % (s3 / 1000. / pop * 100.)
+        s1 = str(int(s1))
+        s2 = str(int(s2))
+        s3 = str(int(s3))
         data_line = ",".join([iso_country,
                               cs,
                               ds,
@@ -627,6 +627,15 @@ def main():
         regions = []
     else:
         regions = _get_geography(args.regions)
+
+    # write summary header
+    header = "Country,cases,deaths,case rate,death rate," + \
+             "doubling cases (days),doubling deaths (days)," + \
+             "pct pop 0.5% mort,prct pop 1% mort,prct pop 2% " +  \
+             "mort,0.5% mort sim cases,1% mort sim cases," + \
+             "2% mort sim cases"
+    with open("country_data/all_countries_data.csv", "w") as file:
+        file.write(header + "\n")
 
     # plot other countries
     double_time = []
