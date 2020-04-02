@@ -639,7 +639,7 @@ def main():
              "mort,0.5% mort sim cases,1% mort sim cases," + \
              "2% mort sim cases," + \
              "0.5% mort sim/cases,1% mort sim/cases," + \
-             "2% mort sim/cases,"
+             "2% mort sim/cases"
     with open("country_data/all_countries_data.csv", "w") as file:
         file.write(header + "\n")
 
