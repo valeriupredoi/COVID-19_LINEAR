@@ -78,23 +78,22 @@ def get_official_uk_data(month, download):
     # uk changed data to remove cases before March 1st (2-04-2020)
     y_deaths_real = load_daily_deaths_history(month)
     if month == 3:
-        y_data_real = cases_cells[1:62]
-        y_deaths_real = y_deaths_real
-        mort = np.array(y_deaths_real) / np.array(y_data_real[45:62])
+        y_data_real = cases_cells[31:62]
+        mort = np.array(y_deaths_real) / np.array(y_data_real[12:])
         x_data = [np.float(x) for x in range(1, len(y_data_real) + 1)]
         x_deaths = [np.float(x) for x in range(13, len(y_deaths_real) + 13)]
     elif month == 4:
         y_data_real = cases_cells[62:]
-        y_deaths_real = y_deaths_real
         mort = np.array(y_deaths_real) / np.array(y_data_real)
         x_data = [np.float(x) for x in range(1, len(y_data_real) + 1)]
         x_deaths = [np.float(x) for x in range(1, len(y_deaths_real) + 1)]
 
-    # append to file if new data
-    if death_cells[1:] not in y_deaths_real:
-        y_deaths_real.extend(death_cells[1:])
-        with open("country_data/UK_deaths_history", "a") as file:
-            file.write(str(death_cells[1:][0]) + "\n")
+    # append to file if new data for new monthly data
+    if month == 4:
+        if death_cells[1:] not in y_deaths_real:
+            y_deaths_real.extend(death_cells[1:])
+            with open("country_data/UK_deaths_history", "a") as file:
+                file.write(str(death_cells[1:][0]) + "\n")
 
     # compute average mortality
     avg_mort = np.mean(mort)

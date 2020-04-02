@@ -109,11 +109,11 @@ def get_linear_parameters(x, y):
     return poly1d_fn(x), R, y_err, slope, d_time, R0
 
 
-def common_plot_stuff(plt, country):
+def common_plot_stuff(plt, country, month_str):
     """Add common stuff to plot."""
-    plt.xlabel("Time [days, starting April 1st, 2020]")
+    plt.xlabel("Time [days, starting {} 1st, 2020]".format(month_str))
     plt.ylabel("Cumulative number of confirmed cases and deaths")
-    plt.title("COVID-19 in {} starting April 1, 2020".format(country))
+    plt.title("COVID-19 in {} starting {} 1, 2020".format(country, month_str))
 
 
 def get_plot_text(slope, country, R, d_time, R0, x,

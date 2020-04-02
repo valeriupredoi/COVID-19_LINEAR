@@ -37,7 +37,7 @@ COUNTRY_PARAMS = country_parameters.COUNTRY_PARAMS
 
 def make_evolution_plot(variable_pack, country,
                         SLOWDOWN, SLOWDOWN_DEATHS,
-                        slowdown_deaths=None):
+                        month_str, slowdown_deaths=None):
     """Make the exponential evolution plot."""
     # unpack variables
     (x_cases, y_cases, x_slow, y_slow, cases, deaths,
@@ -92,7 +92,7 @@ def make_evolution_plot(variable_pack, country,
     if country in SLOWDOWN:
         plt.xlim(0., x_slow[-1] + 1.5)
         plt.ylim(0., y_slow[-1] + 3.5)
-    linear.common_plot_stuff(plt, country)
+    linear.common_plot_stuff(plt, country, month_str)
     if country in SLOWDOWN:
         plt.text(1., y_slow[-1] + 0.3, plot_text_s, fontsize=8, color='g')
         plt.text(1., y_slow[-1] - 1.5, plot_text, fontsize=8, color='r')
@@ -117,6 +117,10 @@ def make_evolution_plot(variable_pack, country,
 
 def plot_countries(datasets, month, country, download):
     """Plot countries data."""
+    if month == 3:
+        month_str = "March"
+    elif month == 4:
+        month_str = "April"
     # filter data lists
     cases = [float(c) for c in datasets[0] if c != 'NN']
     deaths = [float(c) for c in datasets[1] if c != 'NN']
@@ -244,20 +248,24 @@ def plot_countries(datasets, month, country, download):
         plot_text_d, plot_name, slope_d, slope
     )
     if country not in SLOWDOWN_DEATHS:
-        make_evolution_plot(variable_pack, country, SLOWDOWN, SLOWDOWN_DEATHS)
+        make_evolution_plot(variable_pack, country, SLOWDOWN,
+                            SLOWDOWN_DEATHS, month_str)
         if deaths and len(deaths) > 3.0:
             s1, s2, s3 = make_simulations_plot(variable_pack, country,
-                                               SLOWDOWN, SLOWDOWN_DEATHS)
+                                               SLOWDOWN, SLOWDOWN_DEATHS,
+                                               month_str)
     else:
         slowdown_deaths = (x_deaths, y_deaths, x_deaths_slow, y_deaths_slow,
                            poly_x_d_s, R_d_s, y_err_d_s,
                            slope_d_s, d_time_d_s, R0_d_s,
                            plot_text_d_s, plot_name_d_s)
         make_evolution_plot(variable_pack, country, SLOWDOWN,
-                            SLOWDOWN_DEATHS, slowdown_deaths)
+                            SLOWDOWN_DEATHS,
+                            month_str, slowdown_deaths)
         if deaths and len(deaths) > 3.0:
             s1, s2, s3 = make_simulations_plot(variable_pack, country, SLOWDOWN,
-                                               SLOWDOWN_DEATHS, slowdown_deaths)
+                                               SLOWDOWN_DEATHS, month_str,
+                                               slowdown_deaths)
     # run this periodically
     if country in COUNTRY_PARAMS:
         iso_country = COUNTRY_PARAMS[country][0]
@@ -297,7 +305,7 @@ def plot_countries(datasets, month, country, download):
 
 def make_simulations_plot(variable_pack, country,
                           SLOWDOWN, SLOWDOWN_DEATHS,
-                          slowdown_deaths=None):
+                          month_str, slowdown_deaths=None):
     # get variable pack
     (x_data, y_data, x_slow, y_slow, y_data_real, y_deaths_real,
      x_deaths, y_deaths_real, y_deaths, poly_x, poly_x_s,
@@ -418,9 +426,9 @@ def make_simulations_plot(variable_pack, country,
     plt.annotate(str(int(sim_y_1_real[-1])),xy=(x_deaths[-1]-20,sim_y_1[-1]))
     plt.annotate(str(int(sim_y_2_real[-1])),xy=(x_deaths[-1]-20,sim_y_2[-1]))
     plt.annotate(str(int(sim_y_3_real[-1])),xy=(x_deaths[-1]-20,sim_y_3[-1]))
-    plt.xlabel("Time [days, starting April 1st, 2020]")
+    plt.xlabel("Time [days, starting {} 1st, 2020]".format(month_str))
     plt.ylabel("Cumulative no. of deaths and reported and simulated cases")
-    plt.title("COVID-19 in {} starting April 1, 2020\n".format(country) + \
+    plt.title("COVID-19 in {} starting {} 1, 2020\n".format(country, month_str) + \
               "Sim cases are based on mortality fraction M and delayed by 20 days\n" + \
               "Sim cumulative no. cases: measured deaths x 1/M; extrapolated rate 0.5 current death rate",
               fontsize=10)
@@ -430,7 +438,7 @@ def make_simulations_plot(variable_pack, country,
     plt.close()
 
     # do full 10-day running projection
-    # with initial conditions on April 21
+    # with initial conditions on March 21
     if country == "UK":
         # projection data and ticks
         x0, y0, y0d, y, yd, y_min, yd_min = uk.compute_initial_projection_uk()
@@ -492,8 +500,8 @@ def make_simulations_plot(variable_pack, country,
         plt.text(1., y_data[-1] - 2.4, plot_text_d, fontsize=8, color='b')
         plt.axvline(20, color="red")
         plt.axvline(23, color="red")
-        plt.suptitle("COVID-19 in {} starting April 1, 2020 spun up 10 days\n".format(country) + \
-                     "Worst case: April 21 rates b=0.25/DT=2.8d (R=0.99) and m=0.37/DT=1.9d (R=0.97)",
+        plt.suptitle("COVID-19 in {} starting {} 1, 2020 spun up 10 days\n".format(country, month_str) + \
+                     "Worst case: March 21 rates b=0.25/DT=2.8d (R=0.99) and m=0.37/DT=1.9d (R=0.97)",
                      fontsize=10)
         plt.title("Best case: quarantine rates b=m=0.2", color='green', fontsize=10)
         plt.savefig(os.path.join("country_plots",
