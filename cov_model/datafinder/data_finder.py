@@ -75,10 +75,11 @@ def get_official_uk_data(month, download):
                                  download=download)
 
     # data cells: cases and deaths
+    # uk changed data to remove cases before March 1st (2-04-2020)
     if month == 3:
-        y_data_real = cases_cells[31:]
+        y_data_real = cases_cells[1:32]
     elif month == 4:
-        y_data_real = cases_cells[62:]
+        y_data_real = cases_cells[32:]
     y_deaths_real = load_daily_deaths_history(month)
 
     # append to file if new data
@@ -91,7 +92,7 @@ def get_official_uk_data(month, download):
     x_deaths = [np.float(x) for x in range(13, len(y_deaths_real) + 13)]
 
     # compute average mortality
-    mort = np.array(y_deaths_real) / np.array(y_data_real[12:])
+    mort = np.array(y_deaths_real) / np.array(y_data_real[11:])
     avg_mort = np.mean(mort)
     stdev_mort = np.std(mort)
 
@@ -253,7 +254,7 @@ def get_monthly_countries_data(country, month, region):
     today_date = datetime.today().strftime('%m-%d-%Y')
     today_day = today_date.split("-")[1]
     # jump one day in previous month
-    if today_day == '01' and month == 3:
+    if today_day == '02' and month == 3:
         today_day = '32'
     for day in range(1, int(float(today_day))):
         date_object = datetime(day=day,
