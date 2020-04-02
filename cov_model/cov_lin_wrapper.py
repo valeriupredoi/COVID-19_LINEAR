@@ -282,9 +282,12 @@ def plot_countries(datasets, month, country, download):
         f1 = "%.2f" % (s1 / 1000. / pop * 100.)
         f2 = "%.2f" % (s2 / 1000. / pop * 100.)
         f3 = "%.2f" % (s3 / 1000. / pop * 100.)
-        s1 = str(int(s1))
-        s2 = str(int(s2))
-        s3 = str(int(s3))
+        xs1 = str(int(s1))
+        xs2 = str(int(s2))
+        xs3 = str(int(s3))
+        fs1 = str(int(s1 / cases[-1]))
+        fs2 = str(int(s2 / cases[-1]))
+        fs3 = str(int(s3 / cases[-1]))
         data_line = ",".join([iso_country,
                               cs,
                               ds,
@@ -293,7 +296,8 @@ def plot_countries(datasets, month, country, download):
                               dc,
                               dd,
                               f1, f2, f3,
-                              s1, s2, s3]) + '\n'
+                              xs1, xs2, xs3,
+                              fs1, fs2, fs3]) + '\n'
         with open("country_data/all_countries_data.csv", "a") as file:
             file.write(data_line)
 
@@ -633,7 +637,9 @@ def main():
              "doubling cases (days),doubling deaths (days)," + \
              "pct pop 0.5% mort,prct pop 1% mort,prct pop 2% " +  \
              "mort,0.5% mort sim cases,1% mort sim cases," + \
-             "2% mort sim cases"
+             "2% mort sim cases," + \
+             "0.5% mort sim/cases,1% mort sim/cases," + \
+             "2% mort sim/cases,"
     with open("country_data/all_countries_data.csv", "w") as file:
         file.write(header + "\n")
 
