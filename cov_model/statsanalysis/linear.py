@@ -52,8 +52,8 @@ def get_slowdown(month):
                            "Turkey": 27,
                            "UK": 21}
     elif month == 4:
-        SLOWDOWN = {"Italy": 2}
-        SLOWDOWN_DEATHS = {"Italy": 2}
+        SLOWDOWN = {}
+        SLOWDOWN_DEATHS = {}
 
     return SLOWDOWN, SLOWDOWN_DEATHS
 
@@ -111,9 +111,9 @@ def get_linear_parameters(x, y):
 
 def common_plot_stuff(plt, country):
     """Add common stuff to plot."""
-    plt.xlabel("Time [days, starting March 1st, 2020]")
+    plt.xlabel("Time [days, starting April 1st, 2020]")
     plt.ylabel("Cumulative number of confirmed cases and deaths")
-    plt.title("COVID-19 in {} starting March 1, 2020".format(country))
+    plt.title("COVID-19 in {} starting April 1, 2020".format(country))
 
 
 def get_plot_text(slope, country, R, d_time, R0, x,

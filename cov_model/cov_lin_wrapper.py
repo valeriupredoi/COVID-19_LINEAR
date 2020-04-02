@@ -125,21 +125,22 @@ def plot_countries(datasets, month, country, download):
 
     SLOWDOWN, SLOWDOWN_DEATHS = linear.get_slowdown(month)
 
-    time_fmt = "%Y-%m-%dT%H:%M:%S"
-    actual_days = [
-        datetime.strptime(c, time_fmt).day
-        for c in datasets[3] if c != 'NN'
-    ]
+    if country != "UK":
+        time_fmt = "%Y-%m-%dT%H:%M:%S"
+        actual_days = [
+            datetime.strptime(c, time_fmt).day
+            for c in datasets[3] if c != 'NN'
+        ]
 
-    # pad for unavailable data from 1st of month
-    if actual_days[0] != 1 and actual_days[0] < 15:
-        x_cases = actual_days
-    else:
-        x_cases = [float(n) for n in range(1, len(cases) + 1)]
+        # pad for unavailable data from 1st of month
+        if actual_days[0] != 1 and actual_days[0] < 15:
+            x_cases = actual_days
+        else:
+            x_cases = [float(n) for n in range(1, len(cases) + 1)]
 
-    # x-axis for deaths
-    x_deaths = [float(n) for n in range(int(x_cases[-1]) - len(deaths) + 1,
-                                        int(x_cases[-1]) + 1)]
+        # x-axis for deaths
+        x_deaths = [float(n) for n in range(int(x_cases[-1]) - len(deaths) + 1,
+                                            int(x_cases[-1]) + 1)]
 
     # UK specific data
     if country == "UK":
@@ -417,9 +418,9 @@ def make_simulations_plot(variable_pack, country,
     plt.annotate(str(int(sim_y_1_real[-1])),xy=(x_deaths[-1]-20,sim_y_1[-1]))
     plt.annotate(str(int(sim_y_2_real[-1])),xy=(x_deaths[-1]-20,sim_y_2[-1]))
     plt.annotate(str(int(sim_y_3_real[-1])),xy=(x_deaths[-1]-20,sim_y_3[-1]))
-    plt.xlabel("Time [days, starting March 1st, 2020]")
+    plt.xlabel("Time [days, starting April 1st, 2020]")
     plt.ylabel("Cumulative no. of deaths and reported and simulated cases")
-    plt.title("COVID-19 in {} starting March 1, 2020\n".format(country) + \
+    plt.title("COVID-19 in {} starting April 1, 2020\n".format(country) + \
               "Sim cases are based on mortality fraction M and delayed by 20 days\n" + \
               "Sim cumulative no. cases: measured deaths x 1/M; extrapolated rate 0.5 current death rate",
               fontsize=10)
@@ -429,7 +430,7 @@ def make_simulations_plot(variable_pack, country,
     plt.close()
 
     # do full 10-day running projection
-    # with initial conditions on March 21
+    # with initial conditions on April 21
     if country == "UK":
         # projection data and ticks
         x0, y0, y0d, y, yd, y_min, yd_min = uk.compute_initial_projection_uk()
@@ -473,7 +474,7 @@ def make_simulations_plot(variable_pack, country,
         plt.xlim(0., x0 + 11.5)
         plt.yticks(log_ticks, real_ticks)
         plt.tick_params(axis="y", labelsize=7)
-        plt.xlabel("Time [days, starting March 1st, 2020]")
+        plt.xlabel("Time [days, starting April 1st, 2020]")
         plt.ylabel("Cumulative no. of deaths and reported and simulated cases")
         plt.grid()
         plt.annotate("Pubs", xy=(20.5, 0.9), color='red')
@@ -491,8 +492,8 @@ def make_simulations_plot(variable_pack, country,
         plt.text(1., y_data[-1] - 2.4, plot_text_d, fontsize=8, color='b')
         plt.axvline(20, color="red")
         plt.axvline(23, color="red")
-        plt.suptitle("COVID-19 in {} starting March 1, 2020 spun up 10 days\n".format(country) + \
-                     "Worst case: March 21 rates b=0.25/DT=2.8d (R=0.99) and m=0.37/DT=1.9d (R=0.97)",
+        plt.suptitle("COVID-19 in {} starting April 1, 2020 spun up 10 days\n".format(country) + \
+                     "Worst case: April 21 rates b=0.25/DT=2.8d (R=0.99) and m=0.37/DT=1.9d (R=0.97)",
                      fontsize=10)
         plt.title("Best case: quarantine rates b=m=0.2", color='green', fontsize=10)
         plt.savefig(os.path.join("country_plots",
