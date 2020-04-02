@@ -289,6 +289,7 @@ def plot_countries(datasets, month, country, download):
         fs2 = str(int(s2 / cases[-1]))
         fs3 = str(int(s3 / cases[-1]))
         data_line = ",".join([iso_country,
+                              country,
                               cs,
                               ds,
                               br,
@@ -633,7 +634,7 @@ def main():
         regions = _get_geography(args.regions)
 
     # write summary header
-    header = "Country,cases,deaths,case rate,death rate," + \
+    header = "Country,country-name,cases,deaths,case rate,death rate," + \
              "doubling cases (days),doubling deaths (days)," + \
              "pct pop 0.5% mort,prct pop 1% mort,prct pop 2% " +  \
              "mort,0.5% mort sim cases,1% mort sim cases," + \
