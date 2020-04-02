@@ -25,7 +25,7 @@ from datetime import datetime
 
 from datafinder.data_finder import (COUNTRIES_TO_SUM,
     get_monthly_countries_data, get_official_uk_data)
-from statsanalysis import (linear, ks)
+from statsanalysis import (linear, ks, country_parameters)
 from projections import uk
 
 
@@ -33,6 +33,7 @@ from projections import uk
 # same for US states
 COUNTRIES_TO_SUM = ["US", "France", "Denmark",
                     "Netherlands"]
+COUNTRY_PARAMS = country_parameters.COUNTRY_PARAMS
 
 def make_evolution_plot(variable_pack, country,
                         SLOWDOWN, SLOWDOWN_DEATHS,
@@ -257,12 +258,35 @@ def plot_countries(datasets, month, country, download):
             s1, s2, s3 = make_simulations_plot(variable_pack, country, SLOWDOWN,
                                                SLOWDOWN_DEATHS, slowdown_deaths)
     # run this periodically
-    #with open("country_data/all_countries_data.csv", "a") as file:
-    #    data_line = ",".join([country, str(rate_cases), str(rate_deaths),
-    #                          str(double_cases), str(double_deaths),
-    #                          str(s1), str(s2),
-    #                          str(s3)]) + '\n'
-    #    file.write(data_line)
+    if country in COUNTRY_PARAMS:
+        iso_country = COUNTRY_PARAMS[country][0]
+        pop = COUNTRY_PARAMS[country][1]
+        cs = str(cases[-1])
+        if deaths:
+            ds = str(deaths[-1])
+        else:
+            ds = '0'
+        br = "%.3f" % rate_cases
+        mr = "%.3f" % rate_deaths
+        dc = "%.1f" % double_cases
+        dd = "%.1f" % double_deaths
+        f1 = "%.3f" % (s1 / 1000. / pop)
+        f2 = "%.3f" % (s2 / 1000. / pop)
+        f3 = "%.3f" % (s3 / 1000. / pop)
+        s1 = "%.3f" % s1
+        s2 = "%.3f" % s2
+        s3 = "%.3f" % s3
+        data_line = ",".join([iso_country,
+                              cs,
+                              ds,
+                              br,
+                              mr,
+                              dc,
+                              dd,
+                              f1, f2, f3,
+                              s1, s2, s3]) + '\n'
+        with open("country_data/all_countries_data.csv", "a") as file:
+            file.write(data_line)
 
 
     return Pdt, Pr0, [pr - 0.5 for pr in Pr], (np.array(cases), np.array(deaths))
