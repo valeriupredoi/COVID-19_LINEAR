@@ -39,19 +39,19 @@ London [report](https://www.imperial.ac.uk/media/imperial-college/medicine/sph/i
 
 Country  |  % pop infctd. M=0.5% | % pop infctd. M=1% | % pop infctd. at M=2% | Imp. Coll. Rep.
 :-------:|:-------------------------:|:----------------------:|:-------------:|:---------------:
-Austria | 2% | 1%  | 0.5% | 1.1%
-United Kingdom | 5.7% | 2.9% | 1.5% | 2.7%
-Spain | 32% | 16% | 8% | 15%
-Italy | 10% | 5% | 2.5% | 9.8%
+Austria | 2.1% | 1.1%  | 0.5% | 1.1%
+United Kingdom | 4.2% | 2.1% | 1.1% | 2.7%
+Spain | 32.5% | 16.2% | 8.1% | 15%
+Italy | 10.6% | 5.3% | 2.6% | 9.8%
 Germany | 2% | 1% | 0.5% | 0.72%
 France | 7.3%  | 3.6% | 1.8% | 3%
 Sweden | 5.6% | 2.8% | 1.4% | 3.1%
-United States | 2% | 1% | 0.5% | n/a
-Norway | 0.7% | 0.3% | 0.15% | 0.41%
-Denmark | 4% | 2% | 1% | 1.1%
-Belgium | 27% | 13% | 7% | 3.7%
-Switzerland | 5% | 2.5% | 1.3% | 3.1%
-Romania | 1.5% | 0.8% | 0.4% | n/a
+United States | 2.4% | 1.2% | 0.6% | n/a
+Norway | 0.7% | 0.3% | 0.2% | 0.41%
+Denmark | 4.1% | 2.1% | 1% | 1.1%
+Belgium | 27.1% | 13.6% | 6.8% | 3.7%
+Switzerland | 5% | 2.5% | 1.2% | 3.1%
+Romania | 1.5% | 0.7% | 0.4% | n/a
 
 **Table date: 31-03-2020; Imp. Coll. Rep = Imperial College Report for 30/03/2020, Table 1.**
 
