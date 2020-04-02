@@ -1,5 +1,5 @@
 
-
+# name: [ISO, population in 1e3 units]
 COUNTRY_PARAMS = \
     {"Austria": ["AUT", 8891.],
      "Argentina": ["ARG", 44361.],
