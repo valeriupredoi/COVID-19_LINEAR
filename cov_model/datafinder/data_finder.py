@@ -257,7 +257,8 @@ def get_monthly_countries_data(country, month, region):
     today_date = datetime.today().strftime('%m-%d-%Y')
     today_day = today_date.split("-")[1]
     # jump one day in previous month
-    if today_day == '02' and month == 3:
+    # retrorun March in April
+    if today_day == '03' and month == 3:
         today_day = '32'
     for day in range(1, int(float(today_day))):
         date_object = datetime(day=day,

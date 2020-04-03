@@ -115,7 +115,7 @@ def make_evolution_plot(variable_pack, country,
     plt.close()
 
 
-def plot_countries(datasets, month, country, download):
+def plot_countries(datasets, month, country, table_file, download):
     """Plot countries data."""
     if month == 3:
         month_str = "March"
@@ -266,7 +266,8 @@ def plot_countries(datasets, month, country, download):
             s1, s2, s3 = make_simulations_plot(variable_pack, country, SLOWDOWN,
                                                SLOWDOWN_DEATHS, month_str,
                                                slowdown_deaths)
-    # run this periodically
+
+    # write to table file
     if country in COUNTRY_PARAMS:
         iso_country = COUNTRY_PARAMS[country][0]
         pop = COUNTRY_PARAMS[country][1]
@@ -285,9 +286,9 @@ def plot_countries(datasets, month, country, download):
         xs1 = str(int(s1))
         xs2 = str(int(s2))
         xs3 = str(int(s3))
-        fs1 = str(int(s1 / cases[-1]))
-        fs2 = str(int(s2 / cases[-1]))
-        fs3 = str(int(s3 / cases[-1]))
+        fs1 = "%.1f" % (cases[-1] / s1 * 100.)
+        fs2 = "%.1f" % (cases[-1] / s2 * 100.)
+        fs3 = "%.1f" % (cases[-1] / s3 * 100.)
         data_line = ",".join([iso_country,
                               country,
                               cs,
@@ -299,7 +300,7 @@ def plot_countries(datasets, month, country, download):
                               f1, f2, f3,
                               xs1, xs2, xs3,
                               fs1, fs2, fs3]) + '\n'
-        with open("country_data/all_countries_data.csv", "a") as file:
+        with open(table_file, "a") as file:
             file.write(data_line)
 
 
@@ -633,16 +634,31 @@ def main():
     else:
         regions = _get_geography(args.regions)
 
-    # write summary header
+    # write summary files
+    today_date = datetime.today().strftime('%m-%d-%Y')
+    today_day = today_date.split("-")[1]
     header = "Country,country-name,cases,deaths,case rate,death rate," + \
              "doubling cases (days),doubling deaths (days)," + \
              "pct pop 0.5% mort,prct pop 1% mort,prct pop 2% " +  \
              "mort,0.5% mort sim cases,1% mort sim cases," + \
              "2% mort sim cases," + \
-             "0.5% mort sim/cases,1% mort sim/cases," + \
-             "2% mort sim/cases"
-    with open("country_data/all_countries_data.csv", "w") as file:
+             "prct rep cases 0.5% mort,prct rep cases 1% mort," + \
+             "prct rep cases 2% mort"
+    table_file = \
+        "country_tables/ALL_COUNTRIES_DATA_{}-0{}-2020.csv".format(today_day,
+                                                                   args.month)
+    with open(table_file, "w") as file:
         file.write(header + "\n")
+    # write pointer file
+    raw_date = "date={}-0{}-2020".format(today_day, args.month)
+    raw_content = "url=https://raw.githubusercontent.com/" + \
+                  "valeriupredoi/" + \
+                  "COVID-19_LINEAR/master/country_tables/" + \
+                  "ALL_COUNTRIES_DATA_{}-0{}-2020.csv".format(today_day,
+                                                              args.month)
+    raw_file = "country_tables/currentdata.inc"
+    with open(raw_file, "w") as file:
+        file.write(raw_date + ' ' + raw_content)
 
     # plot other countries
     double_time = []
@@ -656,6 +672,7 @@ def main():
                                                      region=False)
         d_time, R0, lin_fit, nums = plot_countries(monthly_numbers,
                                                    args.month, country,
+                                                   table_file,
                                                    download)
         double_time.extend(d_time)
         basic_rep.extend(R0)
@@ -670,6 +687,7 @@ def main():
                                                          region=True)
             d_timeR, R0R, lin_fitR, nums = plot_countries(monthly_numbers,
                                                           args.month, region,
+                                                          table_file,
                                                           download=False)
             double_time.extend(d_timeR)
             basic_rep.extend(R0R)
