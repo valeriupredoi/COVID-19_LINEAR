@@ -61,7 +61,7 @@ Romania | 1.5% | 0.7% | 0.4% | n/a
 
 Spread in the UK: measured cases and deaths  |  10-day projections
 :-------------------------------------------:|:-------------------------:
-![UK](country_plots/COVID-19_LIN_UK.png)     | ![UKP](country_plots/COVID-19_LIN_UK_DARK_SIM_UK.png)
+![UK](country_plots_03-2020/COVID-19_LIN_UK.png)     | ![UKP](country_plots_03-2020/COVID-19_LIN_UK_DARK_SIM_UK.png)
 
 Left panel: daily cumulative numbers of reported cases and deaths (updated daily); right panel: same numbers
 only with two best- and worst-case projections over the next 10 days (March 20-March 30); worst-case
@@ -93,14 +93,14 @@ Germany: 0.39 | Germany: 0.10
 The KS statistic needs to be small and the p-value high for similarity between distributions,
 so `p-value - KS` is a good metric for evaluation:
 
-![UKkS](country_plots/UK-KS.png)
+![UKkS](country_plots_03-2020/UK-KS.png)
 
 From the figure above we notice that only France shows significant similarity with UK's reported
 cases and deaths distributions.
 
 ## Simulating the actual cases
 
-![UKS](country_plots/COVID-19_LIN_UK_SIM_CASES.png)
+![UKS](country_plots_03-2020/COVID-19_LIN_UK_SIM_CASES.png)
 
 Simulating the actual number of infected individuals based on the number of recorded deaths and the
 exponential evolution of this number: numbers of deaths evolve exponentially with the rate `m` and we
@@ -111,7 +111,7 @@ then extrapolate via the exponential evolution of deaths to the current date.
 
 Spread in the UK: measured cases and deaths  |  Simulated actual cases
 :-------------------------------------------:|:-------------------------:
-![UK](country_plots/COVID-19_LIN_UK.png) |  ![UKS](country_plots/COVID-19_LIN_UK_SIM_CASES.png)
+![UK](country_plots_03-2020/COVID-19_LIN_UK.png) |  ![UKS](country_plots_03-2020/COVID-19_LIN_UK_SIM_CASES.png)
 
 Linear fit of the exponential spread in the United Kingdom, starting March 1st, 2020.
 Data is piped automatically from the official database provided by the
@@ -142,7 +142,7 @@ such results need to be placed in the context of actual country-specific situati
 
 Spread in the UK                             |  Spread in Denmark
 :-------------------------------------------:|:-------------------------:
-![UK](country_plots/COVID-19_LIN_UK.png) |  ![Denmark](country_plots/COVID-19_LIN_Denmark.png)
+![UK](country_plots_03-2020/COVID-19_LIN_UK.png) |  ![Denmark](country_plots_03-2020/COVID-19_LIN_Denmark.png)
 
 There a few examples already that show that the combination of better testing and restricted
 social interactions contribute to bringing down the acceleration of the spread: the figure shows
@@ -160,7 +160,7 @@ deaths, factor five less.
 
 Infection starts (UK and Italy)                           |  Current evolution in Italy
 :--------------------------------------------------------:|:-----------------------------:
-![ST](START_PLOTS/COV19_LIN_START_9-03-2020_UK-Italy.png) |  ![IT](country_plots/COVID-19_LIN_Italy.png)
+![ST](START_PLOTS/COV19_LIN_START_9-03-2020_UK-Italy.png) |  ![IT](country_plots_03-2020/COVID-19_LIN_Italy.png)
 
 Figure above (left): comparison of infection starts (shifted in time to overlap)
 for Italy (February, ending March 1st) and UK (March); Italy shows a faster infectious spread at a
@@ -185,7 +185,7 @@ as compared to the initial 0.41 day-1.
 
 (date written: 19 March, 2020)
 
-- the numbers to trust more are the number of deaths and the rate at which they grow, since the reported cases are biased wrt actual number of cases due to different types of testing and the actual number of tests performed per day; in terms of the number of deaths: we are seeing a very high number (today: 144 deaths, 3300 confirmed cases) and a very high measured rate: 0.43 per day (only Spain has a similar rate, accumulated over a longer period, so more trustworthy as a number). To put this into perspective: countries like France, on the day they recorded such a high death number, their total number of reported cases was twice as ours, and knowing they both were doing about half the daily tests we are doing (France has been doing ~2500 [1](http://www.rfi.fr/en/france/20200318-france-step-up-coronavirus-new-test-methods-death-toll-climbs-covid-19-priority-risk-elderly-symptoms) tests per day, the UK has been doing ~5000 tests per day [2](https://ourworldindata.org/covid-testing?fbclid=IwAR0ZIMyVyWLCfn5uYwW10A1T1GdoZrFymt3L5OAqz2REWoGiT2w508gP2-A)) that means numbers don't add up to explain such a high death toll the UK is seeing. My take is that our testing system is very biased (this is just a supposition since I don't know much about it) but is done in such a way that, even if we test twice as much as France does at the moment, we are still finding half the cases they are finding (on average), see the [plot](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_plots/COVID-19_LIN_France.png)
+- the numbers to trust more are the number of deaths and the rate at which they grow, since the reported cases are biased wrt actual number of cases due to different types of testing and the actual number of tests performed per day; in terms of the number of deaths: we are seeing a very high number (today: 144 deaths, 3300 confirmed cases) and a very high measured rate: 0.43 per day (only Spain has a similar rate, accumulated over a longer period, so more trustworthy as a number). To put this into perspective: countries like France, on the day they recorded such a high death number, their total number of reported cases was twice as ours, and knowing they both were doing about half the daily tests we are doing (France has been doing ~2500 [1](http://www.rfi.fr/en/france/20200318-france-step-up-coronavirus-new-test-methods-death-toll-climbs-covid-19-priority-risk-elderly-symptoms) tests per day, the UK has been doing ~5000 tests per day [2](https://ourworldindata.org/covid-testing?fbclid=IwAR0ZIMyVyWLCfn5uYwW10A1T1GdoZrFymt3L5OAqz2REWoGiT2w508gP2-A)) that means numbers don't add up to explain such a high death toll the UK is seeing. My take is that our testing system is very biased (this is just a supposition since I don't know much about it) but is done in such a way that, even if we test twice as much as France does at the moment, we are still finding half the cases they are finding (on average), see the [plot](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_plots_03-2020/COVID-19_LIN_France.png)
 - if testing is biased, we can explain the number of deaths by saying the number of cases in the UK is much higher than what it is reported; using the comparison with France again, that would mean we are in an equivalent position (they report a total ~10000 cases as of today); an average death rate of 0.01-0.02 is something we have measured so far quite accurately vs the reported cases so that would mean today in the UK 7500-15000 cases should have been reported;
 - that puts us in a very bad position because the epidemic is much more advanced than what we declare at the moment, and we are actually not at all behind neither France nor Spain (Spain is suffering from very bad testing too); if we instate strong measures now, the effect will have been felt only much later ie in a full infectious phase time 10-14 days from now, and even then I can not tell how how strong the effect is; my estimate is we will stay in exponential phase for a long time, but similar to Italy the rate will gradually decrease; a rate of 0.25 would mean in a week from now we will have reported ~19,000 cases but if the testing is not fixed that would be a France reported equivalent of ~60,000 cases out of which 20% in hospital-condition =12,000 needing hospitalization; two weeks from now, provided that the rate will have decreased to 0.2 due to the imposed measures the total number of realistic cases would be 240,000 meaning about 40,000 needing hospitalization, and even if the patients from previous week have had recovered completely that would mean we need 30,000 beds.
 
@@ -199,105 +199,105 @@ could well be because of a drop in number of tests or testing procedures!).
 Look for the green lines, representing the new, slow-down increase.
 
 ## France
-![COVID-19 France Evolution](country_plots/COVID-19_LIN_France.png)
-![COVID-19 France Evolution](country_plots/COVID-19_LIN_France_SIM_CASES.png)
+![COVID-19 France Evolution](country_plots_03-2020/COVID-19_LIN_France.png)
+![COVID-19 France Evolution](country_plots_03-2020/COVID-19_LIN_France_SIM_CASES.png)
 
 ## Belgium
-![COVID-19 Belgium Evolution](country_plots/COVID-19_LIN_Belgium.png)
-![COVID-19 Belgium Evolution](country_plots/COVID-19_LIN_Belgium_SIM_CASES.png)
+![COVID-19 Belgium Evolution](country_plots_03-2020/COVID-19_LIN_Belgium.png)
+![COVID-19 Belgium Evolution](country_plots_03-2020/COVID-19_LIN_Belgium_SIM_CASES.png)
 
 ## Spain
-![COVID-19 Spain Evolution](country_plots/COVID-19_LIN_Spain.png)
-![COVID-19 Spain Evolution](country_plots/COVID-19_LIN_Spain_SIM_CASES.png)
+![COVID-19 Spain Evolution](country_plots_03-2020/COVID-19_LIN_Spain.png)
+![COVID-19 Spain Evolution](country_plots_03-2020/COVID-19_LIN_Spain_SIM_CASES.png)
 
 ## Italy
-![COVID-19 Italy Evolution](country_plots/COVID-19_LIN_Italy.png)
-![COVID-19 Italy Evolution](country_plots/COVID-19_LIN_Italy_SIM_CASES.png)
+![COVID-19 Italy Evolution](country_plots_03-2020/COVID-19_LIN_Italy.png)
+![COVID-19 Italy Evolution](country_plots_03-2020/COVID-19_LIN_Italy_SIM_CASES.png)
 
 ## Romania
-![COVID-19 Romania Evolution](country_plots/COVID-19_LIN_Romania.png)
+![COVID-19 Romania Evolution](country_plots_03-2020/COVID-19_LIN_Romania.png)
 
 ## Portugal
-![COVID-19 Portugal Evolution](country_plots/COVID-19_LIN_Portugal.png)
-![COVID-19 Portugal Evolution](country_plots/COVID-19_LIN_Portugal_SIM_CASES.png)
+![COVID-19 Portugal Evolution](country_plots_03-2020/COVID-19_LIN_Portugal.png)
+![COVID-19 Portugal Evolution](country_plots_03-2020/COVID-19_LIN_Portugal_SIM_CASES.png)
 
 ## Germany
-![COVID-19 Germany Evolution](country_plots/COVID-19_LIN_Germany.png)
-![COVID-19 Germany Evolution](country_plots/COVID-19_LIN_Germany_SIM_CASES.png)
+![COVID-19 Germany Evolution](country_plots_03-2020/COVID-19_LIN_Germany.png)
+![COVID-19 Germany Evolution](country_plots_03-2020/COVID-19_LIN_Germany_SIM_CASES.png)
 
 ## Austria
-![COVID-19 Austria Evolution](country_plots/COVID-19_LIN_Austria.png)
-![COVID-19 Austria Evolution](country_plots/COVID-19_LIN_Austria_SIM_CASES.png)
+![COVID-19 Austria Evolution](country_plots_03-2020/COVID-19_LIN_Austria.png)
+![COVID-19 Austria Evolution](country_plots_03-2020/COVID-19_LIN_Austria_SIM_CASES.png)
 
 ## Netherlands
-![COVID-19 Netherlands Evolution](country_plots/COVID-19_LIN_Netherlands.png)
-![COVID-19 Netherlands Evolution](country_plots/COVID-19_LIN_Netherlands_SIM_CASES.png)
+![COVID-19 Netherlands Evolution](country_plots_03-2020/COVID-19_LIN_Netherlands.png)
+![COVID-19 Netherlands Evolution](country_plots_03-2020/COVID-19_LIN_Netherlands_SIM_CASES.png)
 
 ## Switzerland
-![COVID-19 Switzerland Evolution](country_plots/COVID-19_LIN_Switzerland.png)
-![COVID-19 Switzerland Evolution](country_plots/COVID-19_LIN_Switzerland_SIM_CASES.png)
+![COVID-19 Switzerland Evolution](country_plots_03-2020/COVID-19_LIN_Switzerland.png)
+![COVID-19 Switzerland Evolution](country_plots_03-2020/COVID-19_LIN_Switzerland_SIM_CASES.png)
 
 ## Bulgaria
-![COVID-19 Bulgaria Evolution](country_plots/COVID-19_LIN_Bulgaria.png)
-![COVID-19 Bulgaria Evolution](country_plots/COVID-19_LIN_Bulgaria_SIM_CASES.png)
+![COVID-19 Bulgaria Evolution](country_plots_03-2020/COVID-19_LIN_Bulgaria.png)
+![COVID-19 Bulgaria Evolution](country_plots_03-2020/COVID-19_LIN_Bulgaria_SIM_CASES.png)
 
 ## Ireland
-![COVID-19 Ireland Evolution](country_plots/COVID-19_LIN_Ireland.png)
-![COVID-19 Ireland Evolution](country_plots/COVID-19_LIN_Ireland_SIM_CASES.png)
+![COVID-19 Ireland Evolution](country_plots_03-2020/COVID-19_LIN_Ireland.png)
+![COVID-19 Ireland Evolution](country_plots_03-2020/COVID-19_LIN_Ireland_SIM_CASES.png)
 
 ## Slovakia
-![COVID-19 Slovakia Evolution](country_plots/COVID-19_LIN_Slovakia.png)
+![COVID-19 Slovakia Evolution](country_plots_03-2020/COVID-19_LIN_Slovakia.png)
 
 ## Poland
-![COVID-19 Poland Evolution](country_plots/COVID-19_LIN_Poland.png)
-![COVID-19 Poland Evolution](country_plots/COVID-19_LIN_Poland_SIM_CASES.png)
+![COVID-19 Poland Evolution](country_plots_03-2020/COVID-19_LIN_Poland.png)
+![COVID-19 Poland Evolution](country_plots_03-2020/COVID-19_LIN_Poland_SIM_CASES.png)
 
 ## Israel
-![COVID-19 Israel Evolution](country_plots/COVID-19_LIN_Israel.png)
+![COVID-19 Israel Evolution](country_plots_03-2020/COVID-19_LIN_Israel.png)
 
 It is very intriguing to see that all Scandinavian countries show a significant
 decrease in the spread rate after (roughly) March 14, 2020.
 
 ## Denmark
-![COVID-19 Denmark Evolution](country_plots/COVID-19_LIN_Denmark.png)
-![COVID-19 Denmark Evolution](country_plots/COVID-19_LIN_Denmark_SIM_CASES.png)
+![COVID-19 Denmark Evolution](country_plots_03-2020/COVID-19_LIN_Denmark.png)
+![COVID-19 Denmark Evolution](country_plots_03-2020/COVID-19_LIN_Denmark_SIM_CASES.png)
 
 ## Finland
-![COVID-19 Finland Evolution](country_plots/COVID-19_LIN_Finland.png)
+![COVID-19 Finland Evolution](country_plots_03-2020/COVID-19_LIN_Finland.png)
 
 ## Sweden
-![COVID-19 Sweden Evolution](country_plots/COVID-19_LIN_Sweden.png)
-![COVID-19 Sweden Evolution](country_plots/COVID-19_LIN_Sweden_SIM_CASES.png)
+![COVID-19 Sweden Evolution](country_plots_03-2020/COVID-19_LIN_Sweden.png)
+![COVID-19 Sweden Evolution](country_plots_03-2020/COVID-19_LIN_Sweden_SIM_CASES.png)
 
 ## Norway
-![COVID-19 Norway Evolution](country_plots/COVID-19_LIN_Norway.png)
-![COVID-19 Norway Evolution](country_plots/COVID-19_LIN_Norway_SIM_CASES.png)
+![COVID-19 Norway Evolution](country_plots_03-2020/COVID-19_LIN_Norway.png)
+![COVID-19 Norway Evolution](country_plots_03-2020/COVID-19_LIN_Norway_SIM_CASES.png)
 
 # US-Canada
 
 ## US
-![COVID-19 US Evolution](country_plots/COVID-19_LIN_US.png)
-![COVID-19 US Evolution](country_plots/COVID-19_LIN_US_SIM_CASES.png)
+![COVID-19 US Evolution](country_plots_03-2020/COVID-19_LIN_US.png)
+![COVID-19 US Evolution](country_plots_03-2020/COVID-19_LIN_US_SIM_CASES.png)
 
 ## Canada
-![COVID-19 Canada Evolution](country_plots/COVID-19_LIN_Canada.png)
+![COVID-19 Canada Evolution](country_plots_03-2020/COVID-19_LIN_Canada.png)
 
 ## Kentucky
-![COVID-19 Kentucky Evolution](country_plots/COVID-19_LIN_Kentucky.png)
-![COVID-19 Kentucky Evolution](country_plots/COVID-19_LIN_Kentucky_SIM_CASES.png)
+![COVID-19 Kentucky Evolution](country_plots_03-2020/COVID-19_LIN_Kentucky.png)
+![COVID-19 Kentucky Evolution](country_plots_03-2020/COVID-19_LIN_Kentucky_SIM_CASES.png)
 
 ## Tennessee
-![COVID-19 Tennessee Evolution](country_plots/COVID-19_LIN_Tennessee.png)
-![COVID-19 Tennessee Evolution](country_plots/COVID-19_LIN_Tennessee_SIM_CASES.png)
+![COVID-19 Tennessee Evolution](country_plots_03-2020/COVID-19_LIN_Tennessee.png)
+![COVID-19 Tennessee Evolution](country_plots_03-2020/COVID-19_LIN_Tennessee_SIM_CASES.png)
 
 ## Orgeon
-![COVID-19 Oregon Evolution](country_plots/COVID-19_LIN_Oregon.png)
-![COVID-19 Oregon Evolution](country_plots/COVID-19_LIN_Oregon_SIM_CASES.png)
+![COVID-19 Oregon Evolution](country_plots_03-2020/COVID-19_LIN_Oregon.png)
+![COVID-19 Oregon Evolution](country_plots_03-2020/COVID-19_LIN_Oregon_SIM_CASES.png)
 
 # Parameters
 
-![COVID-19 Doubling Time Evolution](country_plots/Histogram_Doubling_Time.png)
-![COVID-19 Rzero Evolution](country_plots/Histogram_Basic_Reproductive_Number.png)
+![COVID-19 Doubling Time Evolution](country_plots_03-2020/Histogram_Doubling_Time.png)
+![COVID-19 Rzero Evolution](country_plots_03-2020/Histogram_Basic_Reproductive_Number.png)
 
 
 - `b`: exponential rate at which daily cases rise (in units `day-1`);
