@@ -659,7 +659,7 @@ def main():
                                                               args.month)
     raw_file = "country_tables/currentdata.inc"
     with open(raw_file, "w") as file:
-        file.write(raw_date + ' ' + raw_content)
+        file.write(raw_date + '\n' + raw_content)
 
     # plot other countries
     double_time = []
