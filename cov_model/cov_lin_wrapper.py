@@ -445,7 +445,8 @@ def make_simulations_plot(variable_pack, country,
 
     # do full 10-day running projection
     # with initial conditions on March 21
-    if country == "UK":
+    # only for March
+    if country == "UK" and month_str == 'March':
         # projection data and ticks
         x0, y0, y0d, y, yd, y_min, yd_min = uk.compute_initial_projection_uk()
         log_ticks = [np.log(y0), np.log(y), np.log(y0d), np.log(yd),
