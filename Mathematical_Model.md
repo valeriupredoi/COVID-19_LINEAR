@@ -72,8 +72,8 @@ growth rate of the actual cases, which we assume to be close to the evolution ov
 days of `m` (case evolution is well mirrored by the deaths evolution after 20 days).
 
 For March, when a lot of the deaths rates `m` have been noticed to drop to half after 15-20 days, we
-chose `f(m) = m/2`; for April (so far) we are thresholding `m` at 0.2 and apply the 0.5 factor only
-for `m > 0.2` since those rates < 0.2 are very stable and have not been observed to change over longer
+chose `f(m) = m/2`; for April (so far) we are thresholding `m` at 0.15 and apply the 0.5 factor only
+for `m > 0.15` since those rates < 0.15 are very stable and have not been observed to change over longer
 periods of time. This way we can estimate the actual number of cases today as:
 ```
 C_today = C(t - 20)exp(f(m)t)
