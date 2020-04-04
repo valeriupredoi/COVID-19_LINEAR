@@ -250,7 +250,7 @@ def plot_countries(datasets, month, country, table_file, download):
     if country not in SLOWDOWN_DEATHS:
         make_evolution_plot(variable_pack, country, SLOWDOWN,
                             SLOWDOWN_DEATHS, month_str)
-        if deaths and len(deaths) > 3.0:
+        if deaths and len(deaths) >= 3.0:
             s1, s2, s3 = make_simulations_plot(variable_pack, country,
                                                SLOWDOWN, SLOWDOWN_DEATHS,
                                                month_str)
@@ -262,7 +262,7 @@ def plot_countries(datasets, month, country, table_file, download):
         make_evolution_plot(variable_pack, country, SLOWDOWN,
                             SLOWDOWN_DEATHS,
                             month_str, slowdown_deaths)
-        if deaths and len(deaths) > 3.0:
+        if deaths and len(deaths) >= 3.0:
             s1, s2, s3 = make_simulations_plot(variable_pack, country, SLOWDOWN,
                                                SLOWDOWN_DEATHS, month_str,
                                                slowdown_deaths)
