@@ -361,8 +361,12 @@ def make_simulations_plot(variable_pack, country,
     # correction: 20 days is probably more realistic
     if slowdown_deaths is not None:
         slope_sim = slope_d_s  # / 2.0 when rates halfen roughly
+        if slope_sim > 0.2:
+            slope_sim = slope_sim / 2.0
     else:
         slope_sim = slope_d  # / 2.0 when rates halfen roughly
+        if slope_sim > 0.2:
+            slope_sim = slope_sim / 2.0
     sim_y_0_f = sim_y_0_real[-1] * np.exp(20. * slope_sim)
     sim_y_1_f = sim_y_1_real[-1] * np.exp(20. * slope_sim)
     sim_y_2_f = sim_y_2_real[-1] * np.exp(20. * slope_sim)
