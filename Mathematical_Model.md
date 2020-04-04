@@ -61,7 +61,7 @@ number of cases
 ```
 C(t) = M x D(t)
 ```
-and shift `C(t) in time by a **fixed** delay of 20 days (assumed as average duration between
+and shift `C(t)` in time by a **fixed** delay of 20 days (assumed as average duration between
 time of infection and time of death) and compute the number of cases on the day when the deaths
 reported today were cases right after infection `C(t - 20)`. To get the number of actual cases of
 today, `C(t - 20)` needs to be extrapolated 20 days later (today): for that we use the rate of

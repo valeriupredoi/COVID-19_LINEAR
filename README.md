@@ -1,5 +1,10 @@
 # COVID-19 Adaptive Linear Fit and Parameter Estimation
 
+## Modelling
+
+A description of the simple mathematical model behind these
+results can be found [here](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/Mathematical_Model.md)
+
 ## Visualization
 
 Maps are courtesy of [datawrapper](https://github.com/werner17/Covis?fbclid=IwAR19xnSaq57hdbWOX0ab-G1FVf2ScgFUd-iRla-1kfASwwhFZTF9k5KEnCQ) and use data from this daily updated [tables](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_tables).
