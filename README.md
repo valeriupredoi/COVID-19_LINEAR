@@ -11,12 +11,16 @@ Maps are courtesy of [datawrapper](https://github.com/werner17/Covis?fbclid=IwAR
 
 * Reported cases doubling time
   ![map](https://github.com/werner17/Covis/blob/master/datawrapper/kdAj6.png)
+  [Interactive Map](https://datawrapper.dwcdn.net/kdAj6)
 * Reported deaths doubling time
   ![map](https://github.com/werner17/Covis/blob/master/datawrapper/WQXRP.png)
+  [Interactive Map](https://datawrapper.dwcdn.net/WQXRP)
 * Actual infections percentages of country populations
   ![map](https://github.com/werner17/Covis/blob/master/datawrapper/foNWt.png)
+  [Interactive Map](https://datawrapper.dwcdn.net/foNWt)
 * Estimated underreporting:
   ![map](https://github.com/werner17/Covis/blob/master/datawrapper/dUzze.png)
+  [Interactive Map](https://datawrapper.dwcdn.net/dUzze)
 
 ## Resources
 
