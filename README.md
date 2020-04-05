@@ -7,11 +7,16 @@ results can be found [here](https://github.com/valeriupredoi/COVID-19_LINEAR/blo
 
 ## Visualization
 
-Maps are courtesy of [datawrapper](https://github.com/werner17/Covis?fbclid=IwAR19xnSaq57hdbWOX0ab-G1FVf2ScgFUd-iRla-1kfASwwhFZTF9k5KEnCQ) and use data from this daily updated [tables](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_tables).
+Maps are courtesy of [datawrapper](https://github.com/werner17/Covis?fbclid=IwAR19xnSaq57hdbWOX0ab-G1FVf2ScgFUd-iRla-1kfASwwhFZTF9k5KEnCQ) and use data from this daily updated [tables](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_tables). Map source can be found[here](https://github.com/werner17/Covis/blob/master/datawrapper/README.md?fbclid=IwAR3lIkoSgOFhVhSJYFd01FToppwhDvcHpVb87Tvl4vQaeaTJXmFS1TeEfgQ)
 
-* Reported cases doubling time [map](https://datawrapper.dwcdn.net/kdAj6/9/?fbclid=IwAR13nerpt17JXOdQWyVn4WdTY22_W0gtNQq1BhgJfawvwQ6bJBbpNuXJcUU)
-* Reported deaths doubling time [map](https://datawrapper.dwcdn.net/WQXRP/3/?fbclid=IwAR0d3ahh4Ylv3G1rsS-X_4O0cI5nTOTVMxSRqUeIJPEJXpaRZl4G8C5Zlfs)
-* Actual infections percentages of country populations [map](https://datawrapper.dwcdn.net/foNWt/2/?fbclid=IwAR1Udpt4SW67r0jtPCdzJ17ZoXALbVli9WOoyfsx0U5emOndrYONAd2jnJY)
+* Reported cases doubling time
+  ![map](https://github.com/werner17/Covis/blob/master/datawrapper/kdAj6.png)
+* Reported deaths doubling time
+  ![map](https://github.com/werner17/Covis/blob/master/datawrapper/WQXRP.png)
+* Actual infections percentages of country populations
+  ![map](https://github.com/werner17/Covis/blob/master/datawrapper/foNWt.png)
+* Estimated underreporting:
+  ![map](https://github.com/werner17/Covis/blob/master/datawrapper/dUzze.png)
 
 ## Resources
 
