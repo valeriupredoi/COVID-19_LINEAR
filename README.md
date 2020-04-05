@@ -7,7 +7,7 @@ results can be found [here](https://github.com/valeriupredoi/COVID-19_LINEAR/blo
 
 ## Visualization
 
-Maps are courtesy of [datawrapper](https://github.com/werner17/Covis?fbclid=IwAR19xnSaq57hdbWOX0ab-G1FVf2ScgFUd-iRla-1kfASwwhFZTF9k5KEnCQ) and use data from this daily updated [tables](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_tables). Map source can be found[here](https://github.com/werner17/Covis/blob/master/datawrapper/README.md?fbclid=IwAR3lIkoSgOFhVhSJYFd01FToppwhDvcHpVb87Tvl4vQaeaTJXmFS1TeEfgQ)
+Maps are courtesy of [datawrapper](https://github.com/werner17/Covis?fbclid=IwAR19xnSaq57hdbWOX0ab-G1FVf2ScgFUd-iRla-1kfASwwhFZTF9k5KEnCQ) and use data from this daily updated [tables](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_tables). Map source can be found [here](https://github.com/werner17/Covis/blob/master/datawrapper/README.md?fbclid=IwAR3lIkoSgOFhVhSJYFd01FToppwhDvcHpVb87Tvl4vQaeaTJXmFS1TeEfgQ)
 
 * Reported cases doubling time
   ![map](https://github.com/werner17/Covis/blob/master/datawrapper/kdAj6.png)
