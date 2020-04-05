@@ -14,6 +14,8 @@ D(t) = D0exp(mt)
 ```
 where `m` is the growth rate for deaths and `D0` is an initial number.
 
+## Doubling times and daily increments
+
 Line-fitting `ln(N) = f(t)` and `ln(D) = f(t)` will give us rates `b` and `m`, and
 will allow us to estimate the doubling times for reported cases and deaths:
 ```
@@ -23,6 +25,28 @@ and
 ```
 double_time_deaths = ln(2)/m
 ```
+
+With these, we can rewrite the evolution of both reported number of cases and reported deaths:
+```
+N(days) = N0 x 2^(days/double_time_cases)
+```
+and
+```
+D(days) = D0 x 2^(days/double_time_deaths)
+```
+where `days` is the number of days the evolution is measured on; the larger `double_time_cases`
+and `double_time_deaths` the smaller `N(t)` and `D(t)` are and for large enough
+`double_time_cases >> days` and `double_time_deaths >> days`, the exponential evolution
+can be approximated to:
+```
+N(days) = N0 x (1 + days/double_time_cases)
+```
+and
+```
+D(days) = D0 x (1 + days/double_time_deaths)
+```
+that is a linear evolution with time, which much slower than the exponential one.
+
 We can also estimate a local, daily basic reproductive number:
 for a daily evolution, starting from N cases the previous day,
 the total number of cases would be
@@ -38,7 +62,14 @@ this is a rough estimate of a daily basic reproductive number, which is < 1,
 but over an infectious period of X days (I assume 10 in this case) will be > 1.
 It somewhat resembles the definition of `R0` as a basic reproductive number since
 it measures how fast the number of cases changes over the infectious period,
-but it is not a rigorous computation of `R0`.
+but it is not a rigorous computation of `R0`. We can rewrite the formula for the
+daily increase as
+```
+b = ln(1 + P)
+```
+where `P = dN/N` represents the daily measured relative increase in reported number of cases;
+this is in fact a function of time `b(t) = ln(1 + P(t))` since both `b` and `P` will decrease
+over time (see next section).
 
 ## Time evolution of rates
 
@@ -76,5 +107,5 @@ chose `f(m) = m/2`; for April (so far) we are thresholding `m` at 0.15 and apply
 for `m > 0.15` since those rates < 0.15 are very stable and have not been observed to change over longer
 periods of time. This way we can estimate the actual number of cases today as:
 ```
-C_today = C(t - 20)exp(f(m)t)
+C(today) = M x D(today) x exp(f(m) x 20)
 ```
