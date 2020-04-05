@@ -19,6 +19,7 @@ COUNTRY_PARAMS = \
      "Ireland": ["IRL", 4818.],
      "Italy": ["ITA", 60627.],
      "Israel": ["ISR", 8381.],
+     "Japan": ["JPN", 127000.],
      "Mexico": ["MEX", 126190.],
      "Moldova": ["MDA", 4051.],
      "Netherlands": ["NLD", 17059.],
