@@ -302,6 +302,9 @@ def plot_countries(datasets, month, country, table_file, download):
                               fs1, fs2, fs3]) + '\n'
         with open(table_file, "a") as file:
             file.write(data_line)
+        with open("country_tables/countries_with_case_doubling-time_larger_14days.csv", "a") as file:
+            if float(dc) >= 14.:
+                file.write(country + "," + dc + "\n")
 
 
     return Pdt, Pr0, [pr - 0.5 for pr in Pr], (np.array(cases), np.array(deaths))
@@ -664,6 +667,9 @@ def main():
     raw_file = "country_tables/currentdata.inc"
     with open(raw_file, "w") as file:
         file.write(raw_date + '\n' + raw_content)
+
+    with open("country_tables/countries_with_case_doubling-time_larger_14days.csv", "w") as file:
+        file.write("Country,doubling time (days)\n")
 
     # plot other countries
     double_time = []
