@@ -29,10 +29,6 @@ from statsanalysis import (linear, ks, country_parameters)
 from projections import uk
 
 
-# countries that need their data to be summed;
-# same for US states
-COUNTRIES_TO_SUM = ["US", "France", "Denmark",
-                    "Netherlands"]
 COUNTRY_PARAMS = country_parameters.COUNTRY_PARAMS
 
 def make_evolution_plot(variable_pack, country,
@@ -735,7 +731,6 @@ def main():
                 
     if regions:
         for region in regions:
-            COUNTRIES_TO_SUM.append(region)
             monthly_numbers = get_monthly_countries_data(region,
                                                          args.month,
                                                          region=True)

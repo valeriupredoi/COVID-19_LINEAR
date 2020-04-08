@@ -20,7 +20,7 @@ JOHN_HOPKINS = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master
 # countries that need their data to be summed;
 # same for US states
 COUNTRIES_TO_SUM = ["US", "France", "Denmark",
-                    "Netherlands"]
+                    "Netherlands", "California", "New York"]
 
 def _sum_up(param, country):
     """Get special csv param for US - summing is needed."""
@@ -149,8 +149,12 @@ def _reformat_date(exp_dates):
         try:
             datetime.strptime(exp_dates, time_fmt)
         except ValueError:
-            exp_dates = datetime.strptime(exp_dates,
-                                          wrong_time_fmt).strftime(time_fmt)
+            try:
+                exp_dates = datetime.strptime(exp_dates,
+                                              wrong_time_fmt).strftime(time_fmt)
+            except ValueError:
+                exp_dates = datetime.strptime(exp_dates,
+                                              "%m/%d/20 %H:%M").strftime(time_fmt)
 
     if exp_dates != 'NN' and isinstance(exp_dates, list):
         try:
