@@ -71,6 +71,11 @@ where `P = dN/N` represents the daily measured relative increase in reported num
 this is in fact a function of time `b(t) = ln(1 + P(t))` since both `b` and `P` will decrease
 over time (see next section).
 
+We can now express the basic reproductive number R in terms of reported cases doubling time:
+```
+R = exp(ln2/double_time_cases) - 1
+```
+
 ## Time evolution of rates
 
 Growth rates `b` and `m` do not stay constant over longer (>10-12 days) periods of time,
