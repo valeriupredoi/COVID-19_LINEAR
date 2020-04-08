@@ -606,6 +606,31 @@ def _get_geography(arg):
     return geographies
 
 
+def plot_doubling(cases_dt, deaths_dt, current_range, country):
+    """Plot doubling times for cases and deaths per country."""
+    plt.scatter(current_range, cases_dt, marker='o', color='r', label='Case doubling time')
+    plt.scatter(current_range, deaths_dt, marker='v', color='b', label='Deaths doubling time')
+    plt.plot(current_range, cases_dt, color='r')
+    plt.plot(current_range, deaths_dt, color='b')
+    header = "Cases/Deaths doubling time [days] for {}".format(country)
+    plt.title(header, fontsize=10)
+    plt.xlabel("Day in April")
+    plt.ylabel("Doubling times [days]")
+    plt.axhline(14., color='k', linestyle='--')
+    plt.semilogy()
+    cas = [float(r) for r in cases_dt]
+    det = [float(r) for r in deaths_dt]
+    cas.extend(det)
+    plt.yticks(cas, cas)
+    plt.tick_params(axis="y", labelsize=8)
+    plt.ylim(3., 15.)
+    plt.grid()
+    plt.legend(loc="lower left", fontsize=8)
+    plt.savefig(os.path.join("country_plots",
+                             "COVID-19_Doubling_Times_{}.png".format(country)))
+    plt.close()
+
+
 def main():
     """Execute the plotter."""
     # parse command line args
@@ -690,6 +715,20 @@ def main():
         lin_fit_quality.extend(lin_fit)
         nums_cases[country] = nums[0]
         nums_deaths[country] = nums[1]
+        current_range = range(4, int(today_day) + 1)
+        cases_dt = []
+        deaths_dt = []
+        for d in current_range:
+            dat_file = "country_tables/ALL_COUNTRIES_DATA_0{}-04-2020.csv".format(d)
+            with open(dat_file, "r") as file:
+                content = file.readlines()
+                for line in content:
+                    if line.split(",")[1] == country:
+                        cases_dt.append(line.split(",")[6])
+                        deaths_dt.append(line.split(",")[7])
+        if len(cases_dt) == len(current_range):
+            plot_doubling(cases_dt, deaths_dt, current_range, country)
+                
     if regions:
         for region in regions:
             COUNTRIES_TO_SUM.append(region)
