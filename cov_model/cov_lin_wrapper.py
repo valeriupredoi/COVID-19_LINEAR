@@ -87,8 +87,12 @@ def make_evolution_plot(variable_pack, country,
     if deaths:
         plt.errorbar(x_deaths, y_deaths, yerr=y_err_d, fmt='v', color='b')
     plt.grid()
-    plt.xlim(0., x_cases[-1] + 1.5)
-    plt.ylim(0., y_cases[-1] + 3.5)
+    if not deaths:
+        plt.xlim(0., x_cases[-1] + 1.5)
+        plt.ylim(0., y_cases[-1] + 3.5)
+    else:
+        plt.xlim(0., x_cases[-1] + 1.5)
+        plt.ylim(y_deaths[0] - 2., y_cases[-1] + 3.5)
     if country in SLOWDOWN:
         plt.xlim(0., x_slow[-1] + 1.5)
         plt.ylim(0., y_slow[-1] + 3.5)
