@@ -719,7 +719,10 @@ def main():
         cases_dt = []
         deaths_dt = []
         for d in current_range:
-            dat_file = "country_tables/ALL_COUNTRIES_DATA_0{}-04-2020.csv".format(d)
+            if d < 10:
+                dat_file = "country_tables/ALL_COUNTRIES_DATA_0{}-04-2020.csv".format(d)
+            else:
+                dat_file = "country_tables/ALL_COUNTRIES_DATA_{}-04-2020.csv".format(d)
             with open(dat_file, "r") as file:
                 content = file.readlines()
                 for line in content:
