@@ -402,13 +402,13 @@ def make_simulations_plot(variable_pack, country,
             slope_sim = slope_sim / 2.0
     else:
         slope_sim = slope_d  # / 2.0 when rates halfen roughly
-        if slope_sim > 0.15:
+        if slope_sim > 0.05:
             slope_sim = slope_sim / 2.0
-    sim_y_0_f = sim_y_0_real[-1] * np.exp(20. * slope_sim)
-    sim_y_1_f = sim_y_1_real[-1] * np.exp(20. * slope_sim)
-    sim_y_2_f = sim_y_2_real[-1] * np.exp(20. * slope_sim)
-    sim_y_3_f = sim_y_3_real[-1] * np.exp(20. * slope_sim)
-    sim_y_4_f = sim_y_4_real[-1] * np.exp(20. * slope_sim) 
+    sim_y_0_f = sim_y_0_real[-1] * np.exp(14. * slope_sim)
+    sim_y_1_f = sim_y_1_real[-1] * np.exp(14. * slope_sim)
+    sim_y_2_f = sim_y_2_real[-1] * np.exp(14. * slope_sim)
+    sim_y_3_f = sim_y_3_real[-1] * np.exp(14. * slope_sim)
+    sim_y_4_f = sim_y_4_real[-1] * np.exp(14. * slope_sim) 
 
     y_all_real = []
     y_all_real.extend(y_deaths_real)
