@@ -82,8 +82,13 @@ Growth rates `b` and `m` do not stay constant over longer (>10-12 days) periods 
 it is noticed they are gradually decreasing with time. Therefore, the linear fits are not
 performed on all data points from the start of the epidemic, but are, in fact, performed
 on subsets of data points to maximize the quality of fit. This generates a set of rates `b`
-and `m` over time. The criterion for refitting is when the coefficient of determination `R` drops
-below a certain acceptance value, usually 0.95 (the fit needs to be of very high quality).
+and `m` over time.
+
+We perform two types of fits: one for all available data and another for the last 5 days. If the
+fit for the last 5 days is better than the overall data fit (compare coefficient of determination
+R) and if the coefficient of determination for the last 5 days fit is > 0.98 then we chose
+the linear parameters for the last 5 days fir (most of the cases show that the last 5 days fit
+is generally better; 0.98 means a very high quality fit).
 
 ## Estimating the actual number of cases
 

@@ -62,7 +62,10 @@ def make_evolution_plot(variable_pack, country,
     # plot
     plt.scatter(x_cases, y_cases, color='r',
                 label="Daily Cases")
-    plt.plot(x_cases, poly_x, '--r')
+    if len(poly_x) == 5: 
+        plt.plot(x_cases[-5:], poly_x, '--r')
+    else:
+        plt.plot(x_cases, poly_x, '--r')
     if country in SLOWDOWN:
         plt.axvline(SLOWDOWN[country], linewidth=2, color='orange')
         plt.scatter(x_slow, y_slow, color='g',
@@ -71,7 +74,10 @@ def make_evolution_plot(variable_pack, country,
     if deaths:
         plt.scatter(x_deaths, y_deaths, marker='v',
                     color='b', label="Daily Deaths")
-        plt.plot(x_deaths, poly_x_d, '--b')
+        if len(poly_x_d) == 5:
+            plt.plot(x_deaths[-5:], poly_x_d, '--b')
+        else:
+            plt.plot(x_deaths, poly_x_d, '--b')
         if country in SLOWDOWN_DEATHS:
             plt.scatter(x_deaths_slow, y_deaths_slow, marker='v',
                         color='g', label="Daily Deaths Slower")
@@ -174,10 +180,23 @@ def plot_countries(datasets, month, country, table_file, download):
         Pr0.append(R0_s)
         Pr.append(R_s)
 
-    # get linear params
+    # get linear params for all data
     poly_x, R, y_err, slope, d_time, R0 = linear.get_linear_parameters(
         x_cases,
         y_cases)
+
+    # extract the last 5 days only
+    x_cases5 = x_cases[-5:]
+    y_cases5 = y_cases[-5:]
+    poly_x5, R5, y_err5, slope5, d_time5, R05 = linear.get_linear_parameters(
+        x_cases5,
+        y_cases5)
+
+    # test for goodness of fit and reassign data
+    if R < R5 and R5 > 0.98:
+        poly_x, R, slope, d_time, R0 = \
+            poly_x5, R5, slope5, d_time5, R05
+        
 
     # get data for plotting
     Pdt.append(d_time)
@@ -225,6 +244,21 @@ def plot_countries(datasets, month, country, table_file, download):
             x_deaths,
             y_deaths
         )
+
+        # refit for last five days
+        x_deaths5 = x_deaths[-5:]
+        y_deaths5 = y_deaths[-5:]
+        (poly_x_d5, R_d5, y_err_d5,
+         slope_d5, d_time_d5, R0_d5) = linear.get_linear_parameters(
+            x_deaths5,
+            y_deaths5
+        )
+
+        # check for goodness of fit and reassign data
+        if R_d < R_d5 and R_d5 > 0.98:
+            (poly_x_d, R_d,
+             slope_d, d_time_d, R0_d) = (poly_x_d5, R_d5,
+                                         slope_d5, d_time_d5, R0_d5)
 
         # plot parameters: deaths
         plot_text_d = linear.get_deaths_plot_text(
@@ -388,7 +422,10 @@ def make_simulations_plot(variable_pack, country,
     # plot simulated cases
     plt.scatter(x_data, y_data, color='r',
                 label="Cum. Cases")
-    plt.plot(x_data, poly_x, '--r')
+    if len(poly_x) == 5:
+        plt.plot(x_data[-5:], poly_x, '--r')
+    else:
+        plt.plot(x_data, poly_x, '--r')
     plt.scatter(x_deaths, y_deaths, marker='v',
                 color='b', label="Cum. Deaths")
     if country in SLOWDOWN:
@@ -406,7 +443,10 @@ def make_simulations_plot(variable_pack, country,
     plt.plot([list(np.array(x_deaths) - 20.)[-1], x_deaths[-1]], [sim_y_2[-1], np.log(sim_y_2_f)], '--r')
     plt.plot([list(np.array(x_deaths) - 20.)[-1], x_deaths[-1]], [sim_y_3[-1], np.log(sim_y_3_f)], '--c')
     plt.plot([list(np.array(x_deaths) - 20.)[-1], x_deaths[-1]], [sim_y_4[-1], np.log(sim_y_4_f)], '--m')
-    plt.plot(x_deaths, poly_x_d, '--b')
+    if len(poly_x_d) == 5:
+        plt.plot(x_deaths[-5:], poly_x_d, '--b')
+    else:
+        plt.plot(x_deaths, poly_x_d, '--b')
     plt.errorbar(x_data, y_data, yerr=y_err, fmt='o', color='r')
     plt.errorbar(x_deaths, y_deaths, yerr=y_err_d, fmt='v', color='b')
     plt.plot(np.array(x_deaths) - 20., sim_y_0, label="M=0.5%")
@@ -496,7 +536,7 @@ def make_simulations_plot(variable_pack, country,
         plt.xlim(0., x0 + 11.5)
         plt.yticks(log_ticks, real_ticks)
         plt.tick_params(axis="y", labelsize=7)
-        plt.xlabel("Time [days, starting April 1st, 2020]")
+        plt.xlabel("Time [days, starting March 1st, 2020]")
         plt.ylabel("Cumulative no. of deaths and reported and simulated cases")
         plt.grid()
         plt.annotate("Pubs", xy=(20.5, 0.9), color='red')
