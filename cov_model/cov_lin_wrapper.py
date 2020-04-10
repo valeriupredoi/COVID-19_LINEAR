@@ -562,6 +562,62 @@ def make_simulations_plot(variable_pack, country,
                                  "COVID-19_LIN_{}_DARK_SIM_UK.png".format(country)))
         plt.close()
 
+    if country == "UK" and month_str == "April":
+        x0, y0, y0d, y, yd, y_min, yd_min = uk.compute_first_april_projection_uk()
+        log_ticks = [np.log(y0), np.log(y), np.log(y0d), np.log(yd),
+                     np.log(y_min), np.log(yd_min), np.log(curr_case),
+                     np.log(curr_death)]
+        real_ticks = [int(y0), int(y), int(y0d), int(yd),
+                      int(y_min), int(yd_min), int(curr_case),
+                      int(curr_death)]
+        plt.scatter((x0, x0 + 10.), (np.log(y0), np.log(y)),
+                    color='k', label="Worst Cases Proj")
+        plt.scatter((x0, x0 + 10.), (np.log(y0), np.log(y_min)),
+                    color='g', label="Best Cases Proj")
+        # plot projections
+        plt.scatter((x0, x0 + 10.), (np.log(y0d), np.log(yd)), marker='v',
+                    color='k', label="Worst Death Proj")
+        plt.scatter((x0, x0 + 10.), (np.log(y0d), np.log(yd_min)), marker='v',
+                    color='g', label="Best Death Proj")
+        plt.plot((x0, x0 + 10.), (np.log(y0), np.log(y)), "--k")
+        plt.plot((x0, x0 + 10.), (np.log(y0), np.log(y_min)), "--g")
+        plt.plot((x0, x0 + 10.), (np.log(y0d), np.log(yd)), "--k")
+        plt.plot((x0, x0 + 10.), (np.log(y0d), np.log(yd_min)), "--g")
+
+        # plot reported evolving numbers
+        plt.scatter(x_data, y_data, color='r',
+                    label="Cases")  # reported cases
+        if len(poly_x) == 5:
+            plt.plot(x_data[-5:], poly_x, '--r')
+        else:
+            plt.plot(x_data, poly_x, '--r')
+        plt.scatter(x_deaths, y_deaths, marker='v',
+                    color='b', label="Deaths")  # reported deaths
+        if len(poly_x_d) == 5:
+            plt.plot(x_deaths[-5:], poly_x_d, '--b')
+        else:
+            plt.plot(x_deaths, poly_x_d, '--b')
+
+        # plot anciliaries
+        plt.xlim(0., x0 + 11.5)
+        plt.yticks(log_ticks, real_ticks)
+        plt.tick_params(axis="y", labelsize=7)
+        plt.xlabel("Time [days, starting April 1st, 2020]")
+        plt.ylabel("Cumulative no. of deaths and reported and simulated cases")
+        plt.grid()
+        plt.annotate("20 days from Lockdown", xy=(11.1, y_data[0]), color='red')
+        plt.legend(loc="lower right", fontsize=9)
+        plt.text(1., y_data[-1] + 0.5, plot_text, fontsize=8, color='r')
+        plt.text(1., y_data[-1] - 2.0, plot_text_d, fontsize=8, color='b')
+        plt.axvline(11., color="red")
+        plt.suptitle("COVID-19 in {} starting {} 1, 2020 spun up 10 days\n".format(country, month_str) + \
+                     "Worst: April 10 rates b=0.08/DoublTime=8.9d (R=0.99) and m=0.12/DoublTime=5.6d (R=0.99)",
+                     fontsize=10)
+        plt.title("Best: b=m=0.05 (DoublTime=14 days, R=1)", color='green', fontsize=10)
+        plt.savefig(os.path.join("country_plots",
+                                 "COVID-19_LIN_{}_DARK_SIM_UK.png".format(country)))
+        plt.close()
+
     return (sim_y_0_f, sim_y_1_f, sim_y_2_f)
 
 
