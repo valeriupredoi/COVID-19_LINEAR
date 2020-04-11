@@ -8,7 +8,7 @@ import numpy as np
 # slowing down value = date in March that is roughly the start of slowdown
 def get_slowdown(month):
     """Set the correct slowdowns depending on month."""
-    if month == 3:
+    if month == 2:  # slowdowns for March; obsolete now
         SLOWDOWN = {"Argentina": 26,
                     "Austria": 26,
                     "Belgium": 13,
@@ -51,6 +51,9 @@ def get_slowdown(month):
                            "Switzerland": 26,
                            "Turkey": 27,
                            "UK": 21}
+    elif month == 3:
+        SLOWDOWN = {}
+        SLOWDOWN_DEATHS = {}
     elif month == 4:
         SLOWDOWN = {}
         SLOWDOWN_DEATHS = {}
