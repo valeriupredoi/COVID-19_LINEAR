@@ -291,8 +291,6 @@ Population percentage %pop IC: 2.7% implies M=0.5%.
 Current repository resources:
 
 * Country [tables](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_tables)
-* Country [tables](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/Summary_Table_11-04-2020.md) for a representative
-  number of countries and comparison with various studies and reports
 * Current country [plots](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_plots)
 * March-2020 [plots](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/anciliaries/country_plots_03-2020)
 * March-2020 [situation report](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/anciliaries/Situtaion_Report_March-2020.md)
