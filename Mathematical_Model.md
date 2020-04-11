@@ -79,10 +79,10 @@ R = exp(ln2/double_time_cases) - 1
 ## Time evolution of rates
 
 Growth rates `b` and `m` do not stay constant over longer (>10-12 days) periods of time,
-it is noticed they are gradually decreasing with time. Therefore, the linear fits are not
-performed on all data points from the start of the epidemic, but are, in fact, performed
-on subsets of data points to maximize the quality of fit. This generates a set of rates `b`
-and `m` over time.
+it is noticed they are gradually decreasing with time (observed decrease by 50% every 10 days).
+Therefore, the linear fits are not performed on all data points from the start of the epidemic,
+but are, in fact, performed on subsets of data points to maximize the quality of fit.
+This generates a set of rates `b` and `m` over time.
 
 We perform two types of fits: one for all available data and another for the last 5 days. If the
 fit for the last 5 days is better than the overall data fit (compare coefficient of determination
@@ -92,31 +92,45 @@ is generally better; 0.98 means a very high quality fit).
 
 ## Estimating the actual number of cases
 
-The reported number of cases is an unreliable data, so it is desired to estimate the actual number
+The reported number of cases is unreliable data, so it is desired to estimate the actual number
 of existing cases at any given day (the analysis performed daily, so the actual number of cases
 is given at the **today** day).
 
 For this purpose we use the deaths data `D(t)` and its growth rate `m` and a set of plausible
-mortality fractions of the virus `M=[0.5, 1, 2, 3 and 4]%`: we construct the plausible actual
+mortality fractions of the virus `M = [0.5, 1, 2, 3 and 4]%`: we construct the plausible actual
 number of cases
 ```
-C(t) = M x D(t)
+C(t) = D(t) x 1/M
 ```
-and shift `C(t)` in time by a **fixed** delay of 20 days (assumed as average duration between
+and shift `C(t)` in time by a **fixed** delay of 14 days (assumed as average duration between
 time of infection and time of death) and compute the number of cases on the day when the deaths
-reported today were cases right after infection `C(t - 20)`. To get the number of actual cases of
-today, `C(t - 20)` needs to be extrapolated 14 days (as of April 9, previous results with 20 days)
+reported today were cases right after infection `C(t - 14)`. To get the number of actual cases of
+today, `C(t - 14)` needs to be extrapolated 14 days
+(14: as of April 9, previous results with 20 days have been redone)
 later (today): for that we use the rate of
 growth for deaths, `m`, and construct a function `f(m)` to best represent the evolution of `m = m(t)`
 for the next 14 days. Note that we are not using the rate of growth for reported cases `b` since we
 consider it to be unreliable. The reason why we need to construct `f(m)` is to best represent the
-growth rate of the actual cases, which we assume to be close to the evolution over the next 20 or so
-days of `m` (case evolution is well mirrored by the deaths evolution after 14-20 days).
+growth rate of the actual cases, which we assume to be close to the evolution over the next 14 or so
+days of `m` (case evolution is well mirrored by the deaths evolution after 14+ days).
 
-For March, when a lot of the deaths rates `m` have been noticed to drop to half after 15-20 days, we
-chose `f(m) = m/2`; for April (so far) we are thresholding `m` at 0.15 and apply the 0.5 factor only
-for `m > 0.15` since those rates < 0.15 are very stable and have not been observed to change over longer
-periods of time. This way we can estimate the actual number of cases today as:
+A lot of the deaths rates `m` have been noticed to drop to half after ~10 days, so we
+chose `f(m) = m/2` and thresholding `m` at 0.05 and apply the 0.5 factor only
+for `m > 0.05` since those rates < 0.05 are very stable and have not been observed to
+change over longer periods of time. This way we can estimate the actual number of cases today as:
 ```
-C(today) = M x D(today) x exp(f(m) x 20)
+C(today) = 1/M x D(today) x exp(m x delay=14)
 ```
+for `m < 0.05` and
+```
+C(today) = 1/M x D(today) x exp(0.5 x m x delay=14)
+```
+for `m >= 0.05`.
+
+`C(today)` is a function of observables `D(today)` and two free parameters `M` and `delay` and
+may have the same value for two different combinations of `(M, delay)` but for the realistic
+set of `M = [0.5, 1, 2, 3 and 4]%` only delays of >= 14 days are a realistic parameter value, that
+excludes unrealistic delays of < 2 days.
+
+Further we compute country current cases population percentages as `C(today)/POP` and testing percentages as
+`Reported cases/C(today)`.
