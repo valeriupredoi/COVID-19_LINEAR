@@ -228,7 +228,7 @@ def plot_countries(datasets, month, country, table_file, download):
     # statistics: deaths
     poly_x_d = R_d = y_err_d = slope_d = \
         d_time_d = R0_d = plot_text_d = None
-    rate_deaths = double_deaths = 'nan'
+    rate_deaths = double_deaths = 1e-10
     if deaths:
         d_time_d_s = None
         if country in SLOWDOWN_DEATHS:
@@ -273,7 +273,7 @@ def plot_countries(datasets, month, country, table_file, download):
             rate_deaths = slope_d_s
             double_deaths = d_time_d_s
 
-    s1 = s2 = s3 = 0
+    s1 = s2 = s3 = 1e-20
     variable_pack = (
         x_cases, y_cases, x_slow, y_slow,
         cases, deaths, x_deaths, deaths,
@@ -493,7 +493,8 @@ def make_simulations_plot(variable_pack, country,
     # do full 10-day running projection
     # with initial conditions on March 21
     # only for March
-    if country == "UK" and month_str == 'March':
+    do_plot = False
+    if country == "UK" and month_str == 'March' and do_plot:
         # projection data and ticks
         x0, y0, y0d, y, yd, y_min, yd_min = uk.compute_initial_projection_uk()
         log_ticks = [np.log(y0), np.log(y), np.log(y0d), np.log(yd),
@@ -527,10 +528,16 @@ def make_simulations_plot(variable_pack, country,
         # plot reported evolving numbers
         plt.scatter(x_data, y_data, color='r',
                     label="Cases")  # reported cases
-        plt.plot(x_data, poly_x, '--r')
+        if len(poly_x) == 5:
+            plt.plot(x_data[-5:], poly_x, '--r')
+        else:
+            plt.plot(x_data, poly_x, '--r')
         plt.scatter(x_deaths, y_deaths, marker='v',
                     color='b', label="Deaths")  # reported deaths
-        plt.plot(x_deaths, poly_x_d, '--b')
+        if len(poly_x_d) == 5:
+            plt.plot(x_deaths[-5:], poly_x_d, '--b')
+        else:
+            plt.plot(x_deaths, poly_x_d, '--b')
 
         # plot anciliaries
         plt.xlim(0., x0 + 11.5)
