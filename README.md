@@ -25,6 +25,8 @@ Maps are courtesy of [datawrapper](https://github.com/werner17/Covis?fbclid=IwAR
 ## Resources
 
 * Country [tables](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_tables)
+* Country [tables](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/Summary_Table_11-04-2020.md) for a representative
+  number of countries and comparison with various studies and reports
 * Current country [plots](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_plots)
 * March-2020 [plots](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_plots_03-2020)
 * March-2020 [situation report](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/Situtaion_Report_March-2020.md)
