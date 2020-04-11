@@ -105,12 +105,13 @@ C(t) = M x D(t)
 and shift `C(t)` in time by a **fixed** delay of 20 days (assumed as average duration between
 time of infection and time of death) and compute the number of cases on the day when the deaths
 reported today were cases right after infection `C(t - 20)`. To get the number of actual cases of
-today, `C(t - 20)` needs to be extrapolated 20 days later (today): for that we use the rate of
+today, `C(t - 20)` needs to be extrapolated 14 days (as of April 9, previous results with 20 days)
+later (today): for that we use the rate of
 growth for deaths, `m`, and construct a function `f(m)` to best represent the evolution of `m = m(t)`
-for the next 20 days. Note that we are not using the rate of growth for reported cases `b` since we
+for the next 14 days. Note that we are not using the rate of growth for reported cases `b` since we
 consider it to be unreliable. The reason why we need to construct `f(m)` is to best represent the
 growth rate of the actual cases, which we assume to be close to the evolution over the next 20 or so
-days of `m` (case evolution is well mirrored by the deaths evolution after 20 days).
+days of `m` (case evolution is well mirrored by the deaths evolution after 14-20 days).
 
 For March, when a lot of the deaths rates `m` have been noticed to drop to half after 15-20 days, we
 chose `f(m) = m/2`; for April (so far) we are thresholding `m` at 0.15 and apply the 0.5 factor only
