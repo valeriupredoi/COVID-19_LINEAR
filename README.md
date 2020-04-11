@@ -169,7 +169,7 @@ and has sufficiently good data for us to place an upper limit on the mortality m
 
 Actual and simulated cases in Israel         |  Doubling times in Israel
 :-------------------------------------------:|:---------------------------:
-[IsraelSim](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_plots/COVID-19_LIN_Israel_SIM_CASES.png) | [DoublIsrael](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_plots/COVID-19_Doubling_Times_Israel.png)
+![IsraelSim](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_plots/COVID-19_LIN_Israel_SIM_CASES.png) | ![DoublIsrael](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_plots/COVID-19_Doubling_Times_Israel.png)
 
 ## Representative countries
 
