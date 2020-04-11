@@ -18,6 +18,9 @@ Tables header:
 - Test% M=1%: country testing efficiency in percent for mortality M=1%
 - Test% M=2%: country testing efficiency in percent for mortality M=2%
 
+Parameter space for simulations: 14 day delay between deaths and simulated cases
+and projected rate 0.5 x current death rate or current death rate if current death rate < 0.05 (or 5%).
+
 ### Spain
 Date  | C | D | DayR C % | DayR D % | DoubT C (d) | DoubT D (d) | %pop M=0.5% | %pop M=1% | %pop M=2% | Test% M=0.5% | Test% M=1% | Test% M=2%
 :----:|:-:|:-:|:--------:|:--------:|:-----------:|:-----------:|:-----------:|:---------:|:---------:|:------------:|:----------:|:----------:
