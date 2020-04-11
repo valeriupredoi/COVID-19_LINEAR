@@ -162,6 +162,15 @@ Maps are courtesy of [datawrapper](https://github.com/werner17/Covis?fbclid=IwAR
   ![map](https://github.com/werner17/Covis/blob/master/datawrapper/dUzze.png)
   [Interactive Map](https://datawrapper.dwcdn.net/dUzze)
 
+## Upper bound on mortality: Israel
+
+Israel is the only country that has solid testing results (16,000+ TpM as of April 10)
+and has sufficiently good data for us to place an upper limit on the mortality mortality there: M=2%
+
+Actual and simulated cases in Israel         |  Doubling times in Israel
+:-------------------------------------------:|:---------------------------:
+[IsraelSim](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_plots/COVID-19_LIN_Israel_SIM_CASES.png) | [DoublIsrael](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_plots/COVID-19_Doubling_Times_Israel.png)
+
 ## Representative countries
 
 Numbers labelled IC for 30-03-2020 from the Imperial College
