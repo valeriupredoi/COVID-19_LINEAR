@@ -2,6 +2,7 @@ Table of Contents
 -----------------
 * [Model](#Model)
 * [Results](#Results)
+* [Conclusions](#Conclusions)
 * [Resources](#Resources)
 * [Software](#Software)
 * [Data](#Data)
@@ -319,6 +320,15 @@ Date  | Mean DoublT (days) | `R0` (10 days) | Figure
 05/04 | 8.9+/-4.3 | 1.0+/-0.4 | ![d3](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_plots/frozen_plots_04-2020/05-04-2020/Histogram_Doubling_Time.png)
 12/04 | 12.6+/-7.3 | 0.7+/-0.3 | ![d4](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_plots/frozen_plots_04-2020/12-04-2020/Histogram_Doubling_Time.png)
 
+# Conclusions
+
+- Viral transmission very high: `R0` of up to 5 in mid-March (considering an infectious phase of 10 days,
+  could be even higher if infectious phase is longer); definite decrease in transmission due to social distancing,
+  of ~70% in the three weeks between 16/03/2020 and 05/04/2020
+- Countries underreport cases in proportion of up 100 times; underreporting decreases with
+  the increase of number of tests per million
+- Average mortality of 0.5-1% (possibly higher to 2% in certain countries, defintely not higher than 2%,
+  considering countries looked at)
 
 # Resources
 
