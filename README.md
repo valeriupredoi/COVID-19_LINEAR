@@ -174,7 +174,8 @@ Actual and simulated cases in Israel         |  Doubling times in Israel
 ## Representative countries
 
 Numbers labelled IC for 30-03-2020 from the Imperial College
-London [report](https://www.imperial.ac.uk/media/imperial-college/medicine/sph/ide/gida-fellowships/Imperial-College-COVID19-Europe-estimates-and-NPI-impact-30-03-2020.pdf)
+London [report](https://www.imperial.ac.uk/media/imperial-college/medicine/sph/ide/gida-fellowships/Imperial-College-COVID19-Europe-estimates-and-NPI-impact-30-03-2020.pdf). **There is very good overlap with these results suggesting a consistent mortality
+fraction per country of M=0.5-1%.**
 
 Tables header:
 - Date: date for data
@@ -190,8 +191,10 @@ Tables header:
 - Test% M=0.5%: country testing efficiency in percent for mortality M=0.5%
 - Test% M=1%: country testing efficiency in percent for mortality M=1%
 - Test% M=2%: country testing efficiency in percent for mortality M=2%
+- Square brackets for 31 March data: values obtained for a 10-day and 20-day delay (equivalent
+  to a 95% confidence interval) for each mortality M.
 
-Key parameters:
+**Key parameters:**
 - Parameter space for simulations: 14 day delay between deaths and simulated cases
   and projected rate 0.5 x current death rate or current death rate if current death rate < 0.05 (or 5%)
 - For 31 March data we give in `[ ]` the values obtained for a 10-day and 20-day delay
