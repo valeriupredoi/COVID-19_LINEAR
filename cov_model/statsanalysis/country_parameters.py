@@ -40,6 +40,6 @@ COUNTRY_PARAMS = \
      "Turkey": ["TUR", 83429.],
      "UK": ["GBR", 67141.],
      "Ukraine": ["UKR", 44246.],
-     "United Arab Emirates": ["UAE", 9631.],
+     "United Arab Emirates": ["ARE", 9631.],
      "US": ["USA", 327096.]
 }
