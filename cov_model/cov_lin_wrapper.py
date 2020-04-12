@@ -482,8 +482,8 @@ def make_simulations_plot(variable_pack, country,
     plt.xlabel("Time [days, starting {} 1st, 2020]".format(month_str))
     plt.ylabel("Cumulative no. of deaths and reported and simulated cases")
     plt.title("COVID-19 in {} starting {} 1, 2020\n".format(country, month_str) + \
-              "Sim cases are based on mortality fraction M and delayed by 20 days\n" + \
-              "Sim cumulative no. cases: measured deaths x 1/M; extrapolated rate 0.5 current death rate",
+              "Sim cases are based on mortality fraction M and delayed by 14 days\n" + \
+              "Sim cum. no. cases: rep. deaths x 1/M; rate=current death rate (0.5 x current death rate if > 5%)",
               fontsize=10)
 
     plt.savefig(os.path.join("country_plots",
