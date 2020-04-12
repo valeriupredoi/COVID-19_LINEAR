@@ -306,6 +306,19 @@ Date  | C | D | DayR C % | DayR D % | DoubT C (d) | DoubT D (d) | %pop M=0.5% | 
 
 Population percentage %pop IC: 2.7% ci=[1.2%-5.4%] implies M=0.5[-1]%.
 
+## Evolution of doubling time with time
+
+Here we compute an `R0` that is obtained from the doubling time and multiplied by 10 days
+(the average infectious period).
+
+Date  | Mean DoublT (days) | R0 (10 days) | Figure
+:----:|:------------------:|:------------:|:--------:
+27/03 | 3.4+/-2 | 2.9+/-1.4 | ![d1](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/anciliaries/country_plots_03-2020/frozen_plots_03-2020/27-3-2020/Histogram_Doubling_Time.png)
+31/03 | 4.2+/-2.4 | 2.6+/-1.5 | ![d2](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/anciliaries/country_plots_03-2020/frozen_plots_03-2020/31-3-2020/Histogram_Doubling_Time.png)
+05/04 | 8.9+/-4.3 | 1.0+/-0.4 | ![d3](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_plots/frozen_plots_04-2020/05-04-2020/Histogram_Doubling_Time.png)
+12/04 | 12.6+/-7.3 | 0.7+/-0.3 | ![d4](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_plots/frozen_plots_04-2020/12-04-2020/Histogram_Doubling_Time.png)
+
+
 # Resources
 
 Current repository resources:
