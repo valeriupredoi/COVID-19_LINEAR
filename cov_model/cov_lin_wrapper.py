@@ -285,9 +285,11 @@ def plot_countries(datasets, month, country, table_file, download):
         make_evolution_plot(variable_pack, country, SLOWDOWN,
                             SLOWDOWN_DEATHS, month_str)
         if deaths and len(deaths) >= 3.0:
-            s1, s2, s3 = make_simulations_plot(variable_pack, country,
-                                               SLOWDOWN, SLOWDOWN_DEATHS,
-                                               month_str)
+            (s1, s2, s3, sim10_0, sim10_1, sim10_2, sim10_3, sim10_4,
+             sim20_0, sim20_1, sim20_2, sim20_3, sim20_4) = \
+                make_simulations_plot(variable_pack, country,
+                                      SLOWDOWN, SLOWDOWN_DEATHS,
+                                      month_str)
     else:
         slowdown_deaths = (x_deaths, y_deaths, x_deaths_slow, y_deaths_slow,
                            poly_x_d_s, R_d_s, y_err_d_s,
@@ -297,9 +299,11 @@ def plot_countries(datasets, month, country, table_file, download):
                             SLOWDOWN_DEATHS,
                             month_str, slowdown_deaths)
         if deaths and len(deaths) >= 3.0:
-            s1, s2, s3 = make_simulations_plot(variable_pack, country, SLOWDOWN,
-                                               SLOWDOWN_DEATHS, month_str,
-                                               slowdown_deaths)
+            (s1, s2, s3, sim10_0, sim10_1, sim10_2, sim10_3, sim10_4,
+             sim20_0, sim20_1, sim20_2, sim20_3, sim20_4) = \
+                make_simulations_plot(variable_pack, country, SLOWDOWN,
+                                      SLOWDOWN_DEATHS, month_str,
+                                      slowdown_deaths)
 
     # write to table file
     if country in COUNTRY_PARAMS:
@@ -317,6 +321,12 @@ def plot_countries(datasets, month, country, table_file, download):
         f1 = "%.2f" % (s1 / 1000. / pop * 100.)
         f2 = "%.2f" % (s2 / 1000. / pop * 100.)
         f3 = "%.2f" % (s3 / 1000. / pop * 100.)
+        f10_1 = "%.2f" % (sim10_0 / 1000. / pop * 100.)
+        f10_2 = "%.2f" % (sim10_1 / 1000. / pop * 100.)
+        f10_3 = "%.2f" % (sim10_2 / 1000. / pop * 100.)
+        f20_1 = "%.2f" % (sim20_0 / 1000. / pop * 100.)
+        f20_2 = "%.2f" % (sim20_1 / 1000. / pop * 100.)
+        f20_3 = "%.2f" % (sim20_2 / 1000. / pop * 100.)
         xs1 = str(int(s1))
         xs2 = str(int(s2))
         xs3 = str(int(s3))
@@ -333,7 +343,9 @@ def plot_countries(datasets, month, country, table_file, download):
                               dd,
                               f1, f2, f3,
                               xs1, xs2, xs3,
-                              fs1, fs2, fs3]) + '\n'
+                              fs1, fs2, fs3,
+                              f10_1, f10_2, f10_3,
+                              f20_1, f20_2, f20_3]) + '\n'
         with open(table_file, "a") as file:
             file.write(data_line)
         with open("country_tables/countries_with_case_doubling-time_larger_14days.csv", "a") as file:
@@ -404,11 +416,26 @@ def make_simulations_plot(variable_pack, country,
         slope_sim = slope_d  # / 2.0 when rates halfen roughly
         if slope_sim > 0.05:
             slope_sim = slope_sim / 2.0
+    # 14 day delay between infection and death
     sim_y_0_f = sim_y_0_real[-1] * np.exp(14. * slope_sim)
     sim_y_1_f = sim_y_1_real[-1] * np.exp(14. * slope_sim)
     sim_y_2_f = sim_y_2_real[-1] * np.exp(14. * slope_sim)
     sim_y_3_f = sim_y_3_real[-1] * np.exp(14. * slope_sim)
-    sim_y_4_f = sim_y_4_real[-1] * np.exp(14. * slope_sim) 
+    sim_y_4_f = sim_y_4_real[-1] * np.exp(14. * slope_sim)
+
+    # 10 day delay between infection and death
+    sim10_0 = sim_y_0_real[-1] * np.exp(10. * slope_sim)
+    sim10_1 = sim_y_1_real[-1] * np.exp(10. * slope_sim)
+    sim10_2 = sim_y_2_real[-1] * np.exp(10. * slope_sim)
+    sim10_3 = sim_y_3_real[-1] * np.exp(10. * slope_sim)
+    sim10_4 = sim_y_4_real[-1] * np.exp(10. * slope_sim)
+
+    # 20 day delay between infection and death
+    sim20_0 = sim_y_0_real[-1] * np.exp(20. * slope_sim)
+    sim20_1 = sim_y_1_real[-1] * np.exp(20. * slope_sim)
+    sim20_2 = sim_y_2_real[-1] * np.exp(20. * slope_sim)
+    sim20_3 = sim_y_3_real[-1] * np.exp(20. * slope_sim)
+    sim20_4 = sim_y_4_real[-1] * np.exp(20. * slope_sim)
 
     y_all_real = []
     y_all_real.extend(y_deaths_real)
@@ -625,7 +652,8 @@ def make_simulations_plot(variable_pack, country,
                                  "COVID-19_LIN_{}_DARK_SIM_UK.png".format(country)))
         plt.close()
 
-    return (sim_y_0_f, sim_y_1_f, sim_y_2_f)
+    return (sim_y_0_f, sim_y_1_f, sim_y_2_f, sim10_0, sim10_1, sim10_2, sim10_3, sim10_4,
+            sim20_0, sim20_1, sim20_2, sim20_3, sim20_4)
 
 
 def _read_write_parameter(filename, parameter, stddev_parameter):
@@ -779,7 +807,9 @@ def main():
              "mort,0.5% mort sim cases,1% mort sim cases," + \
              "2% mort sim cases," + \
              "prct rep cases 0.5% mort,prct rep cases 1% mort," + \
-             "prct rep cases 2% mort"
+             "prct rep cases 2% mort," + \
+             "pct pop 0.5% mort (10d),prct pop 1% mort (10d),prct pop 2% (10d)," +  \
+             "pct pop 0.5% mort (20d),prct pop 1% mort (20d),prct pop 2% (20d) "
     table_file = \
         "country_tables/ALL_COUNTRIES_DATA_{}-0{}-2020.csv".format(today_day,
                                                                    args.month)
