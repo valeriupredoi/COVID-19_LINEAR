@@ -328,6 +328,14 @@ Date  | C | D | DayR C % | DayR D % | DoubT C (d) | DoubT D (d) | %pop M=0.5% | 
 - Population percentage %pop IC: 2.7% ci=[1.2%-5.4%] implies M=0.5[-1]%.
 - Population percentage %pop GA: 3.15% implies M=0.5% for longer delays ~17 days.
 
+### Romania
+Date  | C | D | DayR C % | DayR D % | DoubT C (d) | DoubT D (d) | %pop M=0.5% | %pop M=1% | %pop M=2% | Test% M=0.5% | Test% M=1% | Test% M=2%
+:----:|:-:|:-:|:--------:|:--------:|:-----------:|:-----------:|:-----------:|:---------:|:---------:|:------------:|:----------:|:----------:
+31/03 | 2245 | 82 | 24 | 29 | 2.9 | 2.4 | 0.62[0.4-1.5] | 0.31[0.2-0.7] | 0.16[0.1-0.4] | 1.8 | 3.7 | 7.4
+11/04 | 5467 | 270 | 8 | 11 | 9.1 | 6.4 | 0.59 | 0.30 | 0.15 | 4.7 | 9.5 | 18.9
+
+- Population percentage %pop GA: 0.48% implies M=0.5% for short ~10 days delays or M=1% for ~16day days delays.
+
 ## Evolution of doubling time with time
 
 Here we compute an `R0` that is obtained from the doubling time and multiplied by 10 days
