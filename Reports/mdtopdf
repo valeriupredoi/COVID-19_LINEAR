@@ -1,0 +1,3 @@
+pip install grip
+grip report_11-04-2020.md --export report_11-04-2020.html
+convert at https://www.sejda.com/html-to-pdf
