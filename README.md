@@ -188,7 +188,7 @@ Comparison labels:
 **There is very good overlap with these results suggesting a consistent mortality
 fraction per country of M=0.5-1%.**
 
-Tables header:
+**Tables header:**
 - Date: date for data
 - C: number of reported cases
 - D: number of reported deaths
@@ -393,7 +393,8 @@ Current repository resources:
 
 - UK Data: official data [source](https://www.gov.uk/government/publications/covid-19-track-coronavirus-cases)
 - Worldwide Data: Johns Hopkins University CSSE [gitHub repository](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_daily_reports)
-- Testing [numbers](https://en.wikipedia.org/wiki/COVID-19_testing#Virus_testing_by_country)
+- Testing efficiency [numbers](https://en.wikipedia.org/wiki/COVID-19_testing#Virus_testing_by_country)
 - Heinsberg [study](https://www.tagesschau.de/regional/nordrheinwestfalen/corona-studie-heinsberg-101.html)
-- Imperial College London [report](https://www.imperial.ac.uk/media/imperial-college/medicine/sph/ide/gida-fellowships/Imperial-College-COVID19-Europe-estimates-and-NPI-impact-30-03-2020.pdf)
-- Austrian [study](https://www.bloomberg.com/news/articles/2020-04-10/austrian-study-shows-coronavirus-cases-more-than-3-times-higher?fbclid=IwAR0sUvTL38gYPHWMn0fqHkZRfrs9WnK7On0uH8hLA-dVs3qXhAd1bcOSq7g)
+- Imperial College London, UK [report](https://www.imperial.ac.uk/media/imperial-college/medicine/sph/ide/gida-fellowships/Imperial-College-COVID19-Europe-estimates-and-NPI-impact-30-03-2020.pdf)
+- Georg August University, Germany [study](http://www.uni-goettingen.de/en/606540.html)
+- Austrian large scale testing [study](https://www.bloomberg.com/news/articles/2020-04-10/austrian-study-shows-coronavirus-cases-more-than-3-times-higher?fbclid=IwAR0sUvTL38gYPHWMn0fqHkZRfrs9WnK7On0uH8hLA-dVs3qXhAd1bcOSq7g)
