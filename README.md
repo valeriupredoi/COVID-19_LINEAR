@@ -174,8 +174,18 @@ Actual and simulated cases in Israel         |  Doubling times in Israel
 
 ## Representative countries
 
-Numbers labelled IC for 30-03-2020 from the Imperial College
-London [report](https://www.imperial.ac.uk/media/imperial-college/medicine/sph/ide/gida-fellowships/Imperial-College-COVID19-Europe-estimates-and-NPI-impact-30-03-2020.pdf). **There is very good overlap with these results suggesting a consistent mortality
+We compare results obtained from simulating the actual number of cases for different countries giving
+percentages of infect out of total country population for different mortality fraction scenarios
+(0.5, 1 and 2% respecitively). Comparison is made with the Imperial College London report from 30/03/2020,
+different in-country studies and a [study](http://www.uni-goettingen.de/en/606540.html)
+from Georg-August University, Germany.
+
+Comparison labels:
+- Numbers labelled IC for 30-03-2020 from the Imperial College
+  London [report](https://www.imperial.ac.uk/media/imperial-college/medicine/sph/ide/gida-fellowships/Imperial-College-COVID19-Europe-estimates-and-NPI-impact-30-03-2020.pdf).
+- Numbers labelled GA for 31-03-2020 from the Georg August University, Germany [study](http://www.uni-goettingen.de/en/606540.html).
+
+**There is very good overlap with these results suggesting a consistent mortality
 fraction per country of M=0.5-1%.**
 
 Tables header:
@@ -208,7 +218,8 @@ Date  | C | D | DayR C % | DayR D % | DoubT C (d) | DoubT D (d) | %pop M=0.5% | 
 31/03 | 95923 | 8464 | 9 | 13 | 7.4 | 5.5 | 8.71[6.8-12.7] | 4.36[3.4-6.4] | 2.18[1.7-3.2] | 2.4 | 4.7 | 9.4
 11/04 | 158273 | 16081 | 4 | 5 | 18.7 | 14.8 | 13.28 | 6.64 | 3.32 | 2.6 | 5.1 | 10.2
 
-Population percentage %pop IC: 15% ci=[3.7%-41%] implies underestimation vs IC, probably M=0.5[-1]% best overlap.
+- Population percentage %pop IC: 15% ci=[3.7%-41%] implies underestimation vs IC, probably M=0.5[-1]% best overlap.
+- Population percentage %pop GA: 12.24% implies slight underestimation vs GA, probably M=0.5% for longer delays 14-20 days.
 
 ## Israel
 Date  | C | D | DayR C % | DayR D % | DoubT C (d) | DoubT D (d) | %pop M=0.5% | %pop M=1% | %pop M=2% | Test% M=0.5% | Test% M=1% | Test% M=2%
@@ -223,6 +234,7 @@ Date  | C | D | DayR C % | DayR D % | DoubT C (d) | DoubT D (d) | %pop M=0.5% | 
 11/04 | 13555 | 319 | 2 | 9 | 28.7 | 7.8 | 1.34 | 0.67 | 0.33 | 11.4 | 22.8 | 45.5
 
 - Population percentage %pop IC: 1.1% ci=[0.36%-3.1%] implies M=0.5[-1]%.
+- Population percentage %pop GA: 0.94% implies M=0.5% and longer delays ~16 days.
 - Austrian [study](https://www.bloomberg.com/news/articles/2020-04-10/austrian-study-shows-coronavirus-cases-more-than-3-times-higher?fbclid=IwAR0sUvTL38gYPHWMn0fqHkZRfrs9WnK7On0uH8hLA-dVs3qXhAd1bcOSq7g) suggests 0.32% of total population infected around April 4-5, meaning exactly M=2%
 
 ### France
@@ -233,7 +245,8 @@ Date  | C | D | DayR C % | DayR D % | DoubT C (d) | DoubT D (d) | %pop M=0.5% | 
 31/03 | 52827 | 3532 | 11 | 14 | 6.4 | 4.9 | 2.91[2.2-4.5] | 1.46[1.1-2.2] | 0.73[0.6-1.1] | 2.8 | 5.6 | 11.2
 11/04 | 125931 | 13215 | 9 | 10 | 7.5 | 7.3 | 7.92 | 3.96 | 1.98 | 2.4 | 4.9 | 9.8
 
-Population percentage %pop IC: 3% ci=[1.1%-7.4%] implies M=0.5[-1]%.
+- Population percentage %pop IC: 3% ci=[1.1%-7.4%] implies M=0.5[-1]%.
+- Population percentage %pop GA: 3.09% implies M=0.5% and longer delays ~16 days.
 
 ### Germany
 Date  | C | D | DayR C % | DayR D % | DoubT C (d) | DoubT D (d) | %pop M=0.5% | %pop M=1% | %pop M=2% | Test% M=0.5% | Test% M=1% | Test% M=2%
@@ -243,6 +256,7 @@ Date  | C | D | DayR C % | DayR D % | DoubT C (d) | DoubT D (d) | %pop M=0.5% | 
 11/04 | 122171 | 2767 | 4 | 12 | 16.2 | 5.7 | 1.56 | 0.78 | 0.39 | 9.4 | 18.8 | 37.6
 
 - Population percentage %pop IC: 0.72% ci=[0.28%-1.8%] implies M=0.5[-1]%.
+- Population percentage %pop GA: 0.55% implies M=0.5% for shorter dealys or M=1% for longer delays.
 - Heinsberg [study](https://www.tagesschau.de/regional/nordrheinwestfalen/corona-studie-heinsberg-101.html) suggests a mortality M=0.37%, in line with my estimate and IC (if M=0.5%)
 
 ### Denmark
@@ -252,7 +266,8 @@ Date  | C | D | DayR C % | DayR D % | DoubT C (d) | DoubT D (d) | %pop M=0.5% | 
 31/03 | 3039 | 90 | 8 | 26 | 8.7 | 2.7 | 1.90[1.1-4.1] | 0.95[0.6-2] | 0.48[0.3-1] | 2.8 | 5.6 | 11.1
 11/04 | 6014 | 247 | 7 | 7 | 10.1 | 9.7 | 1.41 | 0.71 | 0.35 | 7.4 | 14.8 | 29.6
 
-Population percentage %pop IC: 1.1% ci=[0.40%-3.1%] implies M=1[-2]%.
+- Population percentage %pop IC: 1.1% ci=[0.40%-3.1%] implies M=1[-2]%.
+- Population percentage %pop GA: 0.41% implies M=2%.
 
 ### Italy
 Date  | C | D | DayR C % | DayR D % | DoubT C (d) | DoubT D (d) | %pop M=0.5% | %pop M=1% | %pop M=2% | Test% M=0.5% | Test% M=1% | Test% M=2%
@@ -262,7 +277,8 @@ Date  | C | D | DayR C % | DayR D % | DoubT C (d) | DoubT D (d) | %pop M=0.5% | 
 31/03 | 105792 | 12428 | 5 | 8 | 13.9 | 9.1 | 6.99[6-8.8] | 3.49[3-4.4] | 1.75[1.5-2.2] | 2.5 | 5.0 | 10.0
 11/04 | 147577 | 18849 | 3 | 3 | 25.4 | 21.1 | 9.85 | 4.92 | 2.46 | 2.5 | 4.9 | 9.9
 
-Population percentage %pop IC: 9.8% ci=[3.2%-26%] implies underestimation vs IC and M=0.5[-1]%.
+- Population percentage %pop IC: 9.8% ci=[3.2%-26%] implies underestimation vs IC and M=0.5[-1]%.
+- Population percentage %pop GA: 5% implies M=0.5% or understimated M=1%.
 
 ### Switzerland
 Date  | C | D | DayR C % | DayR D % | DoubT C (d) | DoubT D (d) | %pop M=0.5% | %pop M=1% | %pop M=2% | Test% M=0.5% | Test% M=1% | Test% M=2%
@@ -271,7 +287,8 @@ Date  | C | D | DayR C % | DayR D % | DoubT C (d) | DoubT D (d) | %pop M=0.5% | 
 31/03 | 16605 | 433 | 6 | 16 | 11.1 | 4.4 | 3.04[2.2-4.9] | 1.52[1.1-2.4] | 0.76[0.6-1.2] | 6.4 | 12.8 | 25.7
 11/04 | 24551 | 1002 | 3 | 7 | 19.9 | 10.1 | 3.79 | 1.90 | 0.95 | 7.6 | 15.2 | 30.4
 
-Population percentage %pop IC: 3.1% ci=[1.3%-7.6%] implies M=0.5[-1]%.
+- Population percentage %pop IC: 3.1% ci=[1.3%-7.6%] implies M=0.5[-1]%.
+- Population percentage %pop GA: 2.72% implies M=0.5%.
 
 ### Norway
 Date  | C | D | DayR C % | DayR D % | DoubT C (d) | DoubT D (d) | %pop M=0.5% | %pop M=1% | %pop M=2% | Test% M=0.5% | Test% M=1% | Test% M=2%
@@ -279,7 +296,8 @@ Date  | C | D | DayR C % | DayR D % | DoubT C (d) | DoubT D (d) | %pop M=0.5% | 
 31/03 | 4641 | 39 | 5 | 18 | 13.2 | 3.9 | 0.50[0.4-0.9] | 0.25[0.2-0.4] | 0.13[0.1-0.2] | 17.3 | 34.5 | 69.0
 11/04 | 6314 | 113 | 3 | 11 | 24.9 | 6.5 | 0.90 | 0.45 | 0.22 | 13.2 | 26.3 | 52.7
 
-Population percentage %pop IC: 0.41% ci=[0.09%-1.2%] implies M=0.5[-1-2]%.
+- Population percentage %pop IC: 0.41% ci=[0.09%-1.2%] implies M=0.5[-1-2]%.
+- Population percentage %pop GA: 0.23% implies M=1%.
 
 ### Belgium
 Date  | C | D | DayR C % | DayR D % | DoubT C (d) | DoubT D (d) | %pop M=0.5% | %pop M=1% | %pop M=2% | Test% M=0.5% | Test% M=1% | Test% M=2%
@@ -288,7 +306,8 @@ Date  | C | D | DayR C % | DayR D % | DoubT C (d) | DoubT D (d) | %pop M=0.5% | 
 31/03 | 12775 | 705 | 24 | 22 | 2.9 | 3.2 | 5.56[3.6-10.6] | 2.78[1.8-5.3] | 1.39[0.9-2.7] | 2.0 | 4.0 | 8.0
 11/04 | 26667 | 3019 | 6 | 14 | 11.3 | 5.0 | 13.90 | 6.95 | 3.48 | 1.7 | 3.3 | 6.7
 
-Population percentage %pop IC: 3.7%i ci=[1.3%-9.7%] implies M=0.5[-1-2]%.
+- Population percentage %pop IC: 3.7%i ci=[1.3%-9.7%] implies M=0.5[-1-2]%.
+- Population percentage %pop GA: 5.5% implies M=0.5%.
 
 ### Sweden
 Date  | C | D | DayR C % | DayR D % | DoubT C (d) | DoubT D (d) | %pop M=0.5% | %pop M=1% | %pop M=2% | Test% M=0.5% | Test% M=1% | Test% M=2%
@@ -297,7 +316,8 @@ Date  | C | D | DayR C % | DayR D % | DoubT C (d) | DoubT D (d) | %pop M=0.5% | 
 31/03 | 4435 | 180 | 9 | 27 | 7.8 | 2.5 | 2.45[1.4-5.6] | 1.23[0.7-2.8] | 0.61[0.4-1.4] | 1.8 | 3.6 | 7.3
 11/04 | 9685 | 870 | 8 | 14 | 9.1 | 5.0 | 4.64 | 2.32 | 1.16 | 2.1 | 4.2 | 8.4
 
-Population percentage %pop IC: 3.1% ci=[0.85%-8.4%] implies underestimation vs IC and M=0.5[-1]%.
+- Population percentage %pop IC: 3.1% ci=[0.85%-8.4%] implies underestimation vs IC and M=0.5[-1]%.
+- Population percentage %pop GA: 0.58% implies M=2%.
 
 ### United Kingdom
 Date  | C | D | DayR C % | DayR D % | DoubT C (d) | DoubT D (d) | %pop M=0.5% | %pop M=1% | %pop M=2% | Test% M=0.5% | Test% M=1% | Test% M=2%
@@ -305,7 +325,8 @@ Date  | C | D | DayR C % | DayR D % | DoubT C (d) | DoubT D (d) | %pop M=0.5% | 
 31/03 | 25150 | 1789 | 14 | 20 | 5.1 | 3.4 | 2.22[1.5-4.1] | 1.11[0.7-2.1] | 0.55[0.4-1] | 1.7 | 3.4 | 6.8
 11/04 | 70272 | 8958 | 8 | 13 | 8.9 | 5.4 | 6.54 | 3.27 | 1.64 | 1.6 | 3.2 | 6.4
 
-Population percentage %pop IC: 2.7% ci=[1.2%-5.4%] implies M=0.5[-1]%.
+- Population percentage %pop IC: 2.7% ci=[1.2%-5.4%] implies M=0.5[-1]%.
+- Population percentage %pop GA: 3.15% implies M=0.5% for longer delays ~17 days.
 
 ## Evolution of doubling time with time
 
