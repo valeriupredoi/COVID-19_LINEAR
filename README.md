@@ -351,13 +351,15 @@ Date  | Mean DoublT (days) | `R0` (10 days) | Figure
 
 # Conclusions
 
-- Viral transmission very high: `R0` of up to 5 in mid-March (considering an infectious phase of 10 days,
+- Viral transmission is very high: `R0` of up to 5-6 in mid-March (considering an infectious phase of 10 days,
   could be even higher if infectious phase is longer); definite decrease in transmission due to social distancing,
   of ~70% in the three weeks between 16/03/2020 and 05/04/2020
-- Countries underreport cases in proportion of up 100 times; underreporting decreases with
-  the increase of number of tests per million
+- Countries underreport cases in very high proportions; underreporting decreases with
+  the increase of number of tests per million; the average reporting for the 13 representative countries
+  we looked at is 13.6% (std.dev. 11.6%) for April 11, for a reference mortality M=1%; that means, on
+  average, that 86% of actual infections may go unreported;
 - Average mortality of 0.5-1% (possibly higher to 2% in certain countries, defintely not higher than 2%,
-  considering countries looked at)
+  considering reference countries we looked at).
 
 # Resources
 
