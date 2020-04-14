@@ -39,7 +39,7 @@ def _sum_up(param, country):
 def get_excel_data(url, country_table, table_name, column, download):
     """Retrive Excel sheet and parse."""
     country_xls = "country_data/{}.xls".format(country_table)
-    if not os.path.isfile(country_xls) or download:
+    if not os.path.isfile(country_xls):  # or download - obsolete
         urllib.urlretrieve(url, country_xls)
     book = open_workbook(country_xls, on_demand=True)
     sheet = [
