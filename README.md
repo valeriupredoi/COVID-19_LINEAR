@@ -1,6 +1,5 @@
 
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
-[![Website valeriupredoi.github.io](https://img.shields.io/website-up-down-green-red/https/valeriupredoi.github.io.svg)](https://valeriupredoi.github.io)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 
 **Website** https://valeriupredoi.github.io/
