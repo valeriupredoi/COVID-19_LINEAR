@@ -20,7 +20,7 @@ We assume the following model for the cumulative number of reported cases and de
 at any given time `t` (measured in days), the cumulative number of cases will be:
 
 ```math
-N(t) = N_0 \exp^{bt}
+N(t) = N0exp(bt)
 ```
 
 where `N0` is an initial number of cases, rate `b` is the growth rate (in units
