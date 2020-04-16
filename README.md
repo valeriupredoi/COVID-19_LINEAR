@@ -18,9 +18,11 @@ Table of Contents
 
 We assume the following model for the cumulative number of reported cases and deaths:
 at any given time `t` (measured in days), the cumulative number of cases will be:
-```
-N(t) = N0exp(bt)
-```
+
+.. math::
+
+N(t) = N_0 \exp^{bt}
+
 where `N0` is an initial number of cases, rate `b` is the growth rate (in units
 1/day or day-1), and `exp` is the exponential number = 2.72. Similarily, deaths
 have the distribution:
