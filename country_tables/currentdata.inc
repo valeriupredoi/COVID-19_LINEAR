@@ -1,2 +1,2 @@
-date=17-04-2020
-url=https://raw.githubusercontent.com/valeriupredoi/COVID-19_LINEAR/master/country_tables/ALL_COUNTRIES_DATA_17-04-2020.csv
+date=18-04-2020
+url=https://raw.githubusercontent.com/valeriupredoi/COVID-19_LINEAR/master/country_tables/ALL_COUNTRIES_DATA_18-04-2020.csv
