@@ -930,7 +930,8 @@ def main():
     # plot viral parameters
     plot_parameters(double_time, basic_rep, lin_fit_quality, len(countries))
     ks.kstest(nums_cases, nums_deaths)
-    plot_rolling_average(all_nums_deaths)
+    # first plot 17-04, repeat after 7 days
+    # plot_rolling_average(all_nums_deaths)
 
 
 if __name__ == '__main__':
