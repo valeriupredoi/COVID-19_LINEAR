@@ -762,6 +762,45 @@ def plot_doubling(cases_dt, deaths_dt, current_range, country):
     plt.close()
 
 
+def plot_rolling_average(nums_deaths, n=7):
+    """Plot a 3-day rolling average of numbers of deaths."""
+    analyzed_countries = ["UK", "France", "Germany", "US",
+                          "Spain", "Italy", "Netherlands",
+                          "Belgium", "Romania", "Sweden", "Norway",
+                          "Switzerland", "Canada"]
+    country_colors = {"UK":"k", "France":"b", "Germany":"r", "US":"c",
+                      "Spain":"m", "Italy":"y", "Netherlands":"g",
+                      "Belgium":"lime", "Romania":"orange", "Sweden":"gray", "Norway":"maroon",
+                      "Switzerland":"teal", "Canada":"darkslategrey"}
+    len_windows = []
+    for country, deaths in nums_deaths.items():
+        if country in analyzed_countries:
+            if country == "UK":
+                deaths = np.loadtxt("country_data/UK_deaths_history")
+            deaths = list(sorted([d for d in deaths if d > 5.]))
+            # TODO remember to change day in datafinder to TODAY
+            deaths = [deaths[i + 1] - deaths[i] for i in range(len(deaths) - 1)]
+            ret = np.cumsum(deaths, dtype=float)
+            ret[n:] = ret[n:] - ret[:-n]
+            rolling_avg = ret[n - 1:] / n
+            plt.plot(range(len(rolling_avg)), rolling_avg,
+                     color=country_colors[country], label=country)
+            plt.annotate(country, xy=(len(rolling_avg) + 0.05,
+                                      rolling_avg[-1]), fontsize=8)
+            len_windows.append(len(rolling_avg))
+
+    header = "7-day rolling average for daily no. of deaths increase (March and April) starting at min=5".format(country)
+    plt.title(header, fontsize=10)
+    plt.xlabel("Rolling window midpoint [day]")
+    plt.ylabel("7-day rolling window average daily no of deaths")
+    plt.semilogy()
+    plt.xlim(0, max(len_windows) + 3)
+    plt.grid()
+    plt.savefig(os.path.join("country_plots",
+                             "COVID-19_Deaths_Rolling_Average.png"))
+    plt.close()
+
+
 def main():
     """Execute the plotter."""
     # parse command line args
@@ -835,10 +874,14 @@ def main():
     lin_fit_quality = []
     nums_cases = {}
     nums_deaths = {}
+    all_nums_deaths = {}
     for country in countries:
         monthly_numbers = get_monthly_countries_data(country,
                                                      args.month,
                                                      region=False)
+        monthly_numbers_prev_month = get_monthly_countries_data(country,
+                                                                args.month - 1,
+                                                                region=False)
         d_time, R0, lin_fit, nums = plot_countries(monthly_numbers,
                                                    args.month, country,
                                                    table_file,
@@ -848,6 +891,12 @@ def main():
         lin_fit_quality.extend(lin_fit)
         nums_cases[country] = nums[0]
         nums_deaths[country] = nums[1]
+        all_nums_deaths[country] = nums[1]
+        prev_month_deaths = [
+            float(s) for s in monthly_numbers_prev_month[1] if s != 'NN'
+        ]
+        all_nums_deaths[country] = np.hstack((all_nums_deaths[country],
+                                              prev_month_deaths))
         current_range = range(4, int(today_day) + 1)
         cases_dt = []
         deaths_dt = []
@@ -881,6 +930,7 @@ def main():
     # plot viral parameters
     plot_parameters(double_time, basic_rep, lin_fit_quality, len(countries))
     ks.kstest(nums_cases, nums_deaths)
+    plot_rolling_average(all_nums_deaths)
 
 
 if __name__ == '__main__':
