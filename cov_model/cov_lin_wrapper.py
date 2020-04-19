@@ -778,7 +778,6 @@ def plot_rolling_average(nums_deaths, n=7):
             if country == "UK":
                 deaths = np.loadtxt("country_data/UK_deaths_history")
             deaths = list(sorted([d for d in deaths if d > 5.]))
-            # TODO remember to change day in datafinder to TODAY
             deaths = [deaths[i + 1] - deaths[i] for i in range(len(deaths) - 1)]
             ret = np.cumsum(deaths, dtype=float)
             ret[n:] = ret[n:] - ret[:-n]
@@ -798,6 +797,35 @@ def plot_rolling_average(nums_deaths, n=7):
     plt.grid()
     plt.savefig(os.path.join("country_plots",
                              "COVID-19_Deaths_Rolling_Average.png"))
+    plt.close()
+
+    for country, deaths in nums_deaths.items():
+        if country in analyzed_countries:
+            if country == "UK":
+                deaths = np.loadtxt("country_data/UK_deaths_history")
+            deaths = list(sorted([d for d in deaths if d > 5.]))
+            deaths = [deaths[i + 1] - deaths[i] for i in range(len(deaths) - 1)]
+            cp = COUNTRY_PARAMS[country][1]
+            deaths_per_capita = [d / cp for d in deaths]
+            ret_pc = np.cumsum(deaths_per_capita, dtype=float)
+            ret_pc[n:] = ret_pc[n:] - ret_pc[:-n]
+            rolling_avg_pc = ret_pc[n - 1:] / n
+            plt.plot(range(len(rolling_avg_pc)), rolling_avg_pc,
+                     color=country_colors[country], label=country)
+            plt.annotate(country, xy=(len(rolling_avg_pc) + 0.05,
+                                      rolling_avg_pc[-1]), fontsize=8)
+
+    header = "7-day rolling average for daily no. of deaths increase (March and April) starting at min=5".format(country)
+    subheader = '\n Proportion of each 1,000 of country population (equiv. to per thousand)'
+    plt.title(header + subheader, fontsize=10)
+    plt.xlabel("Rolling window midpoint [day]")
+    plt.ylabel("7-day rolling window average daily no of deaths per 1k of population")
+    plt.semilogy()
+    plt.xlim(0, max(len_windows) + 3)
+    plt.grid()
+    plt.legend(loc="lower right", fontsize=8)
+    plt.savefig(os.path.join("country_plots",
+                             "COVID-19_Deaths_Rolling_Average_per_Population.png"))
     plt.close()
 
 
@@ -930,8 +958,7 @@ def main():
     # plot viral parameters
     plot_parameters(double_time, basic_rep, lin_fit_quality, len(countries))
     ks.kstest(nums_cases, nums_deaths)
-    # first plot 17-04, repeat after 7 days
-    # plot_rolling_average(all_nums_deaths)
+    plot_rolling_average(all_nums_deaths)
 
 
 if __name__ == '__main__':

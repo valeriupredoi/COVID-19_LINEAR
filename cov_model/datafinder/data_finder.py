@@ -262,8 +262,8 @@ def get_monthly_countries_data(country, month, region):
     today_day = today_date.split("-")[1]
     # jump one day in previous month
     # retrorun March in April
-    if today_day == '18' and month == 3:
-        today_day = '32'  # use current day and shift by 1
+    if month == 3:
+        today_day = '32'  # grab all March (it's done)
     for day in range(1, int(float(today_day))):
         date_object = datetime(day=day,
                                month=month,
