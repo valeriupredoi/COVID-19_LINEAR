@@ -4,6 +4,8 @@
 
 **Website** https://valeriupredoi.github.io/
 
+![protectnhs](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/stay-home-protect-nhs.png)
+
 Table of Contents
 -----------------
 * [Model](#Model)
