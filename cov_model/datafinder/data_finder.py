@@ -19,7 +19,7 @@ JOHN_HOPKINS = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master
 
 # countries that need their data to be summed;
 # same for US states
-COUNTRIES_TO_SUM = ["US", "France", "Denmark",
+COUNTRIES_TO_SUM = ["US", "France", "Denmark", "Canada",
                     "Netherlands", "California", "New York"]
 
 def _sum_up(param, country):
