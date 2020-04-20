@@ -193,9 +193,9 @@ def plot_countries(datasets, month, country, table_file, download):
         y_cases5)
 
     # test for goodness of fit and reassign data
-    if R < R5 and R5 > 0.98:
-        poly_x, R, slope, d_time, R0 = \
-            poly_x5, R5, slope5, d_time5, R05
+    # if R < R5 and R5 > 0.98:  ## switch to last 5 days get flat behaviour (20/04)
+    poly_x, R, slope, d_time, R0 = \
+        poly_x5, R5, slope5, d_time5, R05
         
 
     # get data for plotting
@@ -255,10 +255,10 @@ def plot_countries(datasets, month, country, table_file, download):
         )
 
         # check for goodness of fit and reassign data
-        if R_d < R_d5 and R_d5 > 0.98:
-            (poly_x_d, R_d,
-             slope_d, d_time_d, R0_d) = (poly_x_d5, R_d5,
-                                         slope_d5, d_time_d5, R0_d5)
+        # if R_d < R_d5 and R_d5 > 0.9:  ## switch to last 5 days get flat behaviour (20/04)
+        (poly_x_d, R_d,
+         slope_d, d_time_d, R0_d) = (poly_x_d5, R_d5,
+                                     slope_d5, d_time_d5, R0_d5)
 
         # plot parameters: deaths
         plot_text_d = linear.get_deaths_plot_text(
