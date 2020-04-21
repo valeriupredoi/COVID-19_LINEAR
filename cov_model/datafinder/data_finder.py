@@ -30,8 +30,10 @@ def _sum_up(param, country):
         if not len(set(param)) > 1:
             param = param[0]
         else:
-            param = sum(param)
-
+            if isinstance(param[0], float):
+                param = sum(param)
+            else:
+                param = param[0]
 
     return param
 
