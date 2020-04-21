@@ -600,10 +600,10 @@ def make_simulations_plot(variable_pack, country,
         x0, y0, y0d, y, yd, y_min, yd_min = uk.compute_first_april_projection_uk()
         log_ticks = [np.log(y0), np.log(y), np.log(y0d), np.log(yd),
                      np.log(y_min), np.log(yd_min), np.log(curr_case),
-                     np.log(curr_death)]
+                     np.log(curr_death), np.log(20000.)]
         real_ticks = [int(y0), int(y), int(y0d), int(yd),
                       int(y_min), int(yd_min), int(curr_case),
-                      int(curr_death)]
+                      int(curr_death), 20000.]
         plt.scatter((x0, x0 + 10.), (np.log(y0), np.log(y)),
                     color='k', label="Worst Cases Proj")
         plt.scatter((x0, x0 + 10.), (np.log(y0), np.log(y_min)),
@@ -633,17 +633,27 @@ def make_simulations_plot(variable_pack, country,
             plt.plot(x_deaths, poly_x_d, '--b')
 
         # plot anciliaries
-        plt.xlim(0., x0 + 11.5)
+        plt.xlim(0., x0 + 21.5)
         plt.yticks(log_ticks, real_ticks)
         plt.tick_params(axis="y", labelsize=7)
         plt.xlabel("Time [days, starting April 1st, 2020]")
         plt.ylabel("Cumulative no. of deaths and reported and simulated cases")
         plt.grid()
         plt.annotate("20 days from Lockdown", xy=(11.1, y_data[0]), color='red')
+        plt.annotate("Daily growth rates for deaths April 11-21:",
+                     xy=(11.1, np.log(6100.)), color='darkblue', fontsize=8)
+        plt.annotate("0.12/0.10/0.09/0.07/0.07/0.06/0.06/0.06/0.06/0.06/0.04",
+                     xy=(11.1, np.log(5300.)), color='darkblue', fontsize=8)
+        plt.annotate("Daily growth rates for deaths April 04-10:",
+                     xy=(11.1, np.log(4700.)), color='royalblue', fontsize=8)
+        plt.annotate("0.20/0.19/0.17/0.16/0.15/0.15/0.13",
+                     xy=(11.1, np.log(4100.)), color='royalblue', fontsize=8)
         plt.legend(loc="lower right", fontsize=9)
-        plt.text(1., y_data[-1] + 0.5, plot_text, fontsize=8, color='r')
-        plt.text(1., y_data[-1] - 2.0, plot_text_d, fontsize=8, color='b')
+        plt.text(1., y_data[-9] + 0.5, plot_text, fontsize=8, color='r')
+        plt.text(1., y_data[-4] - 1.9, plot_text_d, fontsize=8, color='b')
         plt.axvline(11., color="red")
+        plt.axvline(19., color='k')
+        plt.axhline(np.log(20000.), color='darkred')
         plt.suptitle("COVID-19 in {} starting {} 1, 2020 spun up 10 days\n".format(country, month_str) + \
                      "Worst: April 10 rates b=0.08/DoublTime=8.9d (R=0.99) and m=0.12/DoublTime=5.6d (R=0.99)",
                      fontsize=10)
