@@ -603,7 +603,7 @@ def make_simulations_plot(variable_pack, country,
                      np.log(curr_death), np.log(20000.)]
         real_ticks = [int(y0), int(y), int(y0d), int(yd),
                       int(y_min), int(yd_min), int(curr_case),
-                      int(curr_death), 20000.]
+                      int(curr_death), 20000]
         plt.scatter((x0, x0 + 10.), (np.log(y0), np.log(y)),
                     color='k', label="Worst Cases Proj")
         plt.scatter((x0, x0 + 10.), (np.log(y0), np.log(y_min)),
