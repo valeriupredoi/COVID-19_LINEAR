@@ -22,6 +22,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 
 from datetime import datetime
+from itertools import groupby
 
 from datafinder.data_finder import (COUNTRIES_TO_SUM,
     get_monthly_countries_data, get_official_uk_data)
@@ -839,6 +840,64 @@ def plot_rolling_average(nums_deaths, n=7):
     plt.close()
 
 
+def plot_death_extrapolation(death_rates):
+    """Plot 5-day death rates dN/dt."""
+    analyzed_countries = ["UK", "Italy", "Germany", "US",
+                          "Spain", "France", "Netherlands",
+                          "Belgium", "Romania", "Sweden", "Norway",
+                          "Switzerland", "Canada"]
+    country_colors = {"UK":"k", "France":"b", "Germany":"r", "US":"c",
+                      "Spain":"m", "Italy":"y", "Netherlands":"g",
+                      "Belgium":"lime", "Romania":"orange", "Sweden":"gray", "Norway":"maroon",
+                      "Switzerland":"teal", "Canada":"darkslategrey"}
+
+    all_rates = []
+    all_frequencies = []
+
+    for country, tuplex in death_rates.items():
+        if country in analyzed_countries:
+            daily_deaths = tuplex[0]
+            daily_rates = tuplex[1]
+            rate_frequency = {key:len(list(group)) for key,group in groupby(daily_rates)}
+            rate_frequency = dict(sorted(rate_frequency.items()))
+            plt.scatter(rate_frequency.keys(), rate_frequency.values(),
+                        color=country_colors[country], s=60, label=country)
+            all_rates.extend(rate_frequency.keys())
+            all_frequencies.extend(rate_frequency.values())
+
+    all_rates = [float(a) for a in all_rates]
+    all_rates = np.array(all_rates)
+    all_frequencies = np.array(all_frequencies)
+    doubles = [(i, j) for i, j in zip(all_rates, all_frequencies)]
+    lim_10 = [d for d in doubles if d[0] < 10.0]
+    x_10 = np.array([s[0] for s in lim_10])
+    y_10 = np.array([s[1] for s in lim_10])
+
+    # get linear params for all data
+    poly_x, R, y_err, slope, d_time, R0 = linear.get_linear_parameters(
+        all_rates,
+        all_frequencies)
+    poly_x10, R10, y_err10, slope10, d_time10, R010 = linear.get_linear_parameters(
+        x_10,
+        y_10)
+    plt.plot(all_rates, poly_x, '--r')
+    plt.plot(x_10, poly_x10, '--b')
+    plt.annotate("LinFit Slope1 (all m) = %.2f" % slope, xy=(11., 8.), color='r')
+    plt.annotate("LinFit Slope2 $(m < 0.1)$ = %.2f" % slope10, xy=(11., 7.5), color='b')
+    plt.annotate("Est. $N_{days}(m < 0.1)$ = 4.6 - 0.36 x R", xy=(11., 7.), color='b')
+    plt.annotate("Est. $N_{days}(m < 0.1)$ = 10 - 0.90 x R", xy=(11., 6.5), color='g')
+
+    header = "5-day rolling average daily growth rate (m from exp(mt)) for deaths vs  growth rate frequency"
+    plt.title(header, fontsize=10)
+    plt.ylabel("Growth rate frequency [day, counts]")
+    plt.xlabel("5-day rolling window avg. daily death growth rate [% from day-1]")
+    plt.grid()
+    plt.legend(loc="upper right", fontsize=8)
+    plt.savefig(os.path.join("country_plots",
+                             "COVID-19_DeathsRate_Rolling_Average_Counts.png"))
+    plt.close()
+
+
 def main():
     """Execute the plotter."""
     # parse command line args
@@ -913,6 +972,7 @@ def main():
     nums_cases = {}
     nums_deaths = {}
     all_nums_deaths = {}
+    death_rates = {}
     for country in countries:
         monthly_numbers = get_monthly_countries_data(country,
                                                      args.month,
@@ -938,6 +998,8 @@ def main():
         current_range = range(4, int(today_day) + 1)
         cases_dt = []
         deaths_dt = []
+        c_deaths = []
+        c_rates = []
         for d in current_range:
             if d < 10:
                 dat_file = "country_tables/ALL_COUNTRIES_DATA_0{}-04-2020.csv".format(d)
@@ -949,8 +1011,12 @@ def main():
                     if line.split(",")[1] == country:
                         cases_dt.append(line.split(",")[6])
                         deaths_dt.append(line.split(",")[7])
+                        c_deaths.append(line.split(",")[3])
+                        c_rates.append(line.split(",")[5])
         if len(cases_dt) == len(current_range):
             plot_doubling(cases_dt, deaths_dt, current_range, country)
+        if len(c_deaths) == len(c_rates):
+            death_rates[country] = (c_deaths, c_rates)
                 
     if regions:
         for region in regions:
@@ -969,6 +1035,7 @@ def main():
     plot_parameters(double_time, basic_rep, lin_fit_quality, len(countries))
     ks.kstest(nums_cases, nums_deaths)
     plot_rolling_average(all_nums_deaths)
+    plot_death_extrapolation(death_rates)
 
 
 if __name__ == '__main__':
