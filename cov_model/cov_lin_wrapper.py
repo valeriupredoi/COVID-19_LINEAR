@@ -869,12 +869,33 @@ def plot_death_extrapolation(death_rates):
         if country in analyzed_countries:
             daily_deaths = tuplex[0]
             daily_rates = tuplex[1]
-            rate_frequency = {key:len(list(group)) for key,group in groupby(daily_rates)}
+            rate_frequency = {float(key):len(list(group)) for key,group in groupby(daily_rates)}
             rate_frequency = dict(sorted(rate_frequency.items()))
             plt.scatter(rate_frequency.keys(), rate_frequency.values(),
                         color=country_colors[country], s=60, label=country)
             all_rates.extend(rate_frequency.keys())
             all_frequencies.extend(rate_frequency.values())
+
+            # plot bar rates
+            frequencies = rate_frequency.values()
+            labels = ['m={}'.format(m) for m in rate_frequency.keys()]
+            x = np.arange(len(labels))  # the label locations
+            width = 0.45  # the width of the bars
+            fig, ax = plt.subplots()
+            rects1 = ax.bar(x - width/2, frequencies, width,
+                            color=country_colors[country])
+
+            # Add some text for labels, title and custom x-axis tick labels, etc.
+            ax.set_ylabel('No of days of constant rate $m$')
+            ax.set_title('{}: 5-day average daily growth rate of deaths $m$ vs no of days of constant $m$'.format(country))
+            ax.set_xticks(x)
+            ax.set_xticklabels(labels)
+            ax.tick_params(axis="x", labelsize=8)
+            ax.grid()
+            ax.legend()
+            plt.savefig(os.path.join("country_plots",
+                                     "COVID-19_DeathsRate_Rolling_Average_{}.png".format(country)))
+            plt.close()
 
     all_rates = [float(a) for a in all_rates]
     all_rates = np.array(all_rates)
@@ -886,9 +907,9 @@ def plot_death_extrapolation(death_rates):
     lim_5 = [d for d in doubles if d[0] < 5.0]
     x_5 = np.array([s[0] for s in lim_5])
     y_5 = np.array([s[1] for s in lim_5])
-    lim_25 = [d for d in doubles if d[0] < 4.]
-    x_25 = np.array([s[0] for s in lim_25])
-    y_25 = np.array([s[1] for s in lim_25])
+    #lim_25 = [d for d in doubles if d[0] < 4.]
+    #x_25 = np.array([s[0] for s in lim_25])
+    #y_25 = np.array([s[1] for s in lim_25])
 
     # get linear params for all data
     poly_x, slope, intercept = get_linear_parameters_local(
@@ -900,24 +921,22 @@ def plot_death_extrapolation(death_rates):
     poly_x5, slope5, intercept5 = get_linear_parameters_local(
         x_5,
         y_5)
-    poly_x25, slope25, intercept25 = get_linear_parameters_local(
-        x_25,
-        y_25)
+    #poly_x25, slope25, intercept25 = get_linear_parameters_local(
+    #    x_25,
+    #    y_25)
     plt.plot(all_rates, poly_x, '--r')
     plt.plot(x_10, poly_x10, '--b')
     plt.plot(x_5, poly_x5, '--g')
-    plt.plot(x_25, poly_x25, '--k')
+    #plt.plot(x_25, poly_x25, '--k')
     plt.annotate("(all m) = %.2f %.2f x R" % (intercept, slope), xy=(11., 8.), color='r')
     plt.annotate("$(m < 0.1)$ = %.2f %.2f x R" % (intercept10, slope10), xy=(11., 7.5), color='b')
     plt.annotate("$(m < 0.05)$ = %.2f %.2f x R" % (intercept5, slope5), xy=(11., 7.), color='g')
-    plt.annotate("$(m < 0.04)$ = %.2f %.2f x R" % (intercept25, slope25), xy=(11., 6.5), color='k')
-    #plt.annotate("Est. $N_{days}(m < 0.1)$ = 4.6 - 0.36 x R", xy=(11., 7.), color='b')
-    #plt.annotate("Est. $N_{days}(m < 0.1)$ = 10 - 0.90 x R", xy=(11., 6.5), color='g')
+    #plt.annotate("$(m < 0.04)$ = %.2f %.2f x R" % (intercept25, slope25), xy=(11., 6.5), color='k')
 
-    header = "5-day rolling average daily growth rate (m from exp(mt)) for deaths vs  growth rate frequency"
+    header = "5-day rolling average daily growth rate $m$ for deaths (from $exp^{mt}$) vs times (days) of constant $m$"
     plt.title(header, fontsize=10)
-    plt.ylabel("Growth rate frequency [day, counts]")
-    plt.xlabel("5-day rolling window avg. daily death growth rate [% from day-1]")
+    plt.ylabel("No of day of constant $m$")
+    plt.xlabel("5-day rolling window avg. daily death growth rate $m$ x 100 [day-1]")
     plt.grid()
     plt.legend(loc="upper right", fontsize=8)
     plt.savefig(os.path.join("country_plots",
