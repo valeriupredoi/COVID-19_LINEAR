@@ -840,6 +840,36 @@ def plot_rolling_average(nums_deaths, n=7):
     plt.close()
 
 
+    for country, deaths in nums_deaths.items():
+        if country in analyzed_countries:
+            if country == "UK":
+                deaths = np.loadtxt("country_data/UK_deaths_history")
+            deaths = list(sorted([d for d in deaths]))
+            dd = [deaths[i + 1] - deaths[i] for i in range(len(deaths) - 1)]
+            delta_deaths = np.array(deaths[1:]) - np.array(dd) 
+            x = np.arange(len(deaths))
+            x_shift = np.arange(1, len(deaths))
+            width = 0.75
+            fig, ax = plt.subplots()
+            rects1 = ax.bar(x - width/2, deaths, width,
+                            color='red', log=True)
+            rects2 = ax.bar(x_shift - width/2, delta_deaths, width,
+                            color=country_colors[country], log=True)
+
+            # Add some text for labels, title and custom x-axis tick labels, etc.
+            # ax.set_yscale('log')
+            ax.set_ylabel('No of deaths')
+            ax.set_xlabel('Days since first death recorded')
+            ax.set_title('{}: March-April number of deaths and daily increment'.format(country))
+            ax.set_xticks(x)
+            ax.tick_params(axis="x", labelsize=6)
+            ax.grid()
+            ax.legend()
+            plt.savefig(os.path.join("country_plots",
+                                     "COVID-19_Deaths_{}.png".format(country)))
+            plt.close()
+
+
 def get_linear_parameters_local(x, y):
     """Retrive linear parameters."""
     # line parameters
