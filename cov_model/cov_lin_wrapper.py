@@ -840,6 +840,17 @@ def plot_rolling_average(nums_deaths, n=7):
     plt.close()
 
 
+def get_linear_parameters_local(x, y):
+    """Retrive linear parameters."""
+    # line parameters
+    coef = np.polyfit(x, y, 1)
+    poly1d_fn = np.poly1d(coef)
+    slope = coef[0]
+    intercept = coef[1]
+
+    return poly1d_fn(x), slope, intercept
+
+
 def plot_death_extrapolation(death_rates):
     """Plot 5-day death rates dN/dt."""
     analyzed_countries = ["UK", "Italy", "Germany", "US",
@@ -872,20 +883,36 @@ def plot_death_extrapolation(death_rates):
     lim_10 = [d for d in doubles if d[0] < 10.0]
     x_10 = np.array([s[0] for s in lim_10])
     y_10 = np.array([s[1] for s in lim_10])
+    lim_5 = [d for d in doubles if d[0] < 5.0]
+    x_5 = np.array([s[0] for s in lim_5])
+    y_5 = np.array([s[1] for s in lim_5])
+    lim_25 = [d for d in doubles if d[0] < 4.]
+    x_25 = np.array([s[0] for s in lim_25])
+    y_25 = np.array([s[1] for s in lim_25])
 
     # get linear params for all data
-    poly_x, R, y_err, slope, d_time, R0 = linear.get_linear_parameters(
+    poly_x, slope, intercept = get_linear_parameters_local(
         all_rates,
         all_frequencies)
-    poly_x10, R10, y_err10, slope10, d_time10, R010 = linear.get_linear_parameters(
+    poly_x10, slope10, intercept10 = get_linear_parameters_local(
         x_10,
         y_10)
+    poly_x5, slope5, intercept5 = get_linear_parameters_local(
+        x_5,
+        y_5)
+    poly_x25, slope25, intercept25 = get_linear_parameters_local(
+        x_25,
+        y_25)
     plt.plot(all_rates, poly_x, '--r')
     plt.plot(x_10, poly_x10, '--b')
-    plt.annotate("LinFit Slope1 (all m) = %.2f" % slope, xy=(11., 8.), color='r')
-    plt.annotate("LinFit Slope2 $(m < 0.1)$ = %.2f" % slope10, xy=(11., 7.5), color='b')
-    plt.annotate("Est. $N_{days}(m < 0.1)$ = 4.6 - 0.36 x R", xy=(11., 7.), color='b')
-    plt.annotate("Est. $N_{days}(m < 0.1)$ = 10 - 0.90 x R", xy=(11., 6.5), color='g')
+    plt.plot(x_5, poly_x5, '--g')
+    plt.plot(x_25, poly_x25, '--k')
+    plt.annotate("(all m) = %.2f %.2f x R" % (intercept, slope), xy=(11., 8.), color='r')
+    plt.annotate("$(m < 0.1)$ = %.2f %.2f x R" % (intercept10, slope10), xy=(11., 7.5), color='b')
+    plt.annotate("$(m < 0.05)$ = %.2f %.2f x R" % (intercept5, slope5), xy=(11., 7.), color='g')
+    plt.annotate("$(m < 0.04)$ = %.2f %.2f x R" % (intercept25, slope25), xy=(11., 6.5), color='k')
+    #plt.annotate("Est. $N_{days}(m < 0.1)$ = 4.6 - 0.36 x R", xy=(11., 7.), color='b')
+    #plt.annotate("Est. $N_{days}(m < 0.1)$ = 10 - 0.90 x R", xy=(11., 6.5), color='g')
 
     header = "5-day rolling average daily growth rate (m from exp(mt)) for deaths vs  growth rate frequency"
     plt.title(header, fontsize=10)
