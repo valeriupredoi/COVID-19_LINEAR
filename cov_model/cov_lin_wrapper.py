@@ -765,7 +765,8 @@ def plot_doubling(cases_dt, deaths_dt, current_range, country):
     cas.extend(det)
     plt.yticks(cas, cas)
     plt.tick_params(axis="y", labelsize=8)
-    plt.ylim(3., 15.)
+    plt.ylim(3., max(max([float(t) for t in cases_dt]),
+                     max([float(t) for t in deaths_dt])) + 5.)
     plt.grid()
     plt.legend(loc="lower left", fontsize=8)
     plt.savefig(os.path.join("country_plots",
