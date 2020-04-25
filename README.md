@@ -173,6 +173,21 @@ Maps are courtesy of [datawrapper](https://github.com/werner17/Covis?fbclid=IwAR
   ![map](https://github.com/werner17/Covis/blob/master/datawrapper/dUzze.png)
   [Interactive Map](https://datawrapper.dwcdn.net/dUzze)
 
+## Rolling averages
+
+We plot the 7-day rolling averages for absolute numbers of daily increases for deaths
+and the same but country population weighted (in units of 1000 inhabitants).
+
+![7dayavg](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_plots/COVID-19_Deaths_Rolling_Average.png)
+
+7-day rolling window averages for daily increases in numbers of deaths (absolute numbers)
+
+![7dayavg](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_plots/COVID-19_Deaths_Rolling_Average_per_Population.png)
+
+7-day rolling window averages for daily increases in numbers of deaths (weighted by country population in units of
+1000 inhabitants; note that Belgium's numbers are very high due to their reporting *all* deaths, see
+[article](https://www.rtl.be/info/belgique/societe/la-belgique-pointee-du-doigt-dans-le-monde-entier-pour-son-nombre-de-victimes-du-coronavirus-pourtant-notre-systeme-de-comptage-est-de-plus-en-plus-1212924.aspx?fbclid=IwAR18cKoaeUCZzR6WoyIsEaHSq4DCX5XbMhdKeyPMSMh1D4sLLw_55NTlXiw))
+
 ## Upper bound on mortality: Israel
 
 Israel is the only country that has solid testing results (16,000+ TpM as of April 10)
@@ -296,9 +311,12 @@ Date  | C | D | DayR C % | DayR D % | DoubT C (d) | DoubT D (d) | %pop M=0.5% | 
 21/03 | 6575 | 75 | 23 | 29 | 3.0 | 2.4 | 1.30 | 0.65 | 0.33 | 5.9 | 11.8 | 23.7
 31/03 | 16605 | 433 | 6 | 16 | 11.1 | 4.4 | 3.04[2.2-4.9] | 1.52[1.1-2.4] | 0.76[0.6-1.2] | 6.4 | 12.8 | 25.7
 11/04 | 24551 | 1002 | 3 | 7 | 19.9 | 10.1 | 3.79 | 1.90 | 0.95 | 7.6 | 15.2 | 30.4
+17/04 | 26732 | 1281 | 1 | 4 | 55.0 | 18.3 | 5.11 | 2.55 | 1.28 | 6.1 | 12.3 | 24.6
 
 - Population percentage %pop IC: 3.1% ci=[1.3%-7.6%] implies M=0.5[-1]%.
 - Population percentage %pop GA: 2.72% implies M=0.5%.
+- Wide antibody testing results [published](https://www.swissinfo.ch/eng/serological-test_antibody-test-results-suggest-6x-more-covid-19-infections-in-geneva/45712418) on April 25 quotes a total population infection of 5.5% which corresponds to M=0.5% from our model (5.1%
+  population infected).
 
 ### Norway
 Date  | C | D | DayR C % | DayR D % | DoubT C (d) | DoubT D (d) | %pop M=0.5% | %pop M=1% | %pop M=2% | Test% M=0.5% | Test% M=1% | Test% M=2%
