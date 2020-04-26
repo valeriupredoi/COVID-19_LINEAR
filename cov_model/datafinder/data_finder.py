@@ -72,7 +72,6 @@ def get_official_uk_data(month, download):
                                  "DailyConfirmedCases", 2,
                                  download=download)
     uk_deaths_url = UK_DAILY_DEATH_DATA
-    # TODO check for possible future book.name == DailyIndicators
     death_cells = get_excel_data(uk_deaths_url, "UK_deaths",
                                  "Sheet1", 3,
                                  download=download)
@@ -263,8 +262,8 @@ def get_monthly_countries_data(country, month, region):
     # start date / actual date
     today_date = datetime.today().strftime('%m-%d-%Y')
     today_day = today_date.split("-")[1]
-    # jump one day in previous month
-    # retrorun March in April
+
+    # monthly data
     if month == 3:
         today_day = '32'  # grab all March (it's done)
     for day in range(1, int(float(today_day))):
