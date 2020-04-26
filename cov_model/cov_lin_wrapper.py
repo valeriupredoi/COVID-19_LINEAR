@@ -32,21 +32,13 @@ from projections import uk
 
 COUNTRY_PARAMS = country_parameters.COUNTRY_PARAMS
 
-def make_evolution_plot(variable_pack, country,
-                        SLOWDOWN, SLOWDOWN_DEATHS,
-                        month_str, slowdown_deaths=None):
+def make_evolution_plot(variable_pack, country, month_str):
     """Make the exponential evolution plot."""
     # unpack variables
     (x_cases, y_cases, x_slow, y_slow, cases, deaths,
      x_deaths, deaths, y_deaths, poly_x, poly_x_s,
      poly_x_d, y_err, y_err_d, plot_text, plot_text_s,
      plot_text_d, plot_name, slope_d, slope) = variable_pack
-
-    if slowdown_deaths is not None:
-        (x_deaths, y_deaths, x_deaths_slow, y_deaths_slow,
-         poly_x_d_s, R_d_s, y_err_d_s,
-         slope_d_s, d_time_d_s, R0_d_s,
-         plot_text_d_s, plot_name_d_s) = slowdown_deaths
 
     # repack some data
     y_all_real = []
@@ -67,11 +59,6 @@ def make_evolution_plot(variable_pack, country,
         plt.plot(x_cases[-5:], poly_x, '--r')
     else:
         plt.plot(x_cases, poly_x, '--r')
-    if country in SLOWDOWN:
-        plt.axvline(SLOWDOWN[country], linewidth=2, color='orange')
-        plt.scatter(x_slow, y_slow, color='g',
-                    label="Daily Cases Slower")
-        plt.plot(x_slow, poly_x_s, '-g')
     if deaths:
         plt.scatter(x_deaths, y_deaths, marker='v',
                     color='b', label="Daily Deaths")
@@ -79,12 +66,6 @@ def make_evolution_plot(variable_pack, country,
             plt.plot(x_deaths[-5:], poly_x_d, '--b')
         else:
             plt.plot(x_deaths, poly_x_d, '--b')
-        if country in SLOWDOWN_DEATHS:
-            plt.scatter(x_deaths_slow, y_deaths_slow, marker='v',
-                        color='g', label="Daily Deaths Slower")
-            plt.plot(x_deaths_slow, poly_x_d_s, '--g')
-            plt.errorbar(x_deaths_slow, y_deaths_slow, yerr=y_err_d_s,
-                         fmt='v', color='g')
 
     plt.errorbar(x_cases, y_cases, yerr=y_err, fmt='o', color='r')
     if deaths:
@@ -96,25 +77,10 @@ def make_evolution_plot(variable_pack, country,
     else:
         plt.xlim(0., x_cases[-1] + 1.5)
         plt.ylim(y_deaths[0] - 2., y_cases[-1] + 3.5)
-    if country in SLOWDOWN:
-        plt.xlim(0., x_slow[-1] + 1.5)
-        plt.ylim(0., y_slow[-1] + 3.5)
     linear.common_plot_stuff(plt, country, month_str)
-    if country in SLOWDOWN:
-        plt.text(1., y_slow[-1] + 0.3, plot_text_s, fontsize=8, color='g')
-        plt.text(1., y_slow[-1] - 1.5, plot_text, fontsize=8, color='r')
-        if deaths:
-            plt.text(1., y_slow[-1] - 3.1, plot_text_d, fontsize=8, color='b')
-            if country in SLOWDOWN_DEATHS:
-                plt.text(1., y_deaths_slow[-1] - 3.7, plot_text_d_s, fontsize=8,
-                         color='g')
-    else:
-        plt.text(1., y_cases[-1] + 0.3, plot_text, fontsize=8, color='r')
-        if deaths:
-            plt.text(1., y_cases[-1] - 2.1, plot_text_d, fontsize=8, color='b')
-            if country in SLOWDOWN_DEATHS:
-                plt.text(1., y_deaths_slow[-1] - 3.3, plot_text_d_s, fontsize=8,
-                         color='g')
+    plt.text(1., y_cases[-1] + 0.3, plot_text, fontsize=8, color='r')
+    if deaths:
+        plt.text(1., y_cases[-1] - 2.1, plot_text_d, fontsize=8, color='b')
     plt.legend(loc="lower left", fontsize=7)
     plt.yticks(last_tick, [np.int(y01) for y01 in last_tick_real])
     plt.tick_params(axis="y", labelsize=8)
@@ -122,19 +88,22 @@ def make_evolution_plot(variable_pack, country,
     plt.close()
 
 
-def plot_countries(datasets, month, country, table_file, download):
+def plot_countries(datasets, months, country, table_file, download):
     """Plot countries data."""
-    if month == 3:
-        month_str = "March"
-    elif month == 4:
-        month_str = "April"
+    # set correct months labels
+    if len(months) == 1:
+        if months[0] == 3:
+            month_str = "March"
+        elif months[0] == 4:
+            month_str = "April"
+    else:
+        months_str = "March-April"
+
     # filter data lists
     cases = [float(c) for c in datasets[0] if c != 'NN']
     deaths = [float(c) for c in datasets[1] if c != 'NN']
     deaths = [d for d in deaths if d > 0.]
     recs = [float(c) for c in datasets[2] if c != 'NN']
-
-    SLOWDOWN, SLOWDOWN_DEATHS = linear.get_slowdown(month)
 
     if country != "UK":
         time_fmt = "%Y-%m-%dT%H:%M:%S"
@@ -155,31 +124,32 @@ def plot_countries(datasets, month, country, table_file, download):
 
     # UK specific data
     if country == "UK":
-        (x_cases, cases, x_deaths,
-        deaths, avg_mort,
-        stdev_mort) = get_official_uk_data(month, download)
+        x_cases, cases, x_deaths, deaths, avg_mort, stdev_mort = \
+            [], [], [], [], [], []
+        for month in months:
+            (x_casesi, casesi, x_deathsi,
+             deathsi, avg_morti,
+             stdev_morti) = get_official_uk_data(month, download)
+            x_cases.extend(x_casesi)
+            cases.extend(casesi)
+            x_deaths.extend(x_deathsi)
+            deaths.extend(deathsi)
+            avg_mort.append(avg_morti)
+            stdev_mort.append(stdev_morti)
+
+        avg_mort = np.mean(avg_mort)
+        stdev_mort = np.mean(stdev_mort)
 
     # log data
     y_cases = np.log(cases)
     y_deaths = np.log(deaths)
 
-    # statistics: cases: account for slowdown
+    # statistics
     Pdt = []
     Pr0 = []
     Pr = []
     x_slow = y_slow = poly_x_s = y_err_s = slope_s = \
         d_time_s = R0_s = R_s = plot_text_s = plot_name_s = None
-
-    if country in SLOWDOWN:
-        (x_cases, y_cases, x_slow, y_slow,
-        poly_x_s, R_s, y_err_s, slope_s, d_time_s, R0_s,
-        plot_text_s, plot_name_s) = linear.compute_slowdown(x_cases, y_cases,
-                                                            country, month,
-                                                            deaths=False)
-        # get data for plotting
-        Pdt.append(d_time_s)
-        Pr0.append(R0_s)
-        Pr.append(R_s)
 
     # get linear params for all data
     poly_x, R, y_err, slope, d_time, R0 = linear.get_linear_parameters(
@@ -217,7 +187,7 @@ def plot_countries(datasets, month, country, table_file, download):
     plot_text, plot_name = linear.get_plot_text(slope, country,
                                                 R, d_time, R0,
                                                 x_cases,
-                                                month)
+                                                months[-1])
 
     # compute average mortality
     if country != "UK":
@@ -232,14 +202,6 @@ def plot_countries(datasets, month, country, table_file, download):
     rate_deaths = double_deaths = 1e-10
     if deaths:
         d_time_d_s = None
-        if country in SLOWDOWN_DEATHS:
-            (x_deaths, y_deaths, x_deaths_slow, y_deaths_slow,
-             poly_x_d_s, R_d_s, y_err_d_s, slope_d_s, d_time_d_s, R0_d_s,
-             plot_text_d_s, plot_name_d_s) = linear.compute_slowdown(x_deaths,
-                                                                     y_deaths,
-                                                                     country,
-                                                                     month,
-                                                                     deaths=True)
         (poly_x_d, R_d, y_err_d,
          slope_d, d_time_d, R0_d) = linear.get_linear_parameters(
             x_deaths,
@@ -282,29 +244,13 @@ def plot_countries(datasets, month, country, table_file, download):
         y_err, y_err_d, plot_text, plot_text_s,
         plot_text_d, plot_name, slope_d, slope
     )
-    if country not in SLOWDOWN_DEATHS:
-        make_evolution_plot(variable_pack, country, SLOWDOWN,
-                            SLOWDOWN_DEATHS, month_str)
-        if deaths and len(deaths) >= 3.0:
-            (s1, s2, s3, sim10_0, sim10_1, sim10_2, sim10_3, sim10_4,
-             sim20_0, sim20_1, sim20_2, sim20_3, sim20_4) = \
-                make_simulations_plot(variable_pack, country,
-                                      SLOWDOWN, SLOWDOWN_DEATHS,
-                                      month_str)
-    else:
-        slowdown_deaths = (x_deaths, y_deaths, x_deaths_slow, y_deaths_slow,
-                           poly_x_d_s, R_d_s, y_err_d_s,
-                           slope_d_s, d_time_d_s, R0_d_s,
-                           plot_text_d_s, plot_name_d_s)
-        make_evolution_plot(variable_pack, country, SLOWDOWN,
-                            SLOWDOWN_DEATHS,
-                            month_str, slowdown_deaths)
-        if deaths and len(deaths) >= 3.0:
-            (s1, s2, s3, sim10_0, sim10_1, sim10_2, sim10_3, sim10_4,
-             sim20_0, sim20_1, sim20_2, sim20_3, sim20_4) = \
-                make_simulations_plot(variable_pack, country, SLOWDOWN,
-                                      SLOWDOWN_DEATHS, month_str,
-                                      slowdown_deaths)
+
+    # call plotting routines
+    make_evolution_plot(variable_pack, country, month_str)
+    if deaths and len(deaths) >= 3.0:
+        (s1, s2, s3, sim10_0, sim10_1, sim10_2, sim10_3, sim10_4,
+         sim20_0, sim20_1, sim20_2, sim20_3, sim20_4) = \
+            make_simulations_plot(variable_pack, country, month_str)
 
     # write to table file
     if country in COUNTRY_PARAMS:
@@ -359,24 +305,12 @@ def plot_countries(datasets, month, country, table_file, download):
 
 
 
-def make_simulations_plot(variable_pack, country,
-                          SLOWDOWN, SLOWDOWN_DEATHS,
-                          month_str, slowdown_deaths=None):
+def make_simulations_plot(variable_pack, country, month_str):
     # get variable pack
     (x_data, y_data, x_slow, y_slow, y_data_real, y_deaths_real,
      x_deaths, y_deaths_real, y_deaths, poly_x, poly_x_s,
      poly_x_d, y_err, y_err_d, plot_text, plot_text_s,
      plot_text_d, plot_name, slope_d, slope) = variable_pack
-
-    if slowdown_deaths is not None:
-        (x_deaths, y_deaths, x_deaths_slow, y_deaths_slow,
-         poly_x_d_s, R_d_s, y_err_d_s,
-         slope_d_s, d_time_d_s, R0_d_s,
-         plot_text_d_s, plot_name_d_s) = slowdown_deaths
-        x_deaths = np.append(x_deaths, x_deaths_slow)
-        y_deaths = np.append(y_deaths, y_deaths_slow)
-        poly_x_d = np.append(poly_x_d, poly_x_d_s)
-        y_err_d = np.append(y_err_d, y_err_d_s)
 
     # extract last points for dsiplay
     curr_case = y_data_real[-1]
@@ -407,16 +341,11 @@ def make_simulations_plot(variable_pack, country,
     sim_y_3 = list(np.log(sim_y_3_real))
     sim_y_4 = list(np.log(sim_y_4_real))
 
-    # forecast the cases in 10 days
-    # correction: 20 days is probably more realistic
-    if slowdown_deaths is not None:
-        slope_sim = slope_d_s  # / 2.0 when rates halfen roughly
-        if slope_sim > 0.15:
-            slope_sim = slope_sim / 2.0
-    else:
-        slope_sim = slope_d  # / 2.0 when rates halfen roughly
-        if slope_sim > 0.05:
-            slope_sim = slope_sim / 2.0
+    # forecast the cases in 14
+    slope_sim = slope_d  # / 2.0 when rates halfen roughly
+    if slope_sim > 0.05:
+        slope_sim = slope_sim / 2.0
+
     # 14 day delay between infection and death
     sim_y_0_f = sim_y_0_real[-1] * np.exp(14. * slope_sim)
     sim_y_1_f = sim_y_1_real[-1] * np.exp(14. * slope_sim)
@@ -456,11 +385,6 @@ def make_simulations_plot(variable_pack, country,
         plt.plot(x_data, poly_x, '--r')
     plt.scatter(x_deaths, y_deaths, marker='v',
                 color='b', label="Cum. Deaths")
-    if country in SLOWDOWN:
-        plt.axvline(SLOWDOWN[country], linewidth=2, color='orange')
-        plt.scatter(x_slow, y_slow, color='g',
-                    label="Daily Cases Slower")
-        plt.plot(x_slow, poly_x_s, '-g')
     plt.scatter(x_deaths[-1], np.log(sim_y_0_f), marker='x', color='b')
     plt.scatter(x_deaths[-1], np.log(sim_y_1_f), marker='x', color='g')
     plt.scatter(x_deaths[-1], np.log(sim_y_2_f), marker='x', color='r')
@@ -485,9 +409,6 @@ def make_simulations_plot(variable_pack, country,
     plt.grid()
     plt.xlim(0., x_data[-1] + 1.5)
     plt.ylim(0., np.log(sim_y_0_f) + 3.)
-    if country in SLOWDOWN:
-        plt.xlim(0., x_slow[-1] + 1.5)
-    # plt.text(2., sim_y_0[-1] + 4., plot_text_d, fontsize=8, color="blue")
     plt.legend(loc="lower left", fontsize=9)
     last_tick = list(last_tick)
     last_tick.append(np.log(sim_y_0_f))
@@ -520,7 +441,6 @@ def make_simulations_plot(variable_pack, country,
 
     # do full 10-day running projection
     # with initial conditions on March 21
-    # only for March
     do_plot = False
     if country == "UK" and month_str == 'March' and do_plot:
         # projection data and ticks
@@ -532,12 +452,6 @@ def make_simulations_plot(variable_pack, country,
                       int(y_min), int(yd_min), int(curr_case),
                       int(curr_death)]
 
-        # if slowdown
-        if country in SLOWDOWN:
-            plt.axvline(SLOWDOWN[country], linewidth=2, color='orange')
-            plt.scatter(x_slow, y_slow, color='darkolivegreen', marker='s',
-                        label="Daily Cases Slower")
-            plt.plot(x_slow, poly_x_s, linestyle='-', color='darkolivegreen')
         plt.scatter((x0, x0 + 10.), (np.log(y0), np.log(y)),
                     color='k', label="Worst Cases Proj")
         plt.scatter((x0, x0 + 10.), (np.log(y0), np.log(y_min)),
@@ -725,8 +639,6 @@ def plot_parameters(doubling_time, basic_reproductive,
     _read_write_parameter("country_data/basic_reproductive_number",
                           mean_r0, std_r0)
 
-    # record data at fixed 10-day intervals
-    # TODO uncomment every 10 days
     with open("country_data/DT_27-03-2020", "w") as file:
         for dt in doubling_time:
             file.write(str(dt) + "\n")
@@ -932,13 +844,17 @@ def plot_death_extrapolation(death_rates):
     all_rates = np.array(all_rates)
     all_frequencies = np.array(all_frequencies)
     doubles = [(i, j) for i, j in zip(all_rates, all_frequencies)]
+
     lim_10 = [d for d in doubles if d[0] < 10.0]
     x_10 = np.array([s[0] for s in lim_10])
     y_10 = np.array([s[1] for s in lim_10])
+
     lim_5 = [d for d in doubles if d[0] < 5.0]
     x_5 = np.array([s[0] for s in lim_5])
     y_5 = np.array([s[1] for s in lim_5])
-    #lim_25 = [d for d in doubles if d[0] < 4.]
+
+    # look for smaller rates
+    #lim_25 = [d for d in doubles if d[0] < 2.5]
     #x_25 = np.array([s[0] for s in lim_25])
     #y_25 = np.array([s[1] for s in lim_25])
 
@@ -962,7 +878,7 @@ def plot_death_extrapolation(death_rates):
     plt.annotate("(all m) = %.2f %.2f x R" % (intercept, slope), xy=(11., 8.), color='r')
     plt.annotate("$(m < 0.1)$ = %.2f %.2f x R" % (intercept10, slope10), xy=(11., 7.5), color='b')
     plt.annotate("$(m < 0.05)$ = %.2f %.2f x R" % (intercept5, slope5), xy=(11., 7.), color='g')
-    #plt.annotate("$(m < 0.04)$ = %.2f %.2f x R" % (intercept25, slope25), xy=(11., 6.5), color='k')
+    #plt.annotate("$(m < 0.025)$ = %.2f %.2f x R" % (intercept25, slope25), xy=(11., 6.5), color='k')
 
     header = "5-day rolling average daily growth rate $m$ for deaths (from $exp^{mt}$) vs times (days) of constant $m$"
     plt.title(header, fontsize=10)
@@ -998,13 +914,32 @@ def main():
                         '--month',
                         type=int,
                         help='Month index: March: 3, April: 4 etc.')
+    parser.add_argument('-a',
+                        '--all-data',
+                        type=bool,
+                        default=False,
+                        help='Analyze all available data.')
     args = parser.parse_args()
+
+    # parse command line args
     download = False
+    all_data = False
     if not args.countries:
         return
     if args.download_data:
         download = True
+    if args.all_data:
+        all_data = True
 
+    # set the analysis interval depending on user choice
+    if not all_data and args.month:
+        months = [args.month]
+    elif all_data:
+        months = [3, 4]
+    else:
+        raise ValueError("You must supply either --all-data or --month")
+
+    # get countries or regions (states)
     countries = _get_geography(args.countries)
     if not args.regions:
         regions = []
@@ -1028,6 +963,7 @@ def main():
                                                                    args.month)
     with open(table_file, "w") as file:
         file.write(header + "\n")
+
     # write pointer file
     raw_date = "date={}-0{}-2020".format(today_day, args.month)
     raw_content = "url=https://raw.githubusercontent.com/" + \
@@ -1035,10 +971,12 @@ def main():
                   "COVID-19_LINEAR/master/country_tables/" + \
                   "ALL_COUNTRIES_DATA_{}-0{}-2020.csv".format(today_day,
                                                               args.month)
+    # write inc file pointing to most recent data file
     raw_file = "country_tables/currentdata.inc"
     with open(raw_file, "w") as file:
         file.write(raw_date + '\n' + raw_content)
 
+    # write countriles with doubling time > 14
     with open("country_tables/countries_with_case_doubling-time_larger_14days.csv", "w") as file:
         file.write("Country,doubling time (days)\n")
 
@@ -1050,15 +988,31 @@ def main():
     nums_deaths = {}
     all_nums_deaths = {}
     death_rates = {}
+
+    # run for each country
     for country in countries:
-        monthly_numbers = get_monthly_countries_data(country,
-                                                     args.month,
-                                                     region=False)
-        monthly_numbers_prev_month = get_monthly_countries_data(country,
-                                                                args.month - 1,
-                                                                region=False)
+        print("Analyzing {} ...".format(country))
+        cases, deaths, recs, times = [], [], [], []
+        for month in months:
+            monthly_numbers_i = get_monthly_countries_data(country,
+                                                           month,
+                                                           region=False)
+            if len(months) == 1:
+                monthly_numbers_prev_month = get_monthly_countries_data(
+                    country,
+                    month - 1,
+                    region=False)
+
+            cases.extend(monthly_numbers_i[0])
+            deaths.extend(monthly_numbers_i[1])
+            recs.extend(monthly_numbers_i[2])
+            times.extend(monthly_numbers_i[3])
+
+        monthly_numbers = (cases, deaths, recs, times)
+
+        # get the evolution parameters
         d_time, R0, lin_fit, nums = plot_countries(monthly_numbers,
-                                                   args.month, country,
+                                                   months, country,
                                                    table_file,
                                                    download)
         double_time.extend(d_time)
@@ -1067,11 +1021,14 @@ def main():
         nums_cases[country] = nums[0]
         nums_deaths[country] = nums[1]
         all_nums_deaths[country] = nums[1]
-        prev_month_deaths = [
-            float(s) for s in monthly_numbers_prev_month[1] if s != 'NN'
-        ]
-        all_nums_deaths[country] = np.hstack((all_nums_deaths[country],
-                                              prev_month_deaths))
+        if len(months) == 1:
+            prev_month_deaths = [
+                float(s) for s in monthly_numbers_prev_month[1] if s != 'NN'
+            ]
+            all_nums_deaths[country] = np.hstack((all_nums_deaths[country],
+                                                  prev_month_deaths))
+
+        # write all data daily file
         current_range = range(4, int(today_day) + 1)
         cases_dt = []
         deaths_dt = []
@@ -1097,18 +1054,29 @@ def main():
                 
     if regions:
         for region in regions:
-            monthly_numbers = get_monthly_countries_data(region,
-                                                         args.month,
-                                                         region=True)
+            print("Analyzing {} ...".format(region))
+            cases, deaths, recs, times = [], [], [], []
+            for month in months:
+                monthly_numbers_i = get_monthly_countries_data(region,
+                                                               month,
+                                                               region=True)
+                cases.extend(monthly_numbers_i[0])
+                deaths.extend(monthly_numbers_i[1])
+                recs.extend(monthly_numbers_i[2])
+                times.extend(monthly_numbers_i[3])
+
+            monthly_numbers = (cases, deaths, recs, times)
+
+            # get the evolution parameters
             d_timeR, R0R, lin_fitR, nums = plot_countries(monthly_numbers,
-                                                          args.month, region,
+                                                          months, region,
                                                           table_file,
                                                           download=False)
             double_time.extend(d_timeR)
             basic_rep.extend(R0R)
             lin_fit_quality.extend(lin_fitR)
 
-    # plot viral parameters
+    # plot viral parameters and various ensemble plots
     plot_parameters(double_time, basic_rep, lin_fit_quality, len(countries))
     ks.kstest(nums_cases, nums_deaths)
     plot_rolling_average(all_nums_deaths)
