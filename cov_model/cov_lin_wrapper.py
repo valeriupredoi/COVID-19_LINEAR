@@ -101,8 +101,6 @@ def plot_countries(datasets, months, country, table_file, download):
 
     # filter data lists
     cases = [float(c) for c in datasets[0] if c != 'NN']
-    if country == "California":
-        print(cases)
     deaths = [float(c) for c in datasets[1] if c != 'NN']
     deaths = [d for d in deaths if d > 0.]
     recs = [float(c) for c in datasets[2] if c != 'NN']
