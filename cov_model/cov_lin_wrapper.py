@@ -67,9 +67,9 @@ def make_evolution_plot(variable_pack, country, month_str):
         else:
             plt.plot(x_deaths, poly_x_d, '--b')
 
-    plt.errorbar(x_cases, y_cases, yerr=y_err, fmt='o', color='r')
-    if deaths:
-        plt.errorbar(x_deaths, y_deaths, yerr=y_err_d, fmt='v', color='b')
+    #plt.errorbar(x_cases, y_cases, yerr=y_err, fmt='o', color='r')
+    #if deaths:
+    #    plt.errorbar(x_deaths, y_deaths, yerr=y_err_d, fmt='v', color='b')
     plt.grid()
     if not deaths:
         plt.xlim(0., x_cases[-1] + 1.5)
@@ -97,10 +97,12 @@ def plot_countries(datasets, months, country, table_file, download):
         elif months[0] == 4:
             month_str = "April"
     else:
-        months_str = "March-April"
+        month_str = "March-April"
 
     # filter data lists
     cases = [float(c) for c in datasets[0] if c != 'NN']
+    if country == "California":
+        print(cases)
     deaths = [float(c) for c in datasets[1] if c != 'NN']
     deaths = [d for d in deaths if d > 0.]
     recs = [float(c) for c in datasets[2] if c != 'NN']
@@ -111,10 +113,20 @@ def plot_countries(datasets, months, country, table_file, download):
             datetime.strptime(c, time_fmt).day
             for c in datasets[3] if c != 'NN'
         ]
+        actual_months = [
+            datetime.strptime(c, time_fmt).month
+            for c in datasets[3] if c != 'NN'
+        ]
+
+        days_list = []
+        day_march = [d for d, m in zip(actual_days, actual_months) if m == 3]
+        day_april = [d + 31 for d, m in zip(actual_days, actual_months) if m == 4]
+        days_list.extend(day_march)
+        days_list.extend(day_april)
 
         # pad for unavailable data from 1st of month
         if actual_days[0] != 1 and actual_days[0] < 15:
-            x_cases = actual_days
+            x_cases = [float(n) for n in range(1, len(days_list) + 1)]
         else:
             x_cases = [float(n) for n in range(1, len(cases) + 1)]
 
@@ -136,6 +148,10 @@ def plot_countries(datasets, months, country, table_file, download):
             deaths.extend(deathsi)
             avg_mort.append(avg_morti)
             stdev_mort.append(stdev_morti)
+
+        x_cases = [float(n) for n in range(1, len(cases) + 1)]
+        x_deaths = [float(n) for n in range(int(x_cases[-1]) - len(deaths) + 1,
+                                            int(x_cases[-1]) + 1)]
 
         avg_mort = np.mean(avg_mort)
         stdev_mort = np.mean(stdev_mort)
@@ -399,8 +415,8 @@ def make_simulations_plot(variable_pack, country, month_str):
         plt.plot(x_deaths[-5:], poly_x_d, '--b')
     else:
         plt.plot(x_deaths, poly_x_d, '--b')
-    plt.errorbar(x_data, y_data, yerr=y_err, fmt='o', color='r')
-    plt.errorbar(x_deaths, y_deaths, yerr=y_err_d, fmt='v', color='b')
+    # plt.errorbar(x_data, y_data, yerr=y_err, fmt='o', color='r')
+    # plt.errorbar(x_deaths, y_deaths, yerr=y_err_d, fmt='v', color='b')
     plt.plot(np.array(x_deaths) - 14., sim_y_0, label="M=0.5%")
     plt.plot(np.array(x_deaths) - 14., sim_y_1, label="M=1%")
     plt.plot(np.array(x_deaths) - 14., sim_y_2, label="M=2%")
@@ -428,9 +444,9 @@ def make_simulations_plot(variable_pack, country, month_str):
     plt.annotate(str(int(sim_y_1_real[-1])),xy=(x_deaths[-1]-20,sim_y_1[-1]))
     plt.annotate(str(int(sim_y_2_real[-1])),xy=(x_deaths[-1]-20,sim_y_2[-1]))
     plt.annotate(str(int(sim_y_3_real[-1])),xy=(x_deaths[-1]-20,sim_y_3[-1]))
-    plt.xlabel("Time [days, starting {} 1st, 2020]".format(month_str))
+    plt.xlabel("Time [days, spanning {}, 2020]".format(month_str))
     plt.ylabel("Cumulative no. of deaths and reported and simulated cases")
-    plt.title("COVID-19 in {} starting {} 1, 2020\n".format(country, month_str) + \
+    plt.title("COVID-19 in {} spanning {}, 2020\n".format(country, month_str) + \
               "Sim cases are based on mortality fraction M and delayed by 14 days\n" + \
               "Sim cum. no. cases: rep. deaths x 1/M; rate=current death rate (0.5 x current death rate if > 5%)",
               fontsize=10)

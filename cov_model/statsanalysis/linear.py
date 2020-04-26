@@ -3,6 +3,8 @@ Line fit via numpy polyfit.
 """
 import numpy as np
 
+from datetime import datetime
+
 
 # slowing countries: countries that show a consistent slowing trend
 # slowing down value = date in March that is roughly the start of slowdown
@@ -114,9 +116,17 @@ def get_linear_parameters(x, y):
 
 def common_plot_stuff(plt, country, month_str):
     """Add common stuff to plot."""
-    plt.xlabel("Time [days, starting {} 1st, 2020]".format(month_str))
+    if month_str in ["March", "April", "May", "June", "July"]:
+        plt.xlabel("Time [days, starting {} 1st, 2020]".format(month_str))
+        plt.title("COVID-19 in {} starting {} 1, 2020".format(country, month_str))
+    else:
+        months = month_str.split("-")
+        plt.xlabel("Time: days since start of {} spanning {}".format(months[0],
+                                                                     str(months)))
+        plt.title("COVID-19 in {} starting {} spanning {}".format(country,
+                                                                  months[0],
+                                                                  str(months)))
     plt.ylabel("Cumulative number of confirmed cases and deaths")
-    plt.title("COVID-19 in {} starting {} 1, 2020".format(country, month_str))
 
 
 def get_plot_text(slope, country, R, d_time, R0, x,
@@ -125,8 +135,9 @@ def get_plot_text(slope, country, R, d_time, R0, x,
     header = "Daily Cases:"
     if deaths_label:
         header = "Daily Deaths (slower):"
+    today = datetime.today().strftime('%m-%d-%Y')
     plot_text = header + "\n" + \
-                "Date: %s-%s-2020" % (str(int(x[-1])), month) + "\n" + \
+                "Date: %s" % today + "\n" + \
                 "Line fit $N=Ce^{bt}$ with rate $b=$%.2f" % slope + "\n" + \
                 "Coefficient of determination R=%.3f" % R + "\n" + \
                 "Cases Doubling time: %.1f days" % d_time + "\n" + \
