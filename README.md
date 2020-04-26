@@ -178,11 +178,11 @@ Maps are courtesy of [datawrapper](https://github.com/werner17/Covis?fbclid=IwAR
 We plot the 7-day rolling averages for absolute numbers of daily increases for deaths
 and the same but country population weighted (in units of 1000 inhabitants).
 
-![7dayavg](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_plots/COVID-19_Deaths_Rolling_Average.png)
+![7dayavg](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_plots/ALL_COUNTRIES/COVID-19_Deaths_Rolling_Average.png)
 
 7-day rolling window averages for daily increases in numbers of deaths (absolute numbers)
 
-![7dayavg](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_plots/COVID-19_Deaths_Rolling_Average_per_Population.png)
+![7dayavg](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_plots/ALL_COUNTRIES/COVID-19_Deaths_Rolling_Average_per_Population.png)
 
 7-day rolling window averages for daily increases in numbers of deaths (weighted by country population in units of
 1000 inhabitants; note that Belgium's numbers are very high due to their reporting *all* deaths, see
@@ -195,7 +195,7 @@ and has sufficiently good data for us to place an upper limit on the mortality m
 
 Actual and simulated cases in Israel         |  Doubling times in Israel
 :-------------------------------------------:|:---------------------------:
-![IsraelSim](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_plots/COVID-19_LIN_Israel_SIM_CASES.png) | ![DoublIsrael](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_plots/COVID-19_Doubling_Times_Israel.png)
+![IsraelSim](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_plots/Israel/COVID-19_LIN_Israel_SIM_CASES.png) | ![DoublIsrael](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_plots/Israel/COVID-19_Doubling_Times_Israel.png)
 
 ## Representative countries
 
@@ -376,6 +376,7 @@ Date  | Mean DoublT (days) | `R0` (10 days) | Figure
 31/03 | 4.2+/-2.4 | 2.6+/-1.5 | ![d2](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/anciliaries/country_plots_03-2020/frozen_plots_03-2020/31-3-2020/Histogram_Doubling_Time.png)
 05/04 | 8.9+/-4.3 | 1.0+/-0.4 | ![d3](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_plots/frozen_plots_04-2020/05-04-2020/Histogram_Doubling_Time.png)
 12/04 | 12.6+/-7.3 | 0.7+/-0.3 | ![d4](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_plots/frozen_plots_04-2020/12-04-2020/Histogram_Doubling_Time.png)
+Current | - | - | ![d4](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/country_plots/ALL_COUNTRIES/Histogram_Doubling_Time.png)
 
 # Conclusions
 
