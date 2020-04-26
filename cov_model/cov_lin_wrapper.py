@@ -84,7 +84,11 @@ def make_evolution_plot(variable_pack, country, month_str):
     plt.legend(loc="lower left", fontsize=7)
     plt.yticks(last_tick, [np.int(y01) for y01 in last_tick_real])
     plt.tick_params(axis="y", labelsize=8)
-    plt.savefig(os.path.join("country_plots", plot_name))
+
+    if not os.path.isdir(os.path.join("country_plots", country)):
+        os.makedirs(os.path.join("country_plots", country))
+
+    plt.savefig(os.path.join("country_plots", country, plot_name))
     plt.close()
 
 
@@ -449,7 +453,10 @@ def make_simulations_plot(variable_pack, country, month_str):
               "Sim cum. no. cases: rep. deaths x 1/M; rate=current death rate (0.5 x current death rate if > 5%)",
               fontsize=10)
 
-    plt.savefig(os.path.join("country_plots",
+    if not os.path.isdir(os.path.join("country_plots", country)):
+        os.makedirs(os.path.join("country_plots", country))
+
+    plt.savefig(os.path.join("country_plots", country,
                              "COVID-19_LIN_{}_SIM_CASES.png".format(country)))
     plt.close()
 
@@ -521,7 +528,11 @@ def make_simulations_plot(variable_pack, country, month_str):
                      "Worst case: March 21 rates b=0.25/DT=2.8d (R=0.99) and m=0.37/DT=1.9d (R=0.97)",
                      fontsize=10)
         plt.title("Best case: quarantine rates b=m=0.2", color='green', fontsize=10)
-        plt.savefig(os.path.join("country_plots",
+
+        if not os.path.isdir(os.path.join("country_plots", country)):
+            os.makedirs(os.path.join("country_plots", country))
+
+        plt.savefig(os.path.join("country_plots", country,
                                  "COVID-19_LIN_{}_DARK_SIM_UK.png".format(country)))
         plt.close()
 
@@ -587,7 +598,11 @@ def make_simulations_plot(variable_pack, country, month_str):
                      "Worst: April 10 rates b=0.08/DoublTime=8.9d (R=0.99) and m=0.12/DoublTime=5.6d (R=0.99)",
                      fontsize=10)
         plt.title("Best: b=m=0.05 (DoublTime=14 days, R=1)", color='green', fontsize=10)
-        plt.savefig(os.path.join("country_plots",
+
+        if not os.path.isdir(os.path.join("country_plots", country)):
+            os.makedirs(os.path.join("country_plots", country))
+
+        plt.savefig(os.path.join("country_plots", country,
                                  "COVID-19_LIN_{}_DARK_SIM_UK.png".format(country)))
         plt.close()
 
@@ -624,7 +639,14 @@ def plot_parameters(doubling_time, basic_reproductive,
             mean_text + '\n' + \
             "weighted by quality of fit $f=R^2-0.5$; incl.some US states"
     plt.title(title, fontsize=10)
-    plt.savefig(os.path.join("country_plots", "Histogram_Doubling_Time.png"))
+
+    country = "ALL_COUNTRIES"
+    if not os.path.isdir(os.path.join("country_plots", country)):
+        os.makedirs(os.path.join("country_plots", country))
+
+    plt.savefig(os.path.join("country_plots",
+                             country,
+                             "Histogram_Doubling_Time.png"))
     plt.close()
 
     # append historical data
@@ -647,7 +669,12 @@ def plot_parameters(doubling_time, basic_reproductive,
             mean_title + \
             "Avg infectious phase 10 days; weighted by quality of fit $f=R^2-0.5$; incl.some US states"
     plt.title(title, fontsize=8)
-    plt.savefig(os.path.join("country_plots",
+
+    country = "ALL_COUNTRIES"
+    if not os.path.isdir(os.path.join("country_plots", country)):
+        os.makedirs(os.path.join("country_plots", country))
+
+    plt.savefig(os.path.join("country_plots", country,
                              "Histogram_Basic_Reproductive_Number.png"))
     # append historical data
     _read_write_parameter("country_data/basic_reproductive_number",
@@ -686,8 +713,8 @@ def plot_doubling(cases_dt, deaths_dt, current_range, country):
     plt.ylabel("Doubling times [days]")
     plt.axhline(14., color='k', linestyle='--')
     plt.semilogy()
-    cas = [float(r) for r in cases_dt]
-    det = [float(r) for r in deaths_dt]
+    cas = [[float(r) for r in cases_dt][-1]]
+    det = [[float(r) for r in deaths_dt][-1]]
     cas.extend(det)
     plt.yticks(cas, cas)
     plt.tick_params(axis="y", labelsize=8)
@@ -695,7 +722,11 @@ def plot_doubling(cases_dt, deaths_dt, current_range, country):
                      max([float(t) for t in deaths_dt])) + 5.)
     plt.grid()
     plt.legend(loc="lower left", fontsize=8)
-    plt.savefig(os.path.join("country_plots",
+
+    if not os.path.isdir(os.path.join("country_plots", country)):
+        os.makedirs(os.path.join("country_plots", country))
+
+    plt.savefig(os.path.join("country_plots", country,
                              "COVID-19_Doubling_Times_{}.png".format(country)))
     plt.close()
 
@@ -733,7 +764,12 @@ def plot_rolling_average(nums_deaths, n=7):
     plt.semilogy()
     plt.xlim(0, max(len_windows) + 3)
     plt.grid()
-    plt.savefig(os.path.join("country_plots",
+
+    country = "ALL_COUNTRIES"
+    if not os.path.isdir(os.path.join("country_plots", country)):
+        os.makedirs(os.path.join("country_plots", country))
+
+    plt.savefig(os.path.join("country_plots", country,
                              "COVID-19_Deaths_Rolling_Average.png"))
     plt.close()
 
@@ -762,7 +798,12 @@ def plot_rolling_average(nums_deaths, n=7):
     plt.xlim(0, max(len_windows) + 3)
     plt.grid()
     plt.legend(loc="lower right", fontsize=8)
-    plt.savefig(os.path.join("country_plots",
+
+    country = "ALL_COUNTRIES"
+    if not os.path.isdir(os.path.join("country_plots", country)):
+        os.makedirs(os.path.join("country_plots", country))
+
+    plt.savefig(os.path.join("country_plots", country,
                              "COVID-19_Deaths_Rolling_Average_per_Population.png"))
     plt.close()
 
@@ -792,8 +833,12 @@ def plot_rolling_average(nums_deaths, n=7):
             ax.tick_params(axis="x", labelsize=6)
             ax.grid()
             ax.legend()
-            plt.savefig(os.path.join("country_plots",
-                                     "COVID-19_Deaths_{}.png".format(country)))
+
+            if not os.path.isdir(os.path.join("country_plots", country)):
+                os.makedirs(os.path.join("country_plots", country))
+
+            plt.savefig(os.path.join("country_plots", country,
+                                     "COVID-19_Deaths_logHist_{}.png".format(country)))
             plt.close()
 
 
@@ -850,7 +895,11 @@ def plot_death_extrapolation(death_rates):
             ax.tick_params(axis="x", labelsize=8)
             ax.grid()
             ax.legend()
-            plt.savefig(os.path.join("country_plots",
+
+            if not os.path.isdir(os.path.join("country_plots", country)):
+                os.makedirs(os.path.join("country_plots", country))
+
+            plt.savefig(os.path.join("country_plots", country,
                                      "COVID-19_DeathsRate_Rolling_Average_{}.png".format(country)))
             plt.close()
 
@@ -900,7 +949,12 @@ def plot_death_extrapolation(death_rates):
     plt.xlabel("5-day rolling window avg. daily death growth rate $m$ x 100 [day-1]")
     plt.grid()
     plt.legend(loc="upper right", fontsize=8)
-    plt.savefig(os.path.join("country_plots",
+
+    country = "ALL_COUNTRIES"
+    if not os.path.isdir(os.path.join("country_plots", country)):
+        os.makedirs(os.path.join("country_plots", country))
+
+    plt.savefig(os.path.join("country_plots", country,
                              "COVID-19_DeathsRate_Rolling_Average_Counts.png"))
     plt.close()
 
