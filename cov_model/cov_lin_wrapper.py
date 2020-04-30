@@ -731,6 +731,46 @@ def plot_doubling(cases_dt, deaths_dt, current_range, country):
     plt.close()
 
 
+def plot_R(nums_dt, n=7):
+    """Plot a 3-day rolling average of numbers of deaths."""
+    analyzed_countries = ["UK", "France", "Germany", "US",
+                          "Spain", "Italy", "Netherlands",
+                          "Belgium", "Romania", "Sweden", "Norway",
+                          "Switzerland", "Canada", "Austria", "Bulgaria"]
+    country_colors = {"UK":"k", "France":"b", "Germany":"r", "US":"c",
+                      "Spain":"m", "Italy":"y", "Netherlands":"g",
+                      "Belgium":"lime", "Romania":"orange", "Sweden":"gray", "Norway":"maroon",
+                      "Switzerland":"teal", "Canada":"darkslategrey", "Austria": "tan",
+                      "Bulgaria": "fuchsia"}
+    len_windows = []
+    for country, dt in nums_dt.items():
+        if country in analyzed_countries:
+            dt = np.array([float(t) for t in dt])
+            R = 14. * (np.exp(0.69314 / dt) - 1.)
+            plt.plot(range(len(R)), R,
+                     color=country_colors[country], label=country)
+            #plt.annotate(country, xy=(len(R) + 0.05,
+            #                          R[-1]), fontsize=8)
+
+    header = "Reproductive number $R_0 = 14(\exp(ln2/T_d) - 1)$\n"
+    sup_header = "where $T_d$ is doubling time for reported cases"
+    plt.title(header + sup_header, fontsize=10)
+    plt.xlabel("Day [starting April 4th]")
+    plt.ylabel("R0")
+    plt.axhline(1., linestyle="--", color='r')
+    plt.xlim(0, len(R) + 3)
+    plt.legend(loc="upper right", fontsize=8)
+    plt.grid()
+
+    country = "ALL_COUNTRIES"
+    if not os.path.isdir(os.path.join("country_plots", country)):
+        os.makedirs(os.path.join("country_plots", country))
+
+    plt.savefig(os.path.join("country_plots", country,
+                             "COVID-19_R0.png"))
+    plt.close()
+
+
 def plot_rolling_average(nums_deaths, n=7):
     """Plot a 3-day rolling average of numbers of deaths."""
     analyzed_countries = ["UK", "France", "Germany", "US",
@@ -1056,6 +1096,7 @@ def main():
     nums_deaths = {}
     all_nums_deaths = {}
     death_rates = {}
+    all_nums_cases_dt = {}
 
     # run for each country
     for country in countries:
@@ -1117,6 +1158,7 @@ def main():
                         c_rates.append(line.split(",")[5])
         if len(cases_dt) == len(current_range):
             plot_doubling(cases_dt, deaths_dt, current_range, country)
+            all_nums_cases_dt[country] = cases_dt
         if len(c_deaths) == len(c_rates):
             death_rates[country] = (c_deaths, c_rates)
                 
@@ -1148,6 +1190,7 @@ def main():
     plot_parameters(double_time, basic_rep, lin_fit_quality, len(countries))
     ks.kstest(nums_cases, nums_deaths)
     plot_rolling_average(all_nums_deaths)
+    plot_R(all_nums_cases_dt)
     plot_death_extrapolation(death_rates)
 
 
