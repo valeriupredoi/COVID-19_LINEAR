@@ -736,7 +736,7 @@ def plot_doubling(cases_dt, deaths_dt, current_range, country):
     plt.xlabel("Days starting April 4th")
     plt.ylabel("Doubling times [days]")
     plt.axhline(14., color='k', linestyle='--')
-    plt.axvline(30, linestyle="--", color='k')
+    plt.axvline(31, linestyle="--", color='k')
     if country == "UK":
         plt.axvline(29, linestyle="--", color='r')
     plt.semilogy()
@@ -1179,7 +1179,7 @@ def main():
                 l_apr = len(current_range)
             elif m == 5:
                 mth = '05'
-                current_range = range(2, int(today_day) + 1)
+                current_range = range(1, int(today_day) + 1)
                 l_may = len(current_range)
             for d in current_range:
                 if d < 10:
@@ -1195,10 +1195,11 @@ def main():
                             c_deaths.append(line.split(",")[3])
                             c_rates.append(line.split(",")[5])
         tot_l = l_apr + l_may
-        if len(cases_dt) == tot_l:
+        if len(cases_dt) == tot_l - 1:
             current_range = range(4, 31)
-            may = [31 + x for x in range(2, int(today_day) + 1)]
+            may = [31 + x for x in range(0, int(today_day) - 1)]
             current_range.extend(may)
+            print(len(cases_dt), len(current_range))
             plot_doubling(cases_dt, deaths_dt, current_range, country)
             all_nums_cases_dt[country] = cases_dt
         if len(c_deaths) == len(c_rates):
