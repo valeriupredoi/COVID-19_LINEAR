@@ -133,13 +133,14 @@ def plot_countries(datasets, months, country, table_file, download):
         days_list.extend(day_april)
         days_list.extend(day_may)
         # starts of months
-        march0 = day_march[0]
-        april0 = day_april[0]
-        may0 = day_may[0]
+        march0 = 1
+        april0 = 32
+        may0 = 62
 
         # pad for unavailable data from 1st of month
         if actual_days[0] != 1 and actual_days[0] < 15:
-            x_cases = [float(n) for n in range(1, len(days_list) + 1)]
+            dt_march = actual_days[0] - 1
+            x_cases = [float(n) + dt_march for n in range(1, len(days_list) + 1)]
         else:
             x_cases = [float(n) for n in range(1, len(cases) + 1)]
 
