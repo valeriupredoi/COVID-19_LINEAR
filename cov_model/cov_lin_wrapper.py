@@ -38,7 +38,8 @@ def make_evolution_plot(variable_pack, country, month_str):
     (x_cases, y_cases, x_slow, y_slow, cases, deaths,
      x_deaths, deaths, y_deaths, poly_x, poly_x_s,
      poly_x_d, y_err, y_err_d, plot_text, plot_text_s,
-     plot_text_d, plot_name, slope_d, slope) = variable_pack
+     plot_text_d, plot_name, slope_d, slope,
+     march0, april0, may0) = variable_pack
 
     # repack some data
     y_all_real = []
@@ -78,6 +79,9 @@ def make_evolution_plot(variable_pack, country, month_str):
         plt.xlim(0., x_cases[-1] + 1.5)
         plt.ylim(y_deaths[0] - 2., y_cases[-1] + 3.5)
     linear.common_plot_stuff(plt, country, month_str)
+    plt.axvline(march0, linestyle="--", color='k')
+    plt.axvline(april0, linestyle="--", color='k')
+    plt.axvline(may0, linestyle="--", color='k')
     plt.text(1., y_cases[-1] + 0.3, plot_text, fontsize=8, color='r')
     if deaths:
         plt.text(1., y_cases[-1] - 2.1, plot_text_d, fontsize=8, color='b')
@@ -101,7 +105,7 @@ def plot_countries(datasets, months, country, table_file, download):
         elif months[0] == 4:
             month_str = "April"
     else:
-        month_str = "March-April"
+        month_str = "March-April-May"
 
     # filter data lists
     cases = [float(c) for c in datasets[0] if c != 'NN']
@@ -123,8 +127,15 @@ def plot_countries(datasets, months, country, table_file, download):
         days_list = []
         day_march = [d for d, m in zip(actual_days, actual_months) if m == 3]
         day_april = [d + 31 for d, m in zip(actual_days, actual_months) if m == 4]
+        day_may = [d + 61 for d, m in zip(actual_days, actual_months) if m == 5]
+        # add to x-axis
         days_list.extend(day_march)
         days_list.extend(day_april)
+        days_list.extend(day_may)
+        # starts of months
+        march0 = day_march[0]
+        april0 = day_april[0]
+        may0 = day_may[0]
 
         # pad for unavailable data from 1st of month
         if actual_days[0] != 1 and actual_days[0] < 15:
@@ -150,6 +161,9 @@ def plot_countries(datasets, months, country, table_file, download):
             deaths.extend(deathsi)
             avg_mort.append(avg_morti)
             stdev_mort.append(stdev_morti)
+            march0 = 1
+            april0 = 31
+            may0 = 62
 
         x_cases = [float(n) for n in range(1, len(cases) + 1)]
         x_deaths = [float(n) for n in range(int(x_cases[-1]) - len(deaths) + 1,
@@ -260,7 +274,8 @@ def plot_countries(datasets, months, country, table_file, download):
         cases, deaths, x_deaths, deaths,
         y_deaths, poly_x, poly_x_s, poly_x_d,
         y_err, y_err_d, plot_text, plot_text_s,
-        plot_text_d, plot_name, slope_d, slope
+        plot_text_d, plot_name, slope_d, slope,
+        march0, april0, may0
     )
 
     # call plotting routines
@@ -328,7 +343,8 @@ def make_simulations_plot(variable_pack, country, month_str):
     (x_data, y_data, x_slow, y_slow, y_data_real, y_deaths_real,
      x_deaths, y_deaths_real, y_deaths, poly_x, poly_x_s,
      poly_x_d, y_err, y_err_d, plot_text, plot_text_s,
-     plot_text_d, plot_name, slope_d, slope) = variable_pack
+     plot_text_d, plot_name, slope_d, slope,
+     march0, april0, may0) = variable_pack
 
     # extract last points for dsiplay
     curr_case = y_data_real[-1]
@@ -446,6 +462,9 @@ def make_simulations_plot(variable_pack, country, month_str):
     plt.annotate(str(int(sim_y_1_real[-1])),xy=(x_deaths[-1]-20,sim_y_1[-1]))
     plt.annotate(str(int(sim_y_2_real[-1])),xy=(x_deaths[-1]-20,sim_y_2[-1]))
     plt.annotate(str(int(sim_y_3_real[-1])),xy=(x_deaths[-1]-20,sim_y_3[-1]))
+    plt.axvline(march0, linestyle="--", color='k')
+    plt.axvline(april0, linestyle="--", color='k')
+    plt.axvline(may0, linestyle="--", color='k')
     plt.xlabel("Time [days, spanning {}, 2020]".format(month_str))
     plt.ylabel("Cumulative no. of deaths and reported and simulated cases")
     plt.title("COVID-19 in {} spanning {}, 2020\n".format(country, month_str) + \
@@ -708,10 +727,17 @@ def plot_doubling(cases_dt, deaths_dt, current_range, country):
     plt.plot(current_range, cases_dt, color='r')
     plt.plot(current_range, deaths_dt, color='b')
     header = "Cases/Deaths doubling time [days] for {}".format(country)
-    plt.title(header, fontsize=10)
-    plt.xlabel("Day in April")
+    subheader = "\nHorizontal dashed line: 14 days; vertical dashed line: month delimiter"
+    if country == "UK":
+        subheader = "\nHorizontal dashed line: 14 days; vertical dashed line: month delimiter" + \
+            "\nUK: 29 April: start of reporting deaths from care homes"
+    plt.title(header + subheader, fontsize=10)
+    plt.xlabel("Days starting April 4th")
     plt.ylabel("Doubling times [days]")
     plt.axhline(14., color='k', linestyle='--')
+    plt.axvline(30, linestyle="--", color='k')
+    if country == "UK":
+        plt.axvline(29, linestyle="--", color='r')
     plt.semilogy()
     cas = [[float(r) for r in cases_dt][-1]]
     det = [[float(r) for r in deaths_dt][-1]]
@@ -776,11 +802,12 @@ def plot_rolling_average(nums_deaths, n=7):
     analyzed_countries = ["UK", "France", "Germany", "US",
                           "Spain", "Italy", "Netherlands",
                           "Belgium", "Romania", "Sweden", "Norway",
-                          "Switzerland", "Canada"]
+                          "Switzerland", "Canada", "Austria", "Bulgaria"]
     country_colors = {"UK":"k", "France":"b", "Germany":"r", "US":"c",
                       "Spain":"m", "Italy":"y", "Netherlands":"g",
                       "Belgium":"lime", "Romania":"orange", "Sweden":"gray", "Norway":"maroon",
-                      "Switzerland":"teal", "Canada":"darkslategrey"}
+                      "Switzerland":"teal", "Canada":"darkslategrey",
+                      "Austria": "tan", "Bulgaria": "fuchsia"}
     len_windows = []
     for country, deaths in nums_deaths.items():
         if country in analyzed_countries:
@@ -898,11 +925,12 @@ def plot_death_extrapolation(death_rates):
     analyzed_countries = ["UK", "Italy", "Germany", "US",
                           "Spain", "France", "Netherlands",
                           "Belgium", "Romania", "Sweden", "Norway",
-                          "Switzerland", "Canada"]
+                          "Switzerland", "Canada", "Austria", "Bulgaria"]
     country_colors = {"UK":"k", "France":"b", "Germany":"r", "US":"c",
                       "Spain":"m", "Italy":"y", "Netherlands":"g",
                       "Belgium":"lime", "Romania":"orange", "Sweden":"gray", "Norway":"maroon",
-                      "Switzerland":"teal", "Canada":"darkslategrey"}
+                      "Switzerland":"teal", "Canada":"darkslategrey", "Austria": "tan",
+                      "Bulgaria": "fuchsia"}
 
     all_rates = []
     all_frequencies = []
@@ -1043,7 +1071,7 @@ def main():
     if not all_data and args.month:
         months = [args.month]
     elif all_data:
-        months = [3, 4]
+        months = [3, 4, 5]
     else:
         raise ValueError("You must supply either --all-data or --month")
 
@@ -1057,6 +1085,7 @@ def main():
     # write summary files
     today_date = datetime.today().strftime('%m-%d-%Y')
     today_day = today_date.split("-")[1]
+    today_month = today_date.split("-")[0]
     header = "Country,country-name,cases,deaths,case rate,death rate," + \
              "doubling cases (days),doubling deaths (days)," + \
              "pct pop 0.5% mort,prct pop 1% mort,prct pop 2% " +  \
@@ -1137,26 +1166,38 @@ def main():
             all_nums_deaths[country] = np.hstack((all_nums_deaths[country],
                                                   prev_month_deaths))
 
-        # write all data daily file
-        current_range = range(4, int(today_day) + 1)
+        # get data from all countries files
         cases_dt = []
         deaths_dt = []
         c_deaths = []
         c_rates = []
-        for d in current_range:
-            if d < 10:
-                dat_file = "country_tables/ALL_COUNTRIES_DATA_0{}-04-2020.csv".format(d)
-            else:
-                dat_file = "country_tables/ALL_COUNTRIES_DATA_{}-04-2020.csv".format(d)
-            with open(dat_file, "r") as file:
-                content = file.readlines()
-                for line in content:
-                    if line.split(",")[1] == country:
-                        cases_dt.append(line.split(",")[6])
-                        deaths_dt.append(line.split(",")[7])
-                        c_deaths.append(line.split(",")[3])
-                        c_rates.append(line.split(",")[5])
-        if len(cases_dt) == len(current_range):
+        for m in months[1:]:
+            if m == 4:
+                mth = '04'
+                current_range = range(4, 31)
+                l_apr = len(current_range)
+            elif m == 5:
+                mth = '05'
+                current_range = range(2, int(today_day) + 1)
+                l_may = len(current_range)
+            for d in current_range:
+                if d < 10:
+                    dat_file = "country_tables/ALL_COUNTRIES_DATA_0{}-{}-2020.csv".format(d, mth)
+                else:
+                    dat_file = "country_tables/ALL_COUNTRIES_DATA_{}-{}-2020.csv".format(d, mth)
+                with open(dat_file, "r") as file:
+                    content = file.readlines()
+                    for line in content:
+                        if line.split(",")[1] == country:
+                            cases_dt.append(line.split(",")[6])
+                            deaths_dt.append(line.split(",")[7])
+                            c_deaths.append(line.split(",")[3])
+                            c_rates.append(line.split(",")[5])
+        tot_l = l_apr + l_may
+        if len(cases_dt) == tot_l:
+            current_range = range(4, 31)
+            may = [31 + x for x in range(2, int(today_day) + 1)]
+            current_range.extend(may)
             plot_doubling(cases_dt, deaths_dt, current_range, country)
             all_nums_cases_dt[country] = cases_dt
         if len(c_deaths) == len(c_rates):

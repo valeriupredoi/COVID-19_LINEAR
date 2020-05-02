@@ -101,6 +101,7 @@ def c_of_d(ys_orig, ys_line):
 def get_linear_parameters(x, y):
     """Retrive linear parameters."""
     # line parameters
+    print("------ Analizying no of time points: {}".format(len(x)))
     coef = np.polyfit(x, y, 1)
     poly1d_fn = np.poly1d(coef)
 
@@ -123,9 +124,9 @@ def common_plot_stuff(plt, country, month_str):
         months = month_str.split("-")
         plt.xlabel("Time: days since start of {} spanning {}".format(months[0],
                                                                      str(months)))
-        plt.title("COVID-19 in {} starting {} spanning {}".format(country,
-                                                                  months[0],
-                                                                  str(months)))
+        plt.title("COVID-19 in {} starting {} spanning {}\n(dashed lines: month delimiters)".format(country,
+                                                                                                    months[0],
+                                                                                                    str(months)))
     plt.ylabel("Cumulative number of confirmed cases and deaths")
 
 

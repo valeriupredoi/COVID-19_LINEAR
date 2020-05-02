@@ -61,7 +61,10 @@ def load_daily_deaths_history(month):
             list(np.loadtxt("country_data/UK_deaths_history", dtype='float'))[0:19]
     elif month == 4:
         deaths_list = \
-            list(np.loadtxt("country_data/UK_deaths_history", dtype='float'))[19:]
+            list(np.loadtxt("country_data/UK_deaths_history", dtype='float'))[19:49]
+    elif month == 5:
+        deaths_list = \
+            list(np.loadtxt("country_data/UK_deaths_history", dtype='float'))[49:]
     return deaths_list
 
 
@@ -80,11 +83,11 @@ def get_official_uk_data(month, download):
     # uk changed data to remove cases before March 1st (2-04-2020)
     y_deaths_real = load_daily_deaths_history(month)
     # append to file if new data for new monthly data
-    if month == 4:
-        if death_cells[1:] not in y_deaths_real:
-            y_deaths_real.extend(death_cells[1:])
-            with open("country_data/UK_deaths_history", "a") as file:
-                file.write(str(death_cells[1:][0]) + "\n")
+    #if month == 5:
+    #    if death_cells[1:] not in y_deaths_real:
+    #        y_deaths_real.extend(death_cells[1:])
+    #        with open("country_data/UK_deaths_history", "a") as file:
+    #            file.write(str(death_cells[1:][0]) + "\n")
 
     if month == 3:
         y_data_real = cases_cells[31:62]
@@ -92,7 +95,12 @@ def get_official_uk_data(month, download):
         x_data = [np.float(x) for x in range(1, len(y_data_real) + 1)]
         x_deaths = [np.float(x) for x in range(13, len(y_deaths_real) + 13)]
     elif month == 4:
-        y_data_real = cases_cells[62:]
+        y_data_real = cases_cells[62:92]
+        mort = np.array(y_deaths_real) / np.array(y_data_real)
+        x_data = [np.float(x) for x in range(1, len(y_data_real) + 1)]
+        x_deaths = [np.float(x) for x in range(1, len(y_deaths_real) + 1)]
+    elif month == 5:
+        y_data_real = cases_cells[92:]
         mort = np.array(y_deaths_real) / np.array(y_data_real)
         x_data = [np.float(x) for x in range(1, len(y_data_real) + 1)]
         x_deaths = [np.float(x) for x in range(1, len(y_deaths_real) + 1)]
@@ -266,6 +274,8 @@ def get_monthly_countries_data(country, month, region):
     # monthly data
     if month == 3:
         today_day = '32'  # grab all March (it's done)
+    if month == 4:
+        today_day = '31'  # grab all April (it's done)
     for day in range(1, int(float(today_day))):
         date_object = datetime(day=day,
                                month=month,
