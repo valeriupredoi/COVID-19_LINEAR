@@ -757,7 +757,7 @@ def plot_doubling(cases_dt, deaths_dt, current_range, country):
         y)
 
     DT_now = rolling_avg_d[-1] * np.exp(slope * 14.)
-    R_nought = np.exp(0.7/DT_now) - 0.5
+    R_nought = 14. * 1.43 * (np.exp(0.7/DT_now) - 1.0)
     plt.scatter(current_range[-1], DT_now, color="orange", marker=(5, 1), s=70)
     plt.annotate("Fit last seven 7-day RolAvg Deaths DT and project by 14 days",
                  xy=(15., 6.), color='k', fontsize=8)
