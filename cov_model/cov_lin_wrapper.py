@@ -723,12 +723,55 @@ def _get_geography(arg):
 
 def plot_doubling(cases_dt, deaths_dt, current_range, country):
     """Plot doubling times for cases and deaths per country."""
+    # raw plot
     plt.scatter(current_range, cases_dt, marker='o', color='r', label='Case doubling time')
     plt.scatter(current_range, deaths_dt, marker='v', color='b', label='Deaths doubling time')
     plt.plot(current_range, cases_dt, color='r')
     plt.plot(current_range, deaths_dt, color='b')
-    header = "Cases/Deaths doubling time [days] for {}".format(country)
-    subheader = "\nHorizontal dashed line: 14 days; vertical dashed line: month delimiter"
+
+    # rollong average
+    n = 7
+    # cases rates
+    ret_c = np.cumsum(np.array([float(m) for m in cases_dt]), dtype=float)
+    ret_c[n:] = ret_c[n:] - ret_c[:-n]
+    rolling_avg_c = ret_c[n - 1:] / n
+
+    # death rates
+    ret_d = np.cumsum(np.array([float(m) for m in deaths_dt]), dtype=float)
+    ret_d[n:] = ret_d[n:] - ret_d[:-n]
+    rolling_avg_d = ret_d[n - 1:] / n
+
+    # plot rolling averages
+    plt.plot(current_range[6:], rolling_avg_c,
+             color='r', linestyle='--', linewidth=5,
+             label="Cases DT 7-day RolAvg")
+    plt.plot(current_range[6:], rolling_avg_d,
+            color='b', linestyle='--', linewidth=5,
+            label="Deaths DT 7-day RolAvg")
+
+    # do a linear analysis
+    x = current_range[-7:]
+    y = np.log(rolling_avg_d[-7:])
+    poly_x, R, y_err, slope, d_time, R0 = linear.get_linear_parameters(
+        x,
+        y)
+
+    DT_now = rolling_avg_d[-1] * np.exp(slope * 14.)
+    R_nought = np.exp(0.7/DT_now) - 0.5
+    plt.scatter(current_range[-1], DT_now, color="orange", marker=(5, 1), s=70)
+    plt.annotate("Fit last seven 7-day RolAvg Deaths DT and project by 14 days",
+                 xy=(15., 6.), color='k', fontsize=8)
+    plt.annotate("Actual Cases DT %.2f days" % (DT_now),
+                 xy=(15., 5.5), color='k', fontsize=8) 
+    plt.annotate("Evolution of Deaths DT = C$\exp^{kt}$, k = %.2f day$^{-1}$" % (slope),
+                 xy=(15., 5.), color='k', fontsize=8)
+    plt.annotate("Line fit coefficient of determination $R =$ %.2f" % (R),
+                 xy=(15., 4.5), color='k', fontsize=8)
+    plt.annotate("Estimated $R_0 = $ %.2f" % (R_nought),
+                 xy=(15., 4.), color='k', fontsize=8)
+
+    header = "Cases/Deaths doubling time [days] for {} / 7-day Rolling Averages".format(country)
+    subheader = "\nHorizontal dashed line: 14 days; vertical dashed line: month delimiter; star: actual Cases DT"
     if country == "UK":
         subheader = "\nHorizontal dashed line: 14 days; vertical dashed line: month delimiter" + \
             "\nUK: 29 April: start of reporting deaths from care homes"
@@ -1199,7 +1242,7 @@ def main():
             current_range = range(4, 31)
             may = [31 + x for x in range(0, int(today_day) - 1)]
             current_range.extend(may)
-            print(len(cases_dt), len(current_range))
+            print("Analyzing cases dubling times count {} with data points {}".format(str(len(cases_dt)), str(len(current_range))))
             plot_doubling(cases_dt, deaths_dt, current_range, country)
             all_nums_cases_dt[country] = cases_dt
         if len(c_deaths) == len(c_rates):
