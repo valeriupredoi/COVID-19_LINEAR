@@ -858,7 +858,11 @@ def plot_rolling_average(nums_deaths, n=7):
             if country == "UK":
                 deaths = np.loadtxt("country_data/UK_deaths_history")
             deaths = list(sorted([d for d in deaths if d > 5.]))
+            # adjust for ONS correction of 29 April 2020
+            # rempve the delta from 28 to 29 April (outlier) and replace with 28 apr value
             deaths = [deaths[i + 1] - deaths[i] for i in range(len(deaths) - 1)]
+            if country == "UK":
+                deaths[46] = 585.  # keep previous delta
             ret = np.cumsum(deaths, dtype=float)
             ret[n:] = ret[n:] - ret[:-n]
             rolling_avg = ret[n - 1:] / n
@@ -868,8 +872,9 @@ def plot_rolling_average(nums_deaths, n=7):
                                       rolling_avg[-1]), fontsize=8)
             len_windows.append(len(rolling_avg))
 
-    header = "7-day rolling average for daily no. of deaths increase (March and April) starting at min=5".format(country)
-    plt.title(header, fontsize=10)
+    header = "7-day rolling average for daily no. of deaths increase starting at min=5"
+    subheader = "\nUK: 29/04 correction from ONS: 4419 increase replaced with prev. day increase 585"
+    plt.title(header + subheader, fontsize=10)
     plt.xlabel("Rolling window midpoint [day]")
     plt.ylabel("7-day rolling window average daily no of deaths")
     plt.semilogy()
@@ -890,6 +895,9 @@ def plot_rolling_average(nums_deaths, n=7):
                 deaths = np.loadtxt("country_data/UK_deaths_history")
             deaths = list(sorted([d for d in deaths if d > 5.]))
             deaths = [deaths[i + 1] - deaths[i] for i in range(len(deaths) - 1)]
+            # adjust delta from ONS correction; replace outlier with value from 28 apr
+            if country == "UK":
+                deaths[46] = 585.  # keep previous delta
             cp = COUNTRY_PARAMS[country][1]
             deaths_per_capita = [d / cp for d in deaths]
             ret_pc = np.cumsum(deaths_per_capita, dtype=float)
@@ -900,9 +908,10 @@ def plot_rolling_average(nums_deaths, n=7):
             plt.annotate(country, xy=(len(rolling_avg_pc) + 0.05,
                                       rolling_avg_pc[-1]), fontsize=8)
 
-    header = "7-day rolling average for daily no. of deaths increase (March and April) starting at min=5".format(country)
+    header = "7-day rolling average for daily no. of deaths increase starting at min=5"
     subheader = '\n Proportion of each 1,000 of country population (equiv. to per thousand)'
-    plt.title(header + subheader, fontsize=10)
+    subheader2 = "\nUK: 29/04 correction from ONS: 4419 increase replaced with prev. day increase 585"
+    plt.title(header + subheader + subheader2, fontsize=10)
     plt.xlabel("Rolling window midpoint [day]")
     plt.ylabel("7-day rolling window average daily no of deaths per 1k of population")
     plt.semilogy()
@@ -918,6 +927,39 @@ def plot_rolling_average(nums_deaths, n=7):
                              "COVID-19_Deaths_Rolling_Average_per_Population.png"))
     plt.close()
 
+
+    for country, deaths in nums_deaths.items():
+        if country in analyzed_countries:
+            if country == "UK":
+                deaths = np.loadtxt("country_data/UK_deaths_history")
+            deaths = list(sorted([d for d in deaths if d > 5.]))
+            cp = COUNTRY_PARAMS[country][1]
+            deaths_per_capita = [d / cp for d in deaths]
+            ret_pc = np.cumsum(deaths_per_capita, dtype=float)
+            ret_pc[n:] = ret_pc[n:] - ret_pc[:-n]
+            rolling_avg_pc = ret_pc[n - 1:] / n
+            plt.plot(range(len(rolling_avg_pc)), rolling_avg_pc,
+                     color=country_colors[country], label=country)
+            plt.annotate(country, xy=(len(rolling_avg_pc) + 0.05,
+                                      rolling_avg_pc[-1]), fontsize=8)
+
+    header = "7-day rolling average cumulative no. of deaths starting at min=5"
+    subheader = '\n Proportion of each 1,000 of country population (equiv. to per thousand)'
+    plt.title(header + subheader, fontsize=10)
+    plt.xlabel("Rolling window midpoint [day]")
+    plt.ylabel("7-day rolling window average cumulative no. of deaths per 1k population")
+    plt.semilogy()
+    plt.xlim(0, max(len_windows) + 3)
+    plt.grid()
+    plt.legend(loc="lower right", fontsize=8)
+
+    country = "ALL_COUNTRIES"
+    if not os.path.isdir(os.path.join("country_plots", country)):
+        os.makedirs(os.path.join("country_plots", country))
+
+    plt.savefig(os.path.join("country_plots", country,
+                             "COVID-19_Deaths_per_Population.png"))
+    plt.close()
 
     for country, deaths in nums_deaths.items():
         if country in analyzed_countries:
