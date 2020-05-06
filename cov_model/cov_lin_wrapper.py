@@ -79,6 +79,32 @@ def make_evolution_plot(variable_pack, country, month_str):
         plt.xlim(0., x_cases[-1] + 1.5)
         plt.ylim(y_deaths[0] - 2., y_cases[-1] + 3.5)
     linear.common_plot_stuff(plt, country, month_str)
+    if country == "UK":
+        plt.axvline(march0 + 20, linestyle="--", color='r', label="LOCKDOWN")
+        main_p_x, main_R, _, main_slope, main_dtime, _ = linear.get_linear_parameters(
+            x_deaths[8:22],
+            y_deaths[8:22])
+        plt.plot(x_deaths[8:22], main_p_x, '--k')
+        plot_text_uk = \
+            "Main exponential phase UK Hospitals\n" + \
+            "------------------------------------------------------\n" + \
+            "Duration: approx. until April 4 (deaths), March 20 (cases)\n" + \
+            "Exponential rate $b=$%.2f day$^{-1}$; doubling time %.2f days\n" % (main_slope, main_dtime) + \
+            "Fit quality ($R^2$) %.2f (perfect fit for 14 points)\n" % main_R
+        plt.text(35., np.log(10.), plot_text_uk, fontsize=9, color='k')
+        # lockdown 10 days before
+        minimized_deaths = [d / 7. for d in deaths[22:]]
+        sim_d_y = list(deaths[:12])
+        sim_d_y.extend(minimized_deaths)
+        dx = [x_deaths[12] + i for i in range(len(sim_d_y) - 12)]
+        sim_d_x = list(x_deaths[:12])
+        sim_d_x.extend(dx)
+        plt.scatter(sim_d_x, np.log(sim_d_y), marker='x',
+                    color='g', label="Daily Deaths LOCKDOWN 10d Early")
+        curr_deaths = deaths[-1] / 7. + .3 * deaths[-1] / 7.
+        green_deaths = "If lockdown on 11 March: current number of deaths would be: %i" % int(curr_deaths)
+        plt.text(22., np.log(5.), green_deaths, fontsize=10, color='g')
+        plt.axhline(np.log(curr_deaths), linestyle="--", color='g')
     plt.axvline(march0, linestyle="--", color='k')
     plt.axvline(april0, linestyle="--", color='k')
     plt.axvline(may0, linestyle="--", color='k')
